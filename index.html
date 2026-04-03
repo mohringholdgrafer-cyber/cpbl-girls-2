@@ -58,15 +58,14 @@
             transition: all 0.5s ease;
         }
 
-        /* 頂部控制列 */
+        /* 頂部控制列 - 移除置頂以免手機版擋住畫面 */
         .header {
             background-color: #000000;
             border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 100;
             padding: 20px 40px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            position: relative; 
+            z-index: 10;
         }
 
         .title {
@@ -271,6 +270,21 @@
             margin-top: 40px;
         }
         .footer p { margin: 5px 0; }
+
+        /* 📱 手機版專屬優化 (RWD) */
+        @media (max-width: 768px) {
+            .header { padding: 15px; }
+            .title { font-size: 20px; margin-bottom: 15px; }
+            .team-tabs { gap: 8px; }
+            .tab-btn { width: 110px; height: 80px; font-size: 13px; padding: 5px; }
+            .tab-btn.has-logo .tab-logo { width: 30px !important; height: 30px !important; min-width: 30px; min-height: 30px; }
+            .filters input, .filters select { flex: 1 1 45%; min-width: 120px; font-size: 13px; }
+            .grid-container { padding: 0 15px; margin: 20px auto; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
+            .photo-area { height: 220px; } /* 手機照片稍微縮短，避免螢幕塞不下 */
+            .info-section { padding: 15px; }
+            .nickname { font-size: 16px; }
+            .number { font-size: 20px; }
+        }
     </style>
 </head>
 <body>
@@ -505,8 +519,9 @@
                         </a>
                     ` : '';
 
+                    // 重點修復：加上 object-position: top 讓照片以頭部為準對齊
                     let photoHtml = (c.img && c.img.trim() !== "") 
-                        ? `<img src="${c.img}" alt="${c.nickname}" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"> <span class="photo-text" style="display:none;">PHOTO PLACEHOLDER</span>`
+                        ? `<img src="${c.img}" alt="${c.nickname}" style="width: 100%; height: 100%; object-fit: cover; object-position: top center; position: absolute; top: 0; left: 0;" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"> <span class="photo-text" style="display:none;">PHOTO PLACEHOLDER</span>`
                         : `<span class="photo-text">PHOTO PLACEHOLDER</span>`;
 
                     return `
@@ -555,7 +570,6 @@
                 }).join('');
         }
 
-        // 網頁載入時執行 loadData
         window.onload = loadData;
     </script>
 </body>
