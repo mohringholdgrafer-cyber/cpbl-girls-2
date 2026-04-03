@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>中華職棒啦啦隊資料庫</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <style>
@@ -30,12 +30,14 @@
             padding: 0;
         }
 
-        body {
+        /* 終極防線：鎖死網頁最大寬度，嚴禁左右滑動 */
+        html, body {
+            max-width: 100vw;
+            overflow-x: hidden;
             background-color: var(--team-dark);
             color: var(--text-main);
             transition: background-color 0.4s ease;
             min-height: 100vh;
-            position: relative; 
             display: flex;
             flex-direction: column;
         }
@@ -58,7 +60,7 @@
             transition: all 0.5s ease;
         }
 
-        /* 頂部控制列 - 移除置頂以免手機版擋住畫面 */
+        /* 頂部控制列 */
         .header {
             background-color: #000000;
             border-bottom: 1px solid var(--border-color);
@@ -162,9 +164,10 @@
 
         .filters input:focus, .filters select:focus { border-color: var(--team-accent); }
 
-        /* 網格系統 */
+        /* 電腦版網格系統 */
         .grid-container {
             max-width: 1200px;
+            width: 100%;
             margin: 40px auto;
             padding: 0 40px;
             display: grid;
@@ -215,14 +218,14 @@
             padding-bottom: 12px;
         }
 
-        .names { display: flex; flex-direction: column; }
-        .name-container { display: flex; align-items: center; gap: 10px; }
-        .nickname { font-size: 20px; font-weight: 900; color: var(--team-accent); margin: 0; }
+        .names { display: flex; flex-direction: column; max-width: 70%; }
+        .name-container { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .nickname { font-size: 20px; font-weight: 900; color: var(--team-accent); margin: 0; line-height: 1.2; }
 
         /* IG 圖示樣式 */
         .ig-link { display: flex; align-items: center; transition: transform 0.2s; }
         .ig-link:hover { transform: scale(1.1); }
-        .ig-icon { width: 22px; height: 22px; fill: url(#ig-gradient); }
+        .ig-icon { width: 22px; height: 22px; fill: url(#ig-gradient); flex-shrink: 0; }
 
         .realname { font-size: 13px; color: var(--text-sub); margin-top: 4px; }
 
@@ -254,11 +257,7 @@
             font-weight: bold;
             animation: pulse 1.5s infinite;
         }
-        @keyframes pulse {
-            0% { opacity: 0.6; }
-            50% { opacity: 1; }
-            100% { opacity: 0.6; }
-        }
+        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
 
         .footer {
             text-align: center;
@@ -271,19 +270,48 @@
         }
         .footer p { margin: 5px 0; }
 
-        /* 📱 手機版專屬優化 (RWD) */
+        /* =========================================
+           📱 手機版專屬優化 (強制防擠破畫面)
+           ========================================= */
         @media (max-width: 768px) {
             .header { padding: 15px; }
-            .title { font-size: 20px; margin-bottom: 15px; }
-            .team-tabs { gap: 8px; }
-            .tab-btn { width: 110px; height: 80px; font-size: 13px; padding: 5px; }
-            .tab-btn.has-logo .tab-logo { width: 30px !important; height: 30px !important; min-width: 30px; min-height: 30px; }
-            .filters input, .filters select { flex: 1 1 45%; min-width: 120px; font-size: 13px; }
-            .grid-container { padding: 0 15px; margin: 20px auto; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
-            .photo-area { height: 220px; } /* 手機照片稍微縮短，避免螢幕塞不下 */
-            .info-section { padding: 15px; }
-            .nickname { font-size: 16px; }
-            .number { font-size: 20px; }
+            .title { font-size: 18px; margin-bottom: 15px; }
+            
+            /* 球隊按鈕縮小，變成一排塞多個，自動換行不外溢 */
+            .team-tabs { gap: 6px; }
+            .tab-btn { width: calc(33% - 6px); height: 75px; font-size: 12px; padding: 5px; flex-grow: 1; min-width: 90px; }
+            .tab-btn.has-logo .tab-logo { width: 26px !important; height: 26px !important; min-width: 26px; min-height: 26px; }
+            
+            /* 搜尋條件改成整齊的網格，嚴格限制寬度 */
+            .filters { 
+                display: grid; 
+                grid-template-columns: 1fr 1fr; 
+                gap: 8px; 
+                width: 100%;
+            }
+            .filters input#searchInput { grid-column: 1 / -1; width: 100%; }
+            .filters input, .filters select { min-width: 0; width: 100%; font-size: 13px; padding: 8px; }
+
+            /* 卡片強制鎖死「兩排」，絕對不會變成6個 */
+            .grid-container { 
+                padding: 0 10px; 
+                margin: 20px auto; 
+                grid-template-columns: repeat(2, 1fr); 
+                gap: 10px; 
+            }
+
+            /* 卡片內部排版微調，適應狹窄空間 */
+            .photo-area { height: 180px; }
+            .info-section { padding: 10px; }
+            .header-info { margin-bottom: 10px; padding-bottom: 8px; }
+            .name-container { gap: 6px; }
+            .nickname { font-size: 15px; }
+            .ig-icon { width: 16px; height: 16px; }
+            .realname { font-size: 11px; margin-top: 2px; }
+            .number-label { font-size: 9px; }
+            .number { font-size: 18px; }
+            .data-row { font-size: 11px; }
+            .remark { font-size: 10px; margin-top: 8px; }
         }
     </style>
 </head>
@@ -343,9 +371,7 @@
     </footer>
 
     <script>
-        // =========================================================================
-        // 正式上線版：直接讀取 Google 試算表，加上時間戳避免快取問題
-        // =========================================================================
+        // Google 試算表連結
         const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT9l-hRhzMwcRdyQHsRs_97fja0Gg4RCcDDMk31u-dSbbQmk_JIUmbPTAj2gaNYmb6bYTwUvv4_1IxN/pub?output=csv&gid=0&t=" + new Date().getTime();
 
         const teamsConfig = {
@@ -365,19 +391,17 @@
             return 3; 
         };
 
-        let db = []; // 清空，改由 Google Sheets 匯入
+        let db = []; 
         let currentTeam = "全部球隊"; 
 
-        // 啟動函數：去抓取 Google 表單資料
         function loadData() {
             Papa.parse(sheetUrl, {
                 download: true,
-                header: true, // 告訴程式第一行是標題
-                skipEmptyLines: true, // 略過空白行
+                header: true,
+                skipEmptyLines: true,
                 complete: function(results) {
-                    // 過濾掉沒有填寫本名的防呆空白行
                     db = results.data.filter(item => item.realName && item.realName.trim() !== '');
-                    init(); // 資料抓取完畢，開始渲染網頁
+                    init();
                 },
                 error: function(error) {
                     console.error("資料載入失敗:", error);
@@ -434,7 +458,6 @@
                 bgLogo.style.backgroundImage = 'none';
                 bgLogo.style.opacity = '0';
             }
-
             renderCards();
         }
 
@@ -472,19 +495,13 @@
             result.sort((a, b) => {
                 let numA = (!a.num || a.num.trim() === "") ? 999 : parseInt(a.num);
                 let numB = (!b.num || b.num.trim() === "") ? 999 : parseInt(b.num);
-
                 let ageA = getAgeValue(a.dob);
                 let ageB = getAgeValue(b.dob);
 
                 switch (sort) {
-                    case 'ageAsc': 
-                        return ageA - ageB; 
-                    case 'heightDesc': 
-                        let hA = parseInt(a.height) || 0;
-                        let hB = parseInt(b.height) || 0;
-                        return hB - hA;
-                    case 'numberAsc': 
-                        return numA - numB;
+                    case 'ageAsc': return ageA - ageB; 
+                    case 'heightDesc': return (parseInt(b.height) || 0) - (parseInt(a.height) || 0);
+                    case 'numberAsc': return numA - numB;
                     case 'default':
                     default:
                         let wA = getNatWeight(a.nat);
@@ -506,11 +523,10 @@
                     let remarkHtml = (c.remark && c.remark.trim() !== "") ? `<div class="remark">${c.remark}</div>` : '';
                     let displayHeight = (c.height && c.height.trim() !== "" && c.height !== "0") ? `${c.height} cm` : "N/A";
                     let displayNumber = (!c.num || c.num.trim() === "") ? "-" : c.num;
-                    
                     let teamAccentColor = teamsConfig[c.team] ? teamsConfig[c.team].accent : '#ffffff';
-
+                    
                     let teamDisplayHtml = currentTeam === "全部球隊" 
-                        ? `<div class="data-row"><span class="data-label">所屬球隊</span><span class="data-value" style="color: ${teamAccentColor};">${c.team}</span></div>`
+                        ? `<div class="data-row"><span class="data-label">球隊</span><span class="data-value" style="color: ${teamAccentColor};">${c.team}</span></div>`
                         : '';
 
                     let igHtml = (c.ig && c.ig.trim() !== "") ? `
@@ -519,7 +535,6 @@
                         </a>
                     ` : '';
 
-                    // 重點修復：加上 object-position: top 讓照片以頭部為準對齊
                     let photoHtml = (c.img && c.img.trim() !== "") 
                         ? `<img src="${c.img}" alt="${c.nickname}" style="width: 100%; height: 100%; object-fit: cover; object-position: top center; position: absolute; top: 0; left: 0;" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"> <span class="photo-text" style="display:none;">PHOTO PLACEHOLDER</span>`
                         : `<span class="photo-text">PHOTO PLACEHOLDER</span>`;
