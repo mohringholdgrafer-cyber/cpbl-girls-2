@@ -383,17 +383,27 @@
     <script>
         const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT9l-hRhzMwcRdyQHsRs_97fja0Gg4RCcDDMk31u-dSbbQmk_JIUmbPTAj2gaNYmb6bYTwUvv4_1IxN/pub?output=csv&gid=0&t=" + new Date().getTime();
 
-        // 預設球隊主題設定
+        // 🌟 預設球隊主題設定 (你可以在這裡自由新增、修改排球與籃球的球隊)
         const teamThemes = {
             "全部球隊": { dark: "#0f0f0f", light: "#1f1f1f", accent: "#ffffff", logo: "" },
+            
+            // --- ⚾ 棒球球隊 ---
             "Wing Stars": { dark: "#05120a", light: "#0a2414", accent: "#00e676", logo: "images/winstars_logo.png" },
             "Uni-Girls": { dark: "#140800", light: "#291000", accent: "#ff8c00", logo: "images/unilions_logo.png" },
             "Rakuten Girls": { dark: "#140202", light: "#2e0505", accent: "#ff3333", logo: "images/rakuten_logo.png" },
             "Passion Sisters": { dark: "#141200", light: "#292400", accent: "#ffea00", logo: "images/brothers_logo.png" },
             "Fubon Angels": { dark: "#020812", light: "#04152b", accent: "#33a1ff", logo: "images/fubon_logo.png" },
-            "Dragon Beauties": { dark: "#170205", light: "#2e050b", accent: "#ff4d6d", logo: "images/dragons_logo.png" }
-            // 日後有新增籃球或排球球隊，請直接寫在下面，例如：
-            // ,"電豹女": { dark: "#1a0b2e", light: "#2d1b4e", accent: "#b366ff", logo: "images/leopards_logo.png" }
+            "Dragon Beauties": { dark: "#170205", light: "#2e050b", accent: "#ff4d6d", logo: "images/dragons_logo.png" },
+
+            // --- 🏐 排球球隊範例 ---
+            "臺北鯨華": { dark: "#001a33", light: "#002b5e", accent: "#3399ff", logo: "images/kingwhale_logo.png" },
+            "極速超跑": { dark: "#1a0d00", light: "#331a00", accent: "#ff6600", logo: "images/topspeed_logo.png" },
+            "新北中纖": { dark: "#001122", light: "#002244", accent: "#00aaff", logo: "images/cmfc_logo.png" },
+
+            // --- 🏀 籃球球隊範例 ---
+            "電豹女": { dark: "#1a0b2e", light: "#2d1b4e", accent: "#b366ff", logo: "images/leopards_logo.png" },
+            "Formosa Sexy": { dark: "#091c14", light: "#143627", accent: "#00ff88", logo: "images/formosa_logo.png" },
+            "慕獅女孩": { dark: "#1c0926", light: "#351447", accent: "#d400ff", logo: "images/lioneers_logo.png" }
         };
 
         let db = []; 
@@ -406,12 +416,14 @@
                 download: true,
                 header: true,
                 skipEmptyLines: true,
-                // 強制清除表頭的 BOM 隱藏亂碼，並去除頭尾空白，避免欄位抓錯
                 transformHeader: function(header) {
-                    return header.replace(/^\uFEFF/, "").trim();
+                    let cleanHeader = header.replace(/^\uFEFF/, "").trim();
+                    if (cleanHeader.toLowerCase() === 'sport') {
+                        return 'sport';
+                    }
+                    return cleanHeader;
                 },
                 complete: function(results) {
-                    // 只過濾掉 realName 是空的列
                     db = results.data.filter(item => item.realName && item.realName.trim() !== '');
                     init();
                 },
@@ -464,13 +476,15 @@
             const container = document.getElementById('tabs-container');
             container.innerHTML = '';
             
-            if (activeTeamsInSport.length <= 1) {
+            // 隱藏全部女孩時的球隊選單
+            if (currentSport === "全部" || activeTeamsInSport.length <= 1) {
                 container.style.display = 'none';
                 return;
             }
             container.style.display = 'flex';
 
             activeTeamsInSport.forEach(team => {
+                // 如果該球隊沒有寫在 teamThemes 裡，會自動套用預設的深灰色調
                 const config = teamThemes[team] || { dark: "#1a1a1a", light: "#2a2a2a", accent: "#cccccc", logo: "" };
                 
                 const btn = document.createElement('button');
@@ -533,7 +547,6 @@
             const sort = document.getElementById('sortFilter').value;
 
             let result = db.filter(c => {
-                // 防呆：去除空白再比對
                 const sportValue = (c.sport || "").trim();
                 const teamValue = (c.team || "").trim();
                 
