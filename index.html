@@ -34,22 +34,21 @@
 
         .title { font-size: 24px; font-weight: 900; margin-bottom: 20px; text-align: center; letter-spacing: 1px; }
 
-        .controls-container { display: flex; flex-direction: column; gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .controls-container { display: flex; flex-direction: column; gap: 15px; max-width: 1200px; margin: 0 auto; }
 
-        .sport-tabs { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+        .sport-tabs { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
         .sport-btn {
             background: transparent; border: 2px solid var(--border-color);
-            color: var(--text-sub); padding: 10px 24px;
-            font-size: 16px; font-weight: 900; border-radius: 30px;
+            color: var(--text-sub); padding: 8px 20px;
+            font-size: 15px; font-weight: 900; border-radius: 30px;
             cursor: pointer; transition: all 0.3s ease;
         }
         .sport-btn.active { background: #ffffff; color: #000000; border-color: #ffffff; }
-        
         .sport-btn.btn-event { border-color: #ff9f43; color: #ff9f43; }
         .sport-btn.btn-event.active { background: #ff9f43; color: #000000; }
 
         .team-tabs {
-            display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; 
+            display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; 
             padding-top: 15px; border-top: 1px dashed var(--border-color);
         }
 
@@ -58,95 +57,104 @@
             color: var(--text-sub); cursor: pointer; font-size: 13px; font-weight: 700;
             border-radius: 12px; transition: all 0.2s;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 6px; width: 120px; height: 105px; padding: 10px;
+            gap: 5px; width: 110px; height: 90px; padding: 10px;
         }
-        .tab-logo { width: 45px; height: 45px; object-fit: contain; display: block; }
-        .tab-btn.active { 
-            background-color: var(--team-accent, #fff); 
-            color: #000000; 
-            border-color: var(--team-accent, #fff); 
-        }
+        .tab-logo { width: 38px; height: 38px; object-fit: contain; display: block; }
+        .tab-btn.active { background-color: var(--team-accent, #fff); color: #000000; border-color: var(--team-accent, #fff); }
 
-        .filters { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+        .filters { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
         .filters input, .filters select {
             background-color: #1a1a1a; border: 1px solid var(--border-color);
-            color: var(--text-main); padding: 8px 12px; font-size: 14px;
-            border-radius: 4px; outline: none; min-width: 150px;
+            color: var(--text-main); padding: 8px 12px; font-size: 13px;
+            border-radius: 4px; outline: none; min-width: 140px;
         }
 
         .grid-container {
-            max-width: 1200px; width: 100%; margin: 40px auto; padding: 0 40px;
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px; flex: 1;
+            max-width: 1100px; width: 100%; margin: 30px auto; padding: 0 20px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px; flex: 1;
         }
 
-        /* --- 活動行程優化 --- */
+        /* --- 活動行程精簡化 --- */
         .event-list-container {
             max-width: 1000px; width: 100%; margin: 20px auto; padding: 0 20px;
-            display: flex; flex-direction: column; gap: 16px;
+            display: flex; flex-direction: column; gap: 10px;
         }
         .event-item {
-            background: #1e1e1e; border-radius: 12px; padding: 20px;
-            display: flex; align-items: flex-start; gap: 20px;
-            border: 1px solid #333; transition: all 0.2s;
+            background: #181818; border-radius: 10px; padding: 15px 20px;
+            display: flex; align-items: center; gap: 15px;
+            border: 1px solid #2a2a2a; transition: all 0.2s;
         }
-        .event-item:hover { border-color: #ff9f43; background: #252525; }
+        .event-item:hover { border-color: #ff9f43; background: #202020; }
         
         .event-date-box {
-            min-width: 90px; text-align: center; border-right: 2px solid #ff9f43; padding-right: 20px;
+            min-width: 70px; text-align: center; border-right: 1px solid #444; padding-right: 15px;
         }
-        .date-day { font-size: 26px; font-weight: 900; color: #ff9f43; display: block; line-height: 1; }
-        .date-month { font-size: 13px; color: #aaa; text-transform: uppercase; margin-top: 5px; display: block; }
+        .date-day { font-size: 22px; font-weight: 900; color: #ff9f43; line-height: 1; }
+        .date-month { font-size: 11px; color: #777; margin-top: 3px; display: block; }
 
         .event-main-info { flex: 1; min-width: 0; }
-        .event-title { font-size: 20px; font-weight: 900; color: #fff; margin-bottom: 10px; }
-        .event-sub-info { font-size: 14px; color: #888; display: flex; flex-direction: column; gap: 5px; }
-        .info-tag { color: #ccc; font-weight: 500; }
+        .event-title { font-size: 17px; font-weight: 900; color: #fff; margin-bottom: 5px; }
+        .event-sub-info { font-size: 13px; color: #888; display: flex; flex-wrap: wrap; gap: x 10px; row-gap: 2px; }
+        .info-tag { color: #aaa; margin-right: 4px; }
         
         .event-girls-container {
-            display: flex; flex-wrap: wrap; gap: 15px; margin-top: 20px; border-top: 1px solid #333; padding-top: 15px;
+            display: flex; flex-wrap: wrap; gap: 10px; margin-left: 20px;
         }
         .event-girl-item {
-            display: flex; flex-direction: column; align-items: center; gap: 8px; width: 75px;
+            display: flex; flex-direction: column; align-items: center; gap: 4px; width: 55px;
         }
         .attend-girl-img {
-            width: 60px; height: 60px; border-radius: 50%; border: 2px solid #444;
-            object-fit: cover; object-position: top center; background: #333;
+            width: 48px; height: 48px; border-radius: 50%; border: 2px solid #333;
+            object-fit: cover; object-position: top center; background: #222;
         }
         .attend-girl-name {
-            font-size: 12px; color: #eee; text-align: center; font-weight: 700; width: 100%;
+            font-size: 10px; color: #ccc; text-align: center; font-weight: 500; width: 100%;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
 
         /* --- 女孩卡片 --- */
-        .card { background-color: var(--team-light); border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; transition: border-color 0.4s ease; }
-        .photo-area { height: 320px; background-color: #111; position: relative; border-bottom: 1px solid var(--border-color); }
-        .sport-tags { position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; gap: 6px; z-index: 5; }
-        .sport-tag { padding: 4px 10px; font-size: 11px; font-weight: 900; color: #fff; border-radius: 4px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.5); }
+        .card { background-color: var(--team-light); border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; }
+        .photo-area { height: 300px; background-color: #111; position: relative; border-bottom: 1px solid var(--border-color); }
+        .sport-tags { position: absolute; top: 10px; left: 10px; display: flex; flex-direction: column; gap: 5px; z-index: 5; }
+        .sport-tag { padding: 3px 8px; font-size: 10px; font-weight: 900; color: #fff; border-radius: 3px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         .tag-baseball { background: #1e3799; }
         .tag-basketball { background: #f39c12; }
         .tag-volleyball { background: #00b894; }
-        .info-section { padding: 20px; }
-        .header-info { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; border-bottom: 1px solid #333; padding-bottom: 12px; }
-        .nickname { font-size: 22px; font-weight: 900; color: var(--team-accent, #fff); }
-        .realname { font-size: 13px; color: var(--text-sub); margin-top: 4px; }
-        .number { font-size: 18px; font-weight: 900; color: #fff; text-align: right; }
+        .info-section { padding: 15px; }
+        .header-info { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .nickname { font-size: 20px; font-weight: 900; color: var(--team-accent, #fff); }
+        .realname { font-size: 12px; color: var(--text-sub); margin-top: 2px; }
+        .number { font-size: 17px; font-weight: 900; color: #fff; text-align: right; }
+        .data-grid { display: flex; flex-direction: column; gap: 10px; }
+        .data-row { display: flex; justify-content: space-between; font-size: 12.5px; }
+
+        /* IG 圖示修正樣式 */
+        .ig-link { margin-left: 8px; vertical-align: middle; display: inline-flex; transition: transform 0.2s; }
+        .ig-link:hover { transform: scale(1.1); }
+        .ig-icon { width: 18px; height: 18px; fill: url(#ig-gradient-fix); }
 
         @media (max-width: 768px) {
-            .event-item { flex-direction: column; padding: 15px; }
-            .event-date-box { border-right: none; border-bottom: 1px solid #ff9f43; padding: 0 0 10px 0; width: 100%; text-align: left; display: flex; align-items: center; gap: 10px; }
-            .date-month { margin-top: 0; }
-            .event-girl-item { width: 60px; }
-            .attend-girl-img { width: 50px; height: 50px; }
-            .grid-container { padding: 0 10px; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .event-item { flex-direction: column; padding: 15px; gap: 10px; }
+            .event-date-box { border-right: none; border-bottom: 1px solid #444; padding: 0 0 8px 0; width: 100%; text-align: left; display: flex; align-items: center; gap: 10px; }
+            .event-girls-container { margin-left: 0; padding-top: 10px; border-top: 1px solid #2a2a2a; width: 100%; }
+            .grid-container { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .photo-area { height: 180px; }
         }
     </style>
 </head>
 <body>
 
     <svg width="0" height="0" style="position:absolute;">
-        <linearGradient id="ig-gradient" x1="100%" y1="100%" x2="0%" y2="0%">
-            <stop offset="0%" style="stop-color:#f09433;" /><stop offset="50%" style="stop-color:#dc2743;" /><stop offset="100%" style="stop-color:#bc1888;" />
-        </linearGradient>
+        <defs>
+            <linearGradient id="ig-gradient-fix" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#f09433;" />
+                <stop offset="25%" style="stop-color:#e6683c;" />
+                <stop offset="50%" style="stop-color:#dc2743;" />
+                <stop offset="75%" style="stop-color:#cc2366;" />
+                <stop offset="100%" style="stop-color:#bc1888;" />
+            </linearGradient>
+        </defs>
     </svg>
 
     <header class="header">
@@ -188,7 +196,6 @@
         const girlsGid = "0";
         const eventsGid = "925411186";
 
-        // 🌟 啦啦隊精準配色方案 (排球 Logo 留空 "" 以隱藏圖片)
         const teamThemes = {
             "全部啦啦隊": { dark: "#0f0f0f", light: "#1a1a1a", accent: "#ffffff", logo: "" },
             "Wing Stars_棒球": { dark: "#05120a", light: "#0a2414", accent: "#00e676", logo: "images/winstars_logo.png" },
@@ -198,12 +205,15 @@
             "Passion Sisters": { dark: "#141200", light: "#292400", accent: "#ffea00", logo: "images/brothers_logo.png" },
             "Fubon Angels": { dark: "#020812", light: "#04152b", accent: "#33a1ff", logo: "images/fubon_logo.png" },
             "Dragon Beauties": { dark: "#170205", light: "#2e050b", accent: "#ff4d6d", logo: "images/dragons_logo.png" },
-            
-            // 🏐 TVBL 排球 (暫不放 Logo)
             "Tokki Cutie": { dark: "#1a0f00", light: "#2e1a05", accent: "#ff8c00", logo: "" },
             "Little witches": { dark: "#001414", light: "#002b2b", accent: "#00d2d3", logo: "" },
-            "Peach Girls": { dark: "#1a000d", light: "#2e0518", accent: "#d63384", logo: "" }, 
-            "Wing Stars_排球": { dark: "#020812", light: "#04152b", accent: "#0984e3", logo: "" } 
+            "Peach Girls": { dark: "#1a000d", light: "#2e0518", accent: "#d63384", logo: "" },
+            "Wing Stars_排球": { dark: "#020812", light: "#04152b", accent: "#0984e3", logo: "" }
+        };
+
+        const getNatWeight = (n) => {
+            const w = {"韓國":1, "日本":2, "臺灣":4, "台灣":4};
+            return w[n] || 3;
         };
 
         let dbGirls = []; let dbEvents = [];
@@ -223,7 +233,7 @@
                         download: true, header: true, skipEmptyLines: true,
                         transformHeader: h => h.trim().toLowerCase().replace(/[\s_]/g, ""),
                         complete: resEvents => {
-                            dbEvents = resEvents.data;
+                            dbEvents = resEvents.data.filter(e => e.date);
                             init();
                         }
                     });
@@ -249,13 +259,9 @@
             ['searchInput', 'natFilter', 'sortFilter'].forEach(id => document.getElementById(id).addEventListener('input', renderContent));
         }
 
-        function getThemeConfig(t, s = "") {
-            const cleanT = (t || "").trim(); const cleanS = (s || "").trim();
-            return teamThemes[`${cleanT}_${cleanS}`] || teamThemes[cleanT] || teamThemes["全部啦啦隊"];
-        }
-
         function applyTheme(tName) {
-            const config = getThemeConfig(tName, currentSport === "全部" ? "" : currentSport);
+            const t = tName.trim(); const s = currentSport === "全部" ? "" : currentSport;
+            const config = teamThemes[`${t}_${s}`] || teamThemes[t] || teamThemes["全部啦啦隊"];
             document.documentElement.style.setProperty('--team-dark', config.dark);
             document.documentElement.style.setProperty('--team-light', config.light);
             document.documentElement.style.setProperty('--team-accent', config.accent);
@@ -276,13 +282,10 @@
 
             activeTeams.forEach(tName => {
                 const t = tName.trim(); const s = currentSport === "全部" ? "" : currentSport;
-                const config = getThemeConfig(t, s);
+                const config = teamThemes[`${t}_${s}`] || teamThemes[t] || { accent: "#ccc", logo: "" };
                 const btn = document.createElement('button');
                 btn.className = `tab-btn ${tName === currentTeam ? 'active' : ''}`;
-                
-                // 只有當 logo 不為空字串時才生成 img 標籤
-                const logoHtml = (config.logo && config.logo !== "") ? `<img src="${config.logo}" class="tab-logo" onerror="this.style.display='none'">` : '';
-                
+                const logoHtml = (config.logo) ? `<img src="${config.logo}" class="tab-logo" onerror="this.style.display='none'">` : '';
                 btn.innerHTML = `${logoHtml}<span>${tName}</span>`;
                 btn.style.setProperty('--team-accent', config.accent);
                 btn.onclick = () => {
@@ -326,7 +329,7 @@
                     return `
                         <div class="event-girl-item">
                             <img src="${g.img}" class="attend-girl-img" title="${name}">
-                            <span class="attend-girl-name">${g.nickname || name}</span>
+                            <span class="attend-girl-name">${g.realname}</span>
                         </div>
                     `;
                 }).join('');
@@ -340,13 +343,13 @@
                         <div class="event-main-info">
                             <div class="event-title">${e.eventname || "未命名活動"}</div>
                             <div class="event-sub-info">
-                                <span><span class="info-tag">🕒 時間：</span>${e.time || "全天"}</span>
-                                <span><span class="info-tag">📍 地點：</span>${e.address || "請參考官方公告"}</span>
-                                <span><span class="info-tag">🏢 主辦：</span>${e.host || "未知單位"}</span>
+                                <span><span class="info-tag">🕒</span>${e.time || "全天"}</span>
+                                <span><span class="info-tag">📍</span>${e.address || "請參考官網"}</span>
+                                <span><span class="info-tag">🏢</span>${e.host || "未知"}</span>
                             </div>
-                            <div class="event-girls-container">
-                                ${girlsHtml}
-                            </div>
+                        </div>
+                        <div class="event-girls-container">
+                            ${girlsHtml}
                         </div>
                     </div>
                 `;
@@ -363,6 +366,7 @@
                 let mNat = nat === 'all' || (c.nat || "").includes(nat);
                 return ms && mt && mSearch && mNat;
             });
+            
             if (currentSport === "全部" && currentTeam === "全部啦啦隊") {
                 const mMap = new Map();
                 result.forEach(c => {
@@ -377,14 +381,15 @@
                 });
                 result = Array.from(mMap.values());
             }
-            const w = {"韓國":1, "日本":2, "臺灣":4, "台灣":4};
+
             result.sort((a,b) => {
-                let wA = w[a.nat] || 3; let wB = w[b.nat] || 3;
+                let wA = getNatWeight(a.nat); let wB = getNatWeight(b.nat);
                 if (wA !== wB) return wA - wB;
                 if (sort === 'ageAsc') return (parseInt(a.dob.replace(/\//g,'')) || 0) - (parseInt(b.dob.replace(/\//g,'')) || 0);
                 if (sort === 'numberAsc') return (parseInt(a.num) || 99) - (parseInt(b.num) || 99);
                 return 0;
             });
+
             container.innerHTML = result.map(c => {
                 const sports = c.mS || [c.sport]; const teams = (c.mT || [c.team]).map(t => t.trim());
                 const nums = (c.mN || [c.num]).filter(n => n && n !== "-");
@@ -394,8 +399,13 @@
                     if(s.includes("排球")) return `<div class="sport-tag tag-volleyball">排球</div>`;
                     return '';
                 }).join('');
+                
                 const t = teams[0]; const s = sports[0];
                 const cardAccent = (teamThemes[`${t}_${s}`] || teamThemes[t] || {accent:"#fff"}).accent;
+
+                // IG 圖示代碼
+                const igIcon = c.ig ? `<a href="${c.ig}" target="_blank" class="ig-link"><svg class="ig-icon" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.332 3.608 1.308.975.975 1.245 2.242 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.332 2.633-1.308 3.608-.975.975-2.242 1.245-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.332-3.608-1.308-.975-.975-1.245-2.242-1.308-3.608-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.062-1.366.332-2.633 1.308-3.608.975-.975 2.242-1.245 3.608-1.308 1.266-.058 1.646-.07 4.85-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.358-.2 6.78-2.618 6.98-6.98.058-1.281.072-1.689.072-4.948s-.014-3.667-.072-4.947c-.2-4.358-2.618-6.78-6.98-6.98-1.281-.058-1.689-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>` : '';
+
                 return `
                     <div class="card" style="border-top: 4px solid ${cardAccent};">
                         <div class="photo-area">
@@ -404,7 +414,7 @@
                         </div>
                         <div class="info-section">
                             <div class="header-info">
-                                <div><div class="nickname" style="color:${cardAccent}">${c.nickname}${c.ig ? `<a href="${c.ig}" target="_blank" class="ig-link"><svg class="ig-icon" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.332 3.608 1.308.975.975 1.245 2.242 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.332 2.633-1.308 3.608-.975.975-2.242 1.245-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.332-3.608-1.308-.975-.975-1.245-2.242-1.308-3.608-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.062-1.366.332-2.633 1.308-3.608.975-.975 2.242-1.245 3.608-1.308 1.266-.058 1.646-.07 4.85-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.358-.2 6.78-2.618 6.98-6.98.058-1.281.072-1.689.072-4.948s-.014-3.667-.072-4.947c-.2-4.358-2.618-6.78-6.98-6.98-1.281-.058-1.689-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>` : ''}</div><div class="realname">${c.realname}</div></div>
+                                <div><div class="nickname" style="color:${cardAccent}">${c.nickname}${igIcon}</div><div class="realname">${c.realname}</div></div>
                                 <div class="number">${nums.join("<br>") || "-"}</div>
                             </div>
                             <div class="data-grid">
