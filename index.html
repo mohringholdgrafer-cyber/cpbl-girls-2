@@ -96,9 +96,9 @@
         <div class="controls-container">
             <div class="sport-tabs" id="sport-tabs">
                 <button class="sport-btn active" onclick="changeSport('全部')">全部</button>
-                <button class="sport-btn" onclick="changeSport('職棒')">職棒</button>
-                <button class="sport-btn" onclick="changeSport('職籃')">職籃</button>
-                <button class="sport-btn" onclick="changeSport('排球')">排球</button>
+                <button class="sport-btn" onclick="changeSport('職業棒球')">職業棒球</button>
+                <button class="sport-btn" onclick="changeSport('職業籃球')">職業籃球</button>
+                <button class="sport-btn" onclick="changeSport('職業排球')">職業排球</button>
             </div>
             <div class="team-tabs" id="tabs-container"></div>
             <div class="filters">
@@ -125,9 +125,9 @@
 
     <script>
         // =========================================================================
-        // 🔴 單純的女孩圖鑑 CSV 網址 🔴
+        // 🔴 這次保證是正確的女孩圖鑑 CSV 網址！(1vT9l 開頭) 🔴
         // =========================================================================
-        const rosterSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTdkYFMELT3B0v0e1rz3k0rhJUinpI9xStZzNGANOVvPG96OF-9Vz06guztjaw21k7HTaudblcpqwkQ/pub?gid=0&single=true&output=csv&t=" + new Date().getTime();
+        const rosterSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT9l-hRhzMwcRdyQHsRs_97fja0Gg4RCcDDMk31u-dSbbQmk_JIUmbPTAj2gaNYmb6bYTwUvv4_1IxN/pub?gid=0&single=true&output=csv&t=" + new Date().getTime();
         // =========================================================================
 
         const teamsConfig = {
@@ -172,7 +172,7 @@
                 },
                 error: function(error) {
                     console.error("圖鑑載入失敗:", error);
-                    document.getElementById('grid-container').innerHTML = '<div class="empty-state">無法讀取圖鑑資料庫，請檢查網址連線。<br>(如果是在電腦裡直接開啟，請嘗試使用 Netlify Drop 測試)</div>';
+                    document.getElementById('grid-container').innerHTML = '<div class="empty-state">無法讀取圖鑑資料庫，請檢查網址連線。<br>或確認是否受到瀏覽器擴充功能阻擋。</div>';
                 }
             });
         }
