@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>2026CPBL中華職棒啦啦隊資料庫</title>
+    <title>2026 台灣啦啦隊資料庫</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
@@ -30,7 +30,6 @@
             padding: 0;
         }
 
-        /* 終極防線：鎖死網頁最大寬度，嚴禁左右滑動 */
         html, body {
             max-width: 100vw;
             overflow-x: hidden;
@@ -42,7 +41,6 @@
             flex-direction: column;
         }
 
-        /* 背景浮水印 LOGO */
         #bg-logo {
             position: fixed;
             top: 50%;
@@ -60,7 +58,6 @@
             transition: all 0.5s ease;
         }
 
-        /* 頂部控制列 */
         .header {
             background-color: #000000;
             border-bottom: 1px solid var(--border-color);
@@ -164,7 +161,6 @@
 
         .filters input:focus, .filters select:focus { border-color: var(--team-accent); }
 
-        /* 電腦版網格系統 */
         .grid-container {
             max-width: 1200px;
             width: 100%;
@@ -176,7 +172,6 @@
             flex: 1;
         }
 
-        /* 卡片設計 */
         .card {
             background-color: var(--team-light);
             border: 1px solid var(--border-color);
@@ -206,7 +201,6 @@
 
         .photo-text { color: #333; font-size: 12px; font-weight: 700; letter-spacing: 2px; }
 
-        /* 資訊區塊 */
         .info-section { padding: 20px; position: relative; }
 
         .header-info {
@@ -222,7 +216,6 @@
         .name-container { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         .nickname { font-size: 20px; font-weight: 900; color: var(--team-accent); margin: 0; line-height: 1.2; }
 
-        /* IG 圖示樣式 */
         .ig-link { display: flex; align-items: center; transition: transform 0.2s; }
         .ig-link:hover { transform: scale(1.1); }
         .ig-icon { width: 22px; height: 22px; fill: url(#ig-gradient); flex-shrink: 0; }
@@ -247,7 +240,6 @@
 
         .empty-state { grid-column: 1 / -1; text-align: center; padding: 60px; color: var(--text-sub); font-size: 16px; }
 
-        /* 載入中動畫 */
         .loader {
             grid-column: 1 / -1;
             text-align: center;
@@ -270,19 +262,14 @@
         }
         .footer p { margin: 5px 0; }
 
-        /* =========================================
-           📱 手機版專屬優化 (強制防擠破畫面)
-           ========================================= */
         @media (max-width: 768px) {
             .header { padding: 15px; }
             .title { font-size: 18px; margin-bottom: 15px; }
             
-            /* 球隊按鈕縮小，變成一排塞多個，自動換行不外溢 */
             .team-tabs { gap: 6px; }
             .tab-btn { width: calc(33% - 6px); height: 75px; font-size: 12px; padding: 5px; flex-grow: 1; min-width: 90px; }
             .tab-btn.has-logo .tab-logo { width: 26px !important; height: 26px !important; min-width: 26px; min-height: 26px; }
             
-            /* 搜尋條件改成整齊的網格，嚴格限制寬度 */
             .filters { 
                 display: grid; 
                 grid-template-columns: 1fr 1fr; 
@@ -292,7 +279,6 @@
             .filters input#searchInput { grid-column: 1 / -1; width: 100%; }
             .filters input, .filters select { min-width: 0; width: 100%; font-size: 13px; padding: 8px; }
 
-            /* 卡片強制鎖死「兩排」，絕對不會變成6個 */
             .grid-container { 
                 padding: 0 10px; 
                 margin: 20px auto; 
@@ -300,7 +286,6 @@
                 gap: 10px; 
             }
 
-            /* 卡片內部排版微調，適應狹窄空間 */
             .photo-area { height: 180px; }
             .info-section { padding: 10px; }
             .header-info { margin-bottom: 10px; padding-bottom: 8px; }
@@ -330,11 +315,17 @@
     <div id="bg-logo"></div>
 
     <header class="header">
-        <h1 class="title">中華職棒啦啦隊資料庫</h1>
+        <h1 class="title">台灣啦啦隊資料庫</h1>
         <div class="controls-container">
             <div class="team-tabs" id="tabs-container"></div>
             <div class="filters">
                 <input type="text" id="searchInput" placeholder="搜尋本名或綽號...">
+                <select id="sportFilter">
+                    <option value="all">所有運動</option>
+                    <option value="棒球">棒球</option>
+                    <option value="籃球">籃球</option>
+                    <option value="排球">排球</option>
+                </select>
                 <select id="natFilter">
                     <option value="all">所有國籍</option>
                     <option value="韓國">韓國</option>
@@ -382,6 +373,8 @@
             "Passion Sisters": { dark: "#141200", light: "#292400", accent: "#ffea00", logo: "images/brothers_logo.png" },
             "Fubon Angels": { dark: "#020812", light: "#04152b", accent: "#33a1ff", logo: "images/fubon_logo.png" },
             "Dragon Beauties": { dark: "#170205", light: "#2e050b", accent: "#ff4d6d", logo: "images/dragons_logo.png" }
+            // 💡 提醒：之後如果你新增了專屬排球或籃球的球隊，記得在這裡依照格式新增上去！
+            // "電豹女": { dark: "#...
         };
 
         const getNatWeight = (nat) => {
@@ -413,7 +406,8 @@
         function init() {
             renderTabs();
             changeTheme(currentTeam);
-            ['searchInput', 'natFilter', 'zodiacFilter', 'sortFilter'].forEach(id => {
+            // 新增 sportFilter 到監聽器
+            ['searchInput', 'sportFilter', 'natFilter', 'zodiacFilter', 'sortFilter'].forEach(id => {
                 document.getElementById(id).addEventListener('input', renderCards);
             });
         }
@@ -470,6 +464,7 @@
         function renderCards() {
             const container = document.getElementById('grid-container');
             const search = document.getElementById('searchInput').value.toLowerCase();
+            const sport = document.getElementById('sportFilter').value; // 取得選取的運動
             const nat = document.getElementById('natFilter').value;
             const zodiac = document.getElementById('zodiacFilter').value;
             const sort = document.getElementById('sortFilter').value;
@@ -478,6 +473,12 @@
                 const matchTeam = currentTeam === "全部球隊" || c.team === currentTeam;
                 const matchSearch = (c.nickname || "").toLowerCase().includes(search) || (c.realName || "").toLowerCase().includes(search);
                 
+                // 新增運動篩選邏輯 (支援欄位中寫多個運動，例如 "棒球,籃球")
+                let matchSport = true;
+                if (sport !== 'all') {
+                    matchSport = c.sport && c.sport.includes(sport);
+                }
+
                 let matchNat = true;
                 if (nat === '韓國') matchNat = c.nat === '韓國';
                 else if (nat === '日本') matchNat = c.nat === '日本';
@@ -489,7 +490,7 @@
                 if (cZodiac === "魔羯座") cZodiac = "摩羯座";
                 const matchZodiac = (zodiac === 'all') || (cZodiac === zodiac);
 
-                return matchTeam && matchSearch && matchNat && matchZodiac;
+                return matchTeam && matchSearch && matchSport && matchNat && matchZodiac;
             });
 
             result.sort((a, b) => {
@@ -529,6 +530,11 @@
                         ? `<div class="data-row"><span class="data-label">球隊</span><span class="data-value" style="color: ${teamAccentColor};">${c.team}</span></div>`
                         : '';
 
+                    // 新增運動項目顯示區塊
+                    let sportHtml = (c.sport && c.sport.trim() !== "")
+                        ? `<div class="data-row"><span class="data-label">運動</span><span class="data-value">${c.sport}</span></div>`
+                        : '';
+
                     let igHtml = (c.ig && c.ig.trim() !== "") ? `
                         <a href="${c.ig}" target="_blank" class="ig-link" title="前往 Instagram">
                             <svg class="ig-icon" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.332 3.608 1.308.975.975 1.245 2.242 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.332 2.633-1.308 3.608-.975.975-2.242 1.245-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.332-3.608-1.308-.975-.975-1.245-2.242-1.308-3.608-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.062-1.366.332-2.633 1.308-3.608.975-.975 2.242-1.245 3.608-1.308 1.266-.058 1.646-.07 4.85-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.358-.2 6.78-2.618 6.98-6.98.058-1.281.072-1.689.072-4.948s-.014-3.667-.072-4.947c-.2-4.358-2.618-6.78-6.98-6.98-1.281-.058-1.689-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
@@ -561,6 +567,7 @@
                                 
                                 <div class="data-grid">
                                     ${teamDisplayHtml}
+                                    ${sportHtml}
                                     <div class="data-row">
                                         <span class="data-label">國籍</span>
                                         <span class="data-value ${natTextClass}">${c.nat}</span>
