@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>2026 台灣啦啦隊資料庫</title>
+    <title>台灣啦啦隊資料庫</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
@@ -79,16 +79,51 @@
         .controls-container {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 20px;
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        .team-tabs {
+        /* 運動大類別按鈕 */
+        .sport-tabs {
             display: flex;
             justify-content: center;
             gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .sport-btn {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-sub);
+            padding: 10px 24px;
+            font-size: 16px;
+            font-weight: 900;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sport-btn:hover {
+            border-color: #ffffff;
+            color: #ffffff;
+        }
+
+        .sport-btn.active {
+            background: #ffffff;
+            color: #000000;
+            border-color: #ffffff;
+            box-shadow: 0 0 15px rgba(255,255,255,0.3);
+        }
+
+        /* 球隊次選單按鈕 */
+        .team-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
             flex-wrap: wrap; 
+            padding-top: 10px;
+            border-top: 1px dashed var(--border-color);
         }
 
         .tab-btn {
@@ -96,7 +131,7 @@
             border: 1px solid var(--border-color);
             color: var(--text-sub);
             cursor: pointer;
-            font-size: 14px; 
+            font-size: 13px; 
             font-weight: 700;
             border-radius: 12px; 
             transition: all 0.2s;
@@ -104,24 +139,16 @@
             flex-direction: column; 
             align-items: center; 
             justify-content: center;
-            gap: 10px; 
-            width: 140px; 
-            height: 100px; 
+            gap: 8px; 
+            width: 120px; 
+            height: 90px; 
             flex-shrink: 0;
             padding: 10px;
         }
 
-        .tab-btn span {
-            text-align: center;
-            line-height: 1.2;
-            width: 100%;
-        }
-
         .tab-logo {
-            width: 40px !important; 
-            height: 40px !important; 
-            min-width: 40px;
-            min-height: 40px;
+            width: 36px !important; 
+            height: 36px !important; 
             object-fit: contain; 
             display: none; 
         }
@@ -135,10 +162,9 @@
         }
 
         .tab-btn.active {
-            background-color: var(--team-accent);
+            background-color: var(--team-accent, #fff);
             color: #000000;
-            border-color: var(--team-accent);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
+            border-color: var(--team-accent, #fff);
         }
 
         .filters {
@@ -159,7 +185,7 @@
             min-width: 150px;
         }
 
-        .filters input:focus, .filters select:focus { border-color: var(--team-accent); }
+        .filters input:focus, .filters select:focus { border-color: #ffffff; }
 
         .grid-container {
             max-width: 1200px;
@@ -214,7 +240,7 @@
 
         .names { display: flex; flex-direction: column; max-width: 70%; }
         .name-container { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-        .nickname { font-size: 20px; font-weight: 900; color: var(--team-accent); margin: 0; line-height: 1.2; }
+        .nickname { font-size: 20px; font-weight: 900; color: var(--team-accent, #fff); margin: 0; line-height: 1.2; }
 
         .ig-link { display: flex; align-items: center; transition: transform 0.2s; }
         .ig-link:hover { transform: scale(1.1); }
@@ -244,7 +270,7 @@
             grid-column: 1 / -1;
             text-align: center;
             padding: 60px;
-            color: var(--team-accent);
+            color: #ffffff;
             font-size: 18px;
             font-weight: bold;
             animation: pulse 1.5s infinite;
@@ -260,32 +286,23 @@
             font-size: 13px;
             margin-top: 40px;
         }
-        .footer p { margin: 5px 0; }
 
         @media (max-width: 768px) {
             .header { padding: 15px; }
             .title { font-size: 18px; margin-bottom: 15px; }
             
-            .team-tabs { gap: 6px; }
+            .sport-tabs { gap: 8px; }
+            .sport-btn { padding: 8px 16px; font-size: 14px; flex-grow: 1; text-align: center; }
+
+            .team-tabs { gap: 6px; padding-top: 8px; }
             .tab-btn { width: calc(33% - 6px); height: 75px; font-size: 12px; padding: 5px; flex-grow: 1; min-width: 90px; }
-            .tab-btn.has-logo .tab-logo { width: 26px !important; height: 26px !important; min-width: 26px; min-height: 26px; }
+            .tab-btn.has-logo .tab-logo { width: 26px !important; height: 26px !important; }
             
-            .filters { 
-                display: grid; 
-                grid-template-columns: 1fr 1fr; 
-                gap: 8px; 
-                width: 100%;
-            }
+            .filters { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
             .filters input#searchInput { grid-column: 1 / -1; width: 100%; }
             .filters input, .filters select { min-width: 0; width: 100%; font-size: 13px; padding: 8px; }
 
-            .grid-container { 
-                padding: 0 10px; 
-                margin: 20px auto; 
-                grid-template-columns: repeat(2, 1fr); 
-                gap: 10px; 
-            }
-
+            .grid-container { padding: 0 10px; margin: 20px auto; grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .photo-area { height: 180px; }
             .info-section { padding: 10px; }
             .header-info { margin-bottom: 10px; padding-bottom: 8px; }
@@ -296,7 +313,6 @@
             .number-label { font-size: 9px; }
             .number { font-size: 18px; }
             .data-row { font-size: 11px; }
-            .remark { font-size: 10px; margin-top: 8px; }
         }
     </style>
 </head>
@@ -317,15 +333,18 @@
     <header class="header">
         <h1 class="title">台灣啦啦隊資料庫</h1>
         <div class="controls-container">
+            
+            <div class="sport-tabs" id="sport-tabs-container">
+                <button class="sport-btn active" data-sport="全部">全部女孩</button>
+                <button class="sport-btn" data-sport="棒球">職業棒球</button>
+                <button class="sport-btn" data-sport="籃球">職業籃球</button>
+                <button class="sport-btn" data-sport="排球">職業排球</button>
+            </div>
+
             <div class="team-tabs" id="tabs-container"></div>
+            
             <div class="filters">
                 <input type="text" id="searchInput" placeholder="搜尋本名或綽號...">
-                <select id="sportFilter">
-                    <option value="all">所有運動</option>
-                    <option value="棒球">棒球</option>
-                    <option value="籃球">籃球</option>
-                    <option value="排球">排球</option>
-                </select>
                 <select id="natFilter">
                     <option value="all">所有國籍</option>
                     <option value="韓國">韓國</option>
@@ -362,10 +381,10 @@
     </footer>
 
     <script>
-        // Google 試算表連結
         const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT9l-hRhzMwcRdyQHsRs_97fja0Gg4RCcDDMk31u-dSbbQmk_JIUmbPTAj2gaNYmb6bYTwUvv4_1IxN/pub?output=csv&gid=0&t=" + new Date().getTime();
 
-        const teamsConfig = {
+        // 預設球隊主題設定 (你未來新增的球隊如果不寫在這裡，系統也會自動給他預設顏色，不用擔心出錯)
+        const teamThemes = {
             "全部球隊": { dark: "#0f0f0f", light: "#1f1f1f", accent: "#ffffff", logo: "" },
             "Wing Stars": { dark: "#05120a", light: "#0a2414", accent: "#00e676", logo: "images/winstars_logo.png" },
             "Uni-Girls": { dark: "#140800", light: "#291000", accent: "#ff8c00", logo: "images/unilions_logo.png" },
@@ -373,19 +392,12 @@
             "Passion Sisters": { dark: "#141200", light: "#292400", accent: "#ffea00", logo: "images/brothers_logo.png" },
             "Fubon Angels": { dark: "#020812", light: "#04152b", accent: "#33a1ff", logo: "images/fubon_logo.png" },
             "Dragon Beauties": { dark: "#170205", light: "#2e050b", accent: "#ff4d6d", logo: "images/dragons_logo.png" }
-            // 💡 提醒：之後如果你新增了專屬排球或籃球的球隊，記得在這裡依照格式新增上去！
-            // "電豹女": { dark: "#...
-        };
-
-        const getNatWeight = (nat) => {
-            if (nat === "韓國") return 1;
-            if (nat === "日本") return 2;
-            if (nat === "臺灣" || nat === "台灣") return 4;
-            return 3; 
         };
 
         let db = []; 
+        let currentSport = "全部"; // 預設全部運動
         let currentTeam = "全部球隊"; 
+        let activeTeamsInSport = []; // 儲存目前選取運動下的所有球隊
 
         function loadData() {
             Papa.parse(sheetUrl, {
@@ -397,26 +409,67 @@
                     init();
                 },
                 error: function(error) {
-                    console.error("資料載入失敗:", error);
                     document.getElementById('grid-container').innerHTML = '<div class="empty-state">無法連線至資料庫，請檢查網路連線或稍後再試。</div>';
                 }
             });
         }
 
         function init() {
-            renderTabs();
+            setupSportTabs();
+            updateTeamsForCurrentSport();
             changeTheme(currentTeam);
-            // 新增 sportFilter 到監聽器
-            ['searchInput', 'sportFilter', 'natFilter', 'zodiacFilter', 'sortFilter'].forEach(id => {
+            
+            ['searchInput', 'natFilter', 'zodiacFilter', 'sortFilter'].forEach(id => {
                 document.getElementById(id).addEventListener('input', renderCards);
             });
         }
 
-        function renderTabs() {
+        // 設定運動大分類點擊事件
+        function setupSportTabs() {
+            const btns = document.querySelectorAll('.sport-btn');
+            btns.forEach(btn => {
+                btn.onclick = () => {
+                    btns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentSport = btn.getAttribute('data-sport');
+                    currentTeam = "全部球隊"; // 切換運動時，重置為全部球隊
+                    updateTeamsForCurrentSport();
+                    changeTheme("全部球隊");
+                };
+            });
+        }
+
+        // 根據選擇的運動，動態抓取該運動底下的球隊
+        function updateTeamsForCurrentSport() {
+            // 從資料庫中萃取出該運動包含的球隊
+            const teamsSet = new Set();
+            db.forEach(c => {
+                if (currentSport === "全部" || (c.sport && c.sport.includes(currentSport))) {
+                    if (c.team && c.team.trim() !== "") {
+                        teamsSet.add(c.team);
+                    }
+                }
+            });
+            activeTeamsInSport = ["全部球隊", ...Array.from(teamsSet).sort()];
+            renderTeamTabs();
+            renderCards();
+        }
+
+        function renderTeamTabs() {
             const container = document.getElementById('tabs-container');
             container.innerHTML = '';
-            Object.keys(teamsConfig).forEach(team => {
-                const config = teamsConfig[team];
+            
+            // 如果只有「全部球隊」，就不顯示第二排選單以免太空曠
+            if (activeTeamsInSport.length <= 1) {
+                container.style.display = 'none';
+                return;
+            }
+            container.style.display = 'flex';
+
+            activeTeamsInSport.forEach(team => {
+                // 如果 teamThemes 有設定專屬顏色與 logo 就用，沒有的話給予預設值
+                const config = teamThemes[team] || { dark: "#1a1a1a", light: "#2a2a2a", accent: "#cccccc", logo: "" };
+                
                 const btn = document.createElement('button');
                 btn.className = `tab-btn ${team === currentTeam ? 'active' : ''}`;
                 
@@ -427,6 +480,8 @@
                 }
 
                 btn.innerHTML = `${logoHtml}<span>${team}</span>`;
+                // 動態寫入 accent 顏色，讓按鈕 active 時能吃對顏色
+                btn.style.setProperty('--team-accent', config.accent);
                 
                 btn.onclick = () => {
                     currentTeam = team;
@@ -439,7 +494,7 @@
         }
 
         function changeTheme(team) {
-            const config = teamsConfig[team];
+            const config = teamThemes[team] || { dark: "#0f0f0f", light: "#1f1f1f", accent: "#ffffff", logo: "" };
             document.documentElement.style.setProperty('--team-dark', config.dark);
             document.documentElement.style.setProperty('--team-light', config.light);
             document.documentElement.style.setProperty('--team-accent', config.accent);
@@ -461,36 +516,40 @@
             return parts[0].length === 4 ? 2026 - parseInt(parts[0]) : 9999;
         }
 
+        function getNatWeight(nat) {
+            if (nat === "韓國") return 1;
+            if (nat === "日本") return 2;
+            if (nat === "臺灣" || nat === "台灣") return 4;
+            return 3; 
+        }
+
         function renderCards() {
             const container = document.getElementById('grid-container');
             const search = document.getElementById('searchInput').value.toLowerCase();
-            const sport = document.getElementById('sportFilter').value; // 取得選取的運動
             const nat = document.getElementById('natFilter').value;
             const zodiac = document.getElementById('zodiacFilter').value;
             const sort = document.getElementById('sortFilter').value;
 
             let result = db.filter(c => {
+                // 1. 運動篩選
+                const matchSport = currentSport === "全部" || (c.sport && c.sport.includes(currentSport));
+                // 2. 球隊篩選
                 const matchTeam = currentTeam === "全部球隊" || c.team === currentTeam;
+                // 3. 關鍵字篩選
                 const matchSearch = (c.nickname || "").toLowerCase().includes(search) || (c.realName || "").toLowerCase().includes(search);
-                
-                // 新增運動篩選邏輯 (支援欄位中寫多個運動，例如 "棒球,籃球")
-                let matchSport = true;
-                if (sport !== 'all') {
-                    matchSport = c.sport && c.sport.includes(sport);
-                }
-
+                // 4. 國籍篩選
                 let matchNat = true;
                 if (nat === '韓國') matchNat = c.nat === '韓國';
                 else if (nat === '日本') matchNat = c.nat === '日本';
                 else if (nat === '臺灣') matchNat = c.nat === '臺灣' || c.nat === '台灣';
                 else if (nat === '其他') matchNat = !['韓國', '日本', '臺灣', '台灣'].includes(c.nat);
-
+                // 5. 星座篩選
                 let cZodiac = (c.zodiac || "").trim();
                 if (cZodiac === "白羊座") cZodiac = "牡羊座";
                 if (cZodiac === "魔羯座") cZodiac = "摩羯座";
                 const matchZodiac = (zodiac === 'all') || (cZodiac === zodiac);
 
-                return matchTeam && matchSearch && matchSport && matchNat && matchZodiac;
+                return matchSport && matchTeam && matchSearch && matchNat && matchZodiac;
             });
 
             result.sort((a, b) => {
@@ -524,15 +583,13 @@
                     let remarkHtml = (c.remark && c.remark.trim() !== "") ? `<div class="remark">${c.remark}</div>` : '';
                     let displayHeight = (c.height && c.height.trim() !== "" && c.height !== "0") ? `${c.height} cm` : "N/A";
                     let displayNumber = (!c.num || c.num.trim() === "") ? "-" : c.num;
-                    let teamAccentColor = teamsConfig[c.team] ? teamsConfig[c.team].accent : '#ffffff';
+                    
+                    // 從 teamThemes 取得對應顏色，沒有則給白色
+                    let teamConfig = teamThemes[c.team] || { accent: '#ffffff' };
+                    let teamAccentColor = teamConfig.accent;
                     
                     let teamDisplayHtml = currentTeam === "全部球隊" 
                         ? `<div class="data-row"><span class="data-label">球隊</span><span class="data-value" style="color: ${teamAccentColor};">${c.team}</span></div>`
-                        : '';
-
-                    // 新增運動項目顯示區塊
-                    let sportHtml = (c.sport && c.sport.trim() !== "")
-                        ? `<div class="data-row"><span class="data-label">運動</span><span class="data-value">${c.sport}</span></div>`
                         : '';
 
                     let igHtml = (c.ig && c.ig.trim() !== "") ? `
@@ -554,7 +611,7 @@
                                 <div class="header-info">
                                     <div class="names">
                                         <div class="name-container">
-                                            <div class="nickname">${c.nickname}</div>
+                                            <div class="nickname" style="color: ${teamAccentColor}">${c.nickname}</div>
                                             ${igHtml}
                                         </div>
                                         <div class="realname">${c.realName}</div>
@@ -567,7 +624,6 @@
                                 
                                 <div class="data-grid">
                                     ${teamDisplayHtml}
-                                    ${sportHtml}
                                     <div class="data-row">
                                         <span class="data-label">國籍</span>
                                         <span class="data-value ${natTextClass}">${c.nat}</span>
