@@ -383,11 +383,11 @@
     <script>
         const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT9l-hRhzMwcRdyQHsRs_97fja0Gg4RCcDDMk31u-dSbbQmk_JIUmbPTAj2gaNYmb6bYTwUvv4_1IxN/pub?output=csv&gid=0&t=" + new Date().getTime();
 
-        // 🌟 預設球隊主題設定 (你可以在這裡自由新增、修改排球與籃球的球隊)
+        // 🌟 預設球隊主題設定 (可自由新增排球與籃球隊伍)
         const teamThemes = {
             "全部球隊": { dark: "#0f0f0f", light: "#1f1f1f", accent: "#ffffff", logo: "" },
             
-            // --- ⚾ 棒球球隊 ---
+            // --- ⚾ 棒球 ---
             "Wing Stars": { dark: "#05120a", light: "#0a2414", accent: "#00e676", logo: "images/winstars_logo.png" },
             "Uni-Girls": { dark: "#140800", light: "#291000", accent: "#ff8c00", logo: "images/unilions_logo.png" },
             "Rakuten Girls": { dark: "#140202", light: "#2e0505", accent: "#ff3333", logo: "images/rakuten_logo.png" },
@@ -395,19 +395,19 @@
             "Fubon Angels": { dark: "#020812", light: "#04152b", accent: "#33a1ff", logo: "images/fubon_logo.png" },
             "Dragon Beauties": { dark: "#170205", light: "#2e050b", accent: "#ff4d6d", logo: "images/dragons_logo.png" },
 
-            // --- 🏐 排球球隊範例 ---
+            // --- 🏐 排球範例 ---
             "臺北鯨華": { dark: "#001a33", light: "#002b5e", accent: "#3399ff", logo: "images/kingwhale_logo.png" },
             "極速超跑": { dark: "#1a0d00", light: "#331a00", accent: "#ff6600", logo: "images/topspeed_logo.png" },
             "新北中纖": { dark: "#001122", light: "#002244", accent: "#00aaff", logo: "images/cmfc_logo.png" },
 
-            // --- 🏀 籃球球隊範例 ---
+            // --- 🏀 籃球範例 ---
             "電豹女": { dark: "#1a0b2e", light: "#2d1b4e", accent: "#b366ff", logo: "images/leopards_logo.png" },
             "Formosa Sexy": { dark: "#091c14", light: "#143627", accent: "#00ff88", logo: "images/formosa_logo.png" },
             "慕獅女孩": { dark: "#1c0926", light: "#351447", accent: "#d400ff", logo: "images/lioneers_logo.png" }
         };
 
         let db = []; 
-        let currentSport = "全部"; // 預設全部運動
+        let currentSport = "全部"; 
         let currentTeam = "全部球隊"; 
         let activeTeamsInSport = []; 
 
@@ -476,7 +476,6 @@
             const container = document.getElementById('tabs-container');
             container.innerHTML = '';
             
-            // 隱藏全部女孩時的球隊選單
             if (currentSport === "全部" || activeTeamsInSport.length <= 1) {
                 container.style.display = 'none';
                 return;
@@ -484,7 +483,6 @@
             container.style.display = 'flex';
 
             activeTeamsInSport.forEach(team => {
-                // 如果該球隊沒有寫在 teamThemes 裡，會自動套用預設的深灰色調
                 const config = teamThemes[team] || { dark: "#1a1a1a", light: "#2a2a2a", accent: "#cccccc", logo: "" };
                 
                 const btn = document.createElement('button');
@@ -568,6 +566,31 @@
                 return matchSport && matchTeam && matchSearch && matchNat && matchZodiac;
             });
 
+            // 🌟 智慧合併邏輯：如果是在「全部女孩」且「全部球隊」模式，將同名女孩的運動、球隊、背號合併
+            if (currentSport === "全部" && currentTeam === "全部球隊") {
+                const mergedMap = new Map();
+                result.forEach(c => {
+                    const nameKey = (c.realName || "").trim();
+                    if (!mergedMap.has(nameKey)) {
+                        mergedMap.set(nameKey, {
+                            ...c,
+                            mergedSports: (c.sport || "").trim() ? [(c.sport || "").trim()] : [],
+                            mergedTeams: (c.team || "").trim() ? [(c.team || "").trim()] : [],
+                            mergedNums: (c.num || "").trim() ? [(c.num || "").trim()] : []
+                        });
+                    } else {
+                        let existing = mergedMap.get(nameKey);
+                        let s = (c.sport || "").trim();
+                        let t = (c.team || "").trim();
+                        let n = (c.num || "").trim();
+                        if (s && !existing.mergedSports.includes(s)) existing.mergedSports.push(s);
+                        if (t && !existing.mergedTeams.includes(t)) existing.mergedTeams.push(t);
+                        if (n && !existing.mergedNums.includes(n)) existing.mergedNums.push(n);
+                    }
+                });
+                result = Array.from(mergedMap.values());
+            }
+
             result.sort((a, b) => {
                 let numA = (!a.num || a.num.trim() === "") ? 999 : parseInt(a.num);
                 let numB = (!b.num || b.num.trim() === "") ? 999 : parseInt(b.num);
@@ -598,13 +621,26 @@
 
                     let remarkHtml = (c.remark && c.remark.trim() !== "") ? `<div class="remark">${c.remark}</div>` : '';
                     let displayHeight = (c.height && c.height.trim() !== "" && c.height !== "0") ? `${c.height} cm` : "N/A";
-                    let displayNumber = (!c.num || c.num.trim() === "") ? "-" : c.num;
                     
-                    let teamConfig = teamThemes[(c.team || "").trim()] || { accent: '#ffffff' };
+                    // 判斷是否為合併顯示狀態
+                    let displaySport = c.mergedSports ? c.mergedSports.join(" / ") : (c.sport || "");
+                    let displayTeam = c.mergedTeams ? c.mergedTeams.join(" / ") : (c.team || "");
+                    let displayNumber = c.mergedNums 
+                        ? (c.mergedNums.length > 0 ? c.mergedNums.join("/") : "-") 
+                        : (!c.num || c.num.trim() === "" ? "-" : c.num);
+                    
+                    // 處理卡片名字的球隊主色 (若有合併，取第一支球隊的顏色)
+                    let firstTeam = c.mergedTeams ? c.mergedTeams[0] : (c.team || "").trim();
+                    let teamConfig = teamThemes[firstTeam] || { accent: '#ffffff' };
                     let teamAccentColor = teamConfig.accent;
                     
+                    // 在全部女孩模式下，增加「運動」的顯示列
+                    let sportDisplayHtml = currentSport === "全部" && displaySport !== ""
+                        ? `<div class="data-row"><span class="data-label">運動</span><span class="data-value">${displaySport}</span></div>`
+                        : '';
+
                     let teamDisplayHtml = currentTeam === "全部球隊" 
-                        ? `<div class="data-row"><span class="data-label">球隊</span><span class="data-value" style="color: ${teamAccentColor};">${c.team}</span></div>`
+                        ? `<div class="data-row"><span class="data-label">球隊</span><span class="data-value" style="color: ${teamAccentColor};">${displayTeam}</span></div>`
                         : '';
 
                     let igHtml = (c.ig && c.ig.trim() !== "") ? `
@@ -616,6 +652,9 @@
                     let photoHtml = (c.img && c.img.trim() !== "") 
                         ? `<img src="${c.img}" alt="${c.nickname}" style="width: 100%; height: 100%; object-fit: cover; object-position: top center; position: absolute; top: 0; left: 0;" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"> <span class="photo-text" style="display:none;">PHOTO PLACEHOLDER</span>`
                         : `<span class="photo-text">PHOTO PLACEHOLDER</span>`;
+
+                    // 背號的字體大小動態調整，如果合併後背號字串太長就縮小字體
+                    let numberFontSize = displayNumber.length > 3 ? "18px" : "24px";
 
                     return `
                         <div class="card" style="border-top: 4px solid ${natColorVar};">
@@ -633,11 +672,12 @@
                                     </div>
                                     <div class="number-group">
                                         <div class="number-label">背號</div>
-                                        <div class="number">${displayNumber}</div>
+                                        <div class="number" style="font-size: ${numberFontSize};">${displayNumber}</div>
                                     </div>
                                 </div>
                                 
                                 <div class="data-grid">
+                                    ${sportDisplayHtml}
                                     ${teamDisplayHtml}
                                     <div class="data-row">
                                         <span class="data-label">國籍</span>
