@@ -126,7 +126,8 @@
             .grid-container { padding: 0 10px; grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .photo-area { height: 200px; }
             .nickname { font-size: 18px; }
-            .tab-btn { width: calc(33% - 6px); height: 95px; }
+            .tab-btn { width: calc(33% - 6px); height: 105px; }
+            .tab-logo { width: 35px; height: 35px; }
         }
     </style>
 </head>
@@ -188,10 +189,12 @@
             "Passion Sisters": { dark: "#141200", light: "#292400", accent: "#ffea00", logo: "images/brothers_logo.png" },
             "Fubon Angels": { dark: "#020812", light: "#04152b", accent: "#33a1ff", logo: "images/fubon_logo.png" },
             "Dragon Beauties": { dark: "#170205", light: "#2e050b", accent: "#ff4d6d", logo: "images/dragons_logo.png" },
-            "Tokki Cutie": { dark: "#1a0f00", light: "#2e1a05", accent: "#ff8c00", logo: "images/tokki_logo.png" },
-            "Little witches": { dark: "#001414", light: "#002b2b", accent: "#00d2d3", logo: "images/witches_logo.png" },
-            "Peach Girls": { dark: "#1a0010", light: "#2e051d", accent: "#ff3399", logo: "images/peach_logo.png" },
-            "Wing Stars_排球": { dark: "#020812", light: "#04152b", accent: "#0984e3", logo: "images/skyhawks_logo.png" }
+            
+            // 🏐 TVBL 排球修正顏色
+            "Tokki Cutie": { dark: "#1a0f00", light: "#2e1a05", accent: "#ff8c00", logo: "images/tokki_logo.png" },      // 伊絲特 - 橘色
+            "Little witches": { dark: "#001414", light: "#002b2b", accent: "#00d2d3", logo: "images/witches_logo.png" }, // 連莊 - 藍綠色
+            "Peach Girls": { dark: "#1a000d", light: "#2e0518", accent: "#d63384", logo: "images/peach_logo.png" },    // 雲豹 - 舒適桃紅 (修正)
+            "Wing Stars_排球": { dark: "#020812", light: "#04152b", accent: "#0984e3", logo: "images/skyhawks_logo.png" } // 天鷹 - 藍色
         };
 
         const getNatWeight = (nat) => {
@@ -282,6 +285,7 @@
             const zodiac = document.getElementById('zodiacFilter').value;
             const sort = document.getElementById('sortFilter').value;
 
+            // 嚴格過濾邏輯
             let result = db.filter(c => {
                 const ms = currentSport === "全部" || (c.sport || "").trim().includes(currentSport);
                 const mt = currentTeam === "全部啦啦隊" || (c.team || "").trim() === currentTeam;
@@ -291,10 +295,11 @@
                 return ms && mt && mSearch && mNat && mZodiac;
             });
 
+            // 智慧合併：基於 realName 嚴格比對 (排除林芊 vs 林芊妤誤報)
             if (currentSport === "全部" && currentTeam === "全部啦啦隊") {
                 const mMap = new Map();
                 result.forEach(c => {
-                    const k = c.realName.trim();
+                    const k = (c.realName || "").trim(); // 這是唯一 Key
                     if (!mMap.has(k)) {
                         mMap.set(k, { ...c, mS: [c.sport], mT: [c.team], mN: [c.num] });
                     } else {
@@ -307,6 +312,7 @@
                 result = Array.from(mMap.values());
             }
 
+            // 國籍權重排序優先
             result.sort((a, b) => {
                 let wA = getNatWeight(a.nat); let wB = getNatWeight(b.nat);
                 if (wA !== wB) return wA - wB;
@@ -326,7 +332,9 @@
                     if(s.includes("排球")) return `<div class="sport-tag tag-volleyball">排球</div>`;
                     return '';
                 }).join('');
+                
                 const cardAccent = getThemeConfig(teams[0], sports[0]).accent;
+                
                 return `
                     <div class="card" style="border-top: 4px solid ${cardAccent};">
                         <div class="photo-area">
