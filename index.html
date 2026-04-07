@@ -66,24 +66,29 @@
         .filters input, .filters select {
             background-color: #1a1a1a; border: 1px solid var(--border-color);
             color: var(--text-main); padding: 8px 12px; font-size: 13px;
-            border-radius: 4px; outline: none; min-width: 140px;
+            border-radius: 4px; outline: none; min-width: 130px;
         }
 
         .grid-container {
-            max-width: 1200px; width: 100%; margin: 30px auto; padding: 0 20px;
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px; flex: 1;
+            max-width: 1100px; width: 100%; margin: 30px auto; padding: 0 20px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px; flex: 1;
         }
 
         /* --- 活動行程樣式 --- */
         .event-list-container { max-width: 1000px; width: 100%; margin: 20px auto; padding: 0 20px; display: flex; flex-direction: column; gap: 12px; }
+        .event-section-title { font-size: 18px; font-weight: 900; color: #777; margin: 20px 0 10px; padding-left: 10px; border-left: 4px solid #444; }
         .event-item { background: #181818; border-radius: 10px; padding: 15px 20px; display: flex; align-items: center; gap: 15px; border: 1px solid #2a2a2a; }
+        .event-item.expired { opacity: 0.6; filter: grayscale(0.5); }
         .event-date-box { min-width: 70px; text-align: center; border-right: 1px solid #444; padding-right: 15px; }
         .date-day { font-size: 22px; font-weight: 900; color: #ff9f43; line-height: 1; }
+        .event-item.expired .date-day { color: #777; }
         .date-month { font-size: 11px; color: #777; margin-top: 3px; display: block; }
+        
         .event-main-info { flex: 1; min-width: 0; }
         .event-title { font-size: 17px; font-weight: 900; color: #fff; margin-bottom: 5px; }
         .event-sub-info { font-size: 13px; color: #888; }
+        
         .event-girls-container { display: flex; flex-wrap: wrap; gap: 10px; margin-left: 15px; }
         .event-girl-item { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 55px; }
         .attend-girl-img { width: 48px; height: 48px; border-radius: 50%; border: 2px solid #333; object-fit: cover; object-position: top center; background: #222; }
@@ -98,22 +103,20 @@
         .tag-basketball { background: #f39c12; }
         .tag-volleyball { background: #00b894; }
 
-        .info-section { padding: 20px; }
-        .header-info { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; border-bottom: 1px solid #333; padding-bottom: 12px; }
+        .info-section { padding: 18px; }
+        .header-info { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; border-bottom: 1px solid #333; padding-bottom: 10px; }
         .nickname-container { display: flex; align-items: center; gap: 6px; }
-        .nickname { font-size: 22px; font-weight: 900; color: var(--team-accent, #fff); line-height: 1; }
-        .realname { font-size: 13px; color: var(--text-sub); margin-top: 4px; }
-        .number { font-size: 18px; font-weight: 900; color: #fff; text-align: right; }
+        .nickname { font-size: 20px; font-weight: 900; color: var(--team-accent, #fff); line-height: 1.1; }
+        .realname { font-size: 12px; color: var(--text-sub); margin-top: 3px; }
+        .number { font-size: 17px; font-weight: 900; color: #fff; text-align: right; }
 
-        .data-grid { display: flex; flex-direction: column; gap: 10px; }
-        .data-row { display: flex; justify-content: space-between; font-size: 13px; align-items: flex-start; }
-        .data-label { color: var(--text-sub); min-width: 65px; }
-        .data-value { font-weight: 700; text-align: right; line-height: 1.5; }
+        .data-grid { display: flex; flex-direction: column; gap: 8px; }
+        .data-row { display: flex; justify-content: space-between; font-size: 12.5px; align-items: flex-start; }
+        .data-label { color: var(--text-sub); min-width: 60px; }
+        .data-value { font-weight: 700; text-align: right; line-height: 1.4; }
 
-        /* IG 圖案樣式修正 */
         .ig-link { display: inline-flex; vertical-align: middle; transition: transform 0.2s; }
-        .ig-link:hover { transform: scale(1.1); }
-        .ig-icon { width: 16px; height: 16px; fill: url(#ig-gradient-card); }
+        .ig-icon { width: 16px; height: 16px; fill: url(#ig-gradient-final); }
 
         @media (max-width: 768px) {
             .grid-container { padding: 0 10px; grid-template-columns: repeat(2, 1fr); gap: 10px; }
@@ -128,7 +131,7 @@
 
     <svg width="0" height="0" style="position:absolute;">
         <defs>
-            <linearGradient id="ig-gradient-card" x1="0%" y1="100%" x2="100%" y2="0%">
+            <linearGradient id="ig-gradient-final" x1="0%" y1="100%" x2="100%" y2="0%">
                 <stop offset="0%" style="stop-color:#f09433;" />
                 <stop offset="25%" style="stop-color:#e6683c;" />
                 <stop offset="50%" style="stop-color:#dc2743;" />
@@ -157,8 +160,12 @@
                         <option value="韓國">韓國</option><option value="日本">日本</option>
                         <option value="臺灣">臺灣</option><option value="其他">其他</option>
                     </select>
+                    <select id="zodiacFilter">
+                        <option value="all">所有星座</option>
+                        <option value="牡羊座">牡羊座</option><option value="金牛座">金牛座</option><option value="雙子座">雙子座</option><option value="巨蟹座">巨蟹座</option><option value="獅子座">獅子座</option><option value="處女座">處女座</option><option value="天秤座">天秤座</option><option value="天蠍座">天蠍座</option><option value="射手座">射手座</option><option value="摩羯座">摩羯座</option><option value="水瓶座">水瓶座</option><option value="雙魚座">雙魚座</option>
+                    </select>
                     <select id="sortFilter">
-                        <option value="default">預設排序 (國籍)</option>
+                        <option value="default">預設排序</option>
                         <option value="ageAsc">年齡 (小到大)</option>
                         <option value="numberAsc">背號 (小到大)</option>
                     </select>
@@ -237,7 +244,7 @@
                 };
             });
             updateTeamTabs();
-            ['searchInput', 'natFilter', 'sortFilter'].forEach(id => document.getElementById(id).addEventListener('input', renderContent));
+            ['searchInput', 'natFilter', 'zodiacFilter', 'sortFilter'].forEach(id => document.getElementById(id).addEventListener('input', renderContent));
         }
 
         function applyTheme(tName) {
@@ -290,15 +297,22 @@
         }
 
         function renderEvents(container, search) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
             let filtered = dbEvents.filter(e => {
                 const evName = (e.eventname || "").toLowerCase();
                 const girls = (e.girls || "").toLowerCase();
                 const host = (e.host || "").toLowerCase();
                 return search === "" || evName.includes(search) || girls.includes(search) || host.includes(search);
             });
+
             filtered.sort((a,b) => new Date(a.date) - new Date(b.date));
 
-            container.innerHTML = filtered.length === 0 ? '<div style="text-align:center; padding:50px; color:#666;">目前暫無活動行程</div>' : filtered.map(e => {
+            const upcoming = filtered.filter(e => new Date(e.date) >= today);
+            const expired = filtered.filter(e => new Date(e.date) < today).reverse();
+
+            const createItem = (e, isExpired) => {
                 const d = new Date(e.date);
                 const day = d.getDate() || "--";
                 const month = d.toLocaleDateString('en-US', { month: 'short' }) || "N/A";
@@ -311,7 +325,7 @@
                 }).join('');
 
                 return `
-                    <div class="event-item">
+                    <div class="event-item ${isExpired ? 'expired' : ''}">
                         <div class="event-date-box"><span class="date-day">${day}</span><span class="date-month">${month}</span></div>
                         <div class="event-main-info">
                             <div class="event-title">${e.eventname || "活動"}</div>
@@ -320,18 +334,36 @@
                         <div class="event-girls-container">${girlsHtml}</div>
                     </div>
                 `;
-            }).join('');
+            };
+
+            let html = "";
+            if (upcoming.length > 0) {
+                html += upcoming.map(e => createItem(e, false)).join('');
+            } else if (search === "" && expired.length === 0) {
+                html = '<div style="text-align:center; padding:50px; color:#666;">目前暫無活動行程</div>';
+            }
+
+            if (expired.length > 0) {
+                html += `<div class="event-section-title">活動結束</div>`;
+                html += expired.map(e => createItem(e, true)).join('');
+            }
+
+            container.innerHTML = html;
         }
 
         function renderGirls(container, search) {
             const nat = document.getElementById('natFilter').value;
+            const zodiac = document.getElementById('zodiacFilter').value;
             const sort = document.getElementById('sortFilter').value;
+
             let result = dbGirls.filter(c => {
                 const ms = currentSport === "全部" || (c.sport || "").includes(currentSport);
                 const mt = currentTeam === "全部啦啦隊" || (c.team || "").trim() === currentTeam;
                 const mSearch = search === "" || (c.nickname || "").toLowerCase().includes(search) || (c.realname || "").toLowerCase().includes(search);
                 let mNat = nat === 'all' || (c.nat || "").includes(nat);
-                return ms && mt && mSearch && mNat;
+                let cZodiac = (c.zodiac || "").trim().replace("魔羯","摩羯").replace("白羊","牡羊");
+                let matchZodiac = (zodiac === 'all') || (cZodiac === zodiac);
+                return ms && mt && mSearch && mNat && matchZodiac;
             });
             
             if (currentSport === "全部" && currentTeam === "全部啦啦隊") {
@@ -385,6 +417,8 @@
                             <div class="data-grid">
                                 <div class="data-row"><span class="data-label">啦啦隊</span><span class="data-value" style="color:${cardAccent}">${teams.join("<br>")}</span></div>
                                 <div class="data-row"><span class="data-label">國籍</span><span class="data-value">${c.nat}</span></div>
+                                <div class="data-row"><span class="data-label">生日</span><span class="data-value">${c.dob || "-"}</span></div>
+                                <div class="data-row"><span class="data-label">星座</span><span class="data-value">${c.zodiac || "-"}</span></div>
                                 <div class="data-row"><span class="data-label">身高</span><span class="data-value">${c.height ? c.height + ' cm' : 'N/A'}</span></div>
                             </div>
                         </div>
