@@ -383,7 +383,7 @@
     <script>
         const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT9l-hRhzMwcRdyQHsRs_97fja0Gg4RCcDDMk31u-dSbbQmk_JIUmbPTAj2gaNYmb6bYTwUvv4_1IxN/pub?output=csv&gid=0&t=" + new Date().getTime();
 
-        // 預設球隊主題設定 (你未來新增的球隊如果不寫在這裡，系統也會自動給他預設顏色，不用擔心出錯)
+        // 預設球隊主題設定
         const teamThemes = {
             "全部球隊": { dark: "#0f0f0f", light: "#1f1f1f", accent: "#ffffff", logo: "" },
             "Wing Stars": { dark: "#05120a", light: "#0a2414", accent: "#00e676", logo: "images/winstars_logo.png" },
@@ -392,19 +392,26 @@
             "Passion Sisters": { dark: "#141200", light: "#292400", accent: "#ffea00", logo: "images/brothers_logo.png" },
             "Fubon Angels": { dark: "#020812", light: "#04152b", accent: "#33a1ff", logo: "images/fubon_logo.png" },
             "Dragon Beauties": { dark: "#170205", light: "#2e050b", accent: "#ff4d6d", logo: "images/dragons_logo.png" }
+            // 日後有新增籃球或排球球隊，請直接寫在下面，例如：
+            // ,"電豹女": { dark: "#1a0b2e", light: "#2d1b4e", accent: "#b366ff", logo: "images/leopards_logo.png" }
         };
 
         let db = []; 
         let currentSport = "全部"; // 預設全部運動
         let currentTeam = "全部球隊"; 
-        let activeTeamsInSport = []; // 儲存目前選取運動下的所有球隊
+        let activeTeamsInSport = []; 
 
         function loadData() {
             Papa.parse(sheetUrl, {
                 download: true,
                 header: true,
                 skipEmptyLines: true,
+                // 強制清除表頭的 BOM 隱藏亂碼，並去除頭尾空白，避免欄位抓錯
+                transformHeader: function(header) {
+                    return header.replace(/^\uFEFF/, "").trim();
+                },
                 complete: function(results) {
+                    // 只過濾掉 realName 是空的列
                     db = results.data.filter(item => item.realName && item.realName.trim() !== '');
                     init();
                 },
@@ -424,7 +431,6 @@
             });
         }
 
-        // 設定運動大分類點擊事件
         function setupSportTabs() {
             const btns = document.querySelectorAll('.sport-btn');
             btns.forEach(btn => {
@@ -432,21 +438,20 @@
                     btns.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     currentSport = btn.getAttribute('data-sport');
-                    currentTeam = "全部球隊"; // 切換運動時，重置為全部球隊
+                    currentTeam = "全部球隊"; 
                     updateTeamsForCurrentSport();
                     changeTheme("全部球隊");
                 };
             });
         }
 
-        // 根據選擇的運動，動態抓取該運動底下的球隊
         function updateTeamsForCurrentSport() {
-            // 從資料庫中萃取出該運動包含的球隊
             const teamsSet = new Set();
             db.forEach(c => {
-                if (currentSport === "全部" || (c.sport && c.sport.includes(currentSport))) {
+                const sportValue = (c.sport || "").trim();
+                if (currentSport === "全部" || sportValue.includes(currentSport)) {
                     if (c.team && c.team.trim() !== "") {
-                        teamsSet.add(c.team);
+                        teamsSet.add(c.team.trim());
                     }
                 }
             });
@@ -459,7 +464,6 @@
             const container = document.getElementById('tabs-container');
             container.innerHTML = '';
             
-            // 如果只有「全部球隊」，就不顯示第二排選單以免太空曠
             if (activeTeamsInSport.length <= 1) {
                 container.style.display = 'none';
                 return;
@@ -467,7 +471,6 @@
             container.style.display = 'flex';
 
             activeTeamsInSport.forEach(team => {
-                // 如果 teamThemes 有設定專屬顏色與 logo 就用，沒有的話給予預設值
                 const config = teamThemes[team] || { dark: "#1a1a1a", light: "#2a2a2a", accent: "#cccccc", logo: "" };
                 
                 const btn = document.createElement('button');
@@ -480,7 +483,6 @@
                 }
 
                 btn.innerHTML = `${logoHtml}<span>${team}</span>`;
-                // 動態寫入 accent 顏色，讓按鈕 active 時能吃對顏色
                 btn.style.setProperty('--team-accent', config.accent);
                 
                 btn.onclick = () => {
@@ -531,19 +533,20 @@
             const sort = document.getElementById('sortFilter').value;
 
             let result = db.filter(c => {
-                // 1. 運動篩選
-                const matchSport = currentSport === "全部" || (c.sport && c.sport.includes(currentSport));
-                // 2. 球隊篩選
-                const matchTeam = currentTeam === "全部球隊" || c.team === currentTeam;
-                // 3. 關鍵字篩選
+                // 防呆：去除空白再比對
+                const sportValue = (c.sport || "").trim();
+                const teamValue = (c.team || "").trim();
+                
+                const matchSport = currentSport === "全部" || sportValue.includes(currentSport);
+                const matchTeam = currentTeam === "全部球隊" || teamValue === currentTeam;
                 const matchSearch = (c.nickname || "").toLowerCase().includes(search) || (c.realName || "").toLowerCase().includes(search);
-                // 4. 國籍篩選
+                
                 let matchNat = true;
                 if (nat === '韓國') matchNat = c.nat === '韓國';
                 else if (nat === '日本') matchNat = c.nat === '日本';
                 else if (nat === '臺灣') matchNat = c.nat === '臺灣' || c.nat === '台灣';
                 else if (nat === '其他') matchNat = !['韓國', '日本', '臺灣', '台灣'].includes(c.nat);
-                // 5. 星座篩選
+                
                 let cZodiac = (c.zodiac || "").trim();
                 if (cZodiac === "白羊座") cZodiac = "牡羊座";
                 if (cZodiac === "魔羯座") cZodiac = "摩羯座";
@@ -584,8 +587,7 @@
                     let displayHeight = (c.height && c.height.trim() !== "" && c.height !== "0") ? `${c.height} cm` : "N/A";
                     let displayNumber = (!c.num || c.num.trim() === "") ? "-" : c.num;
                     
-                    // 從 teamThemes 取得對應顏色，沒有則給白色
-                    let teamConfig = teamThemes[c.team] || { accent: '#ffffff' };
+                    let teamConfig = teamThemes[(c.team || "").trim()] || { accent: '#ffffff' };
                     let teamAccentColor = teamConfig.accent;
                     
                     let teamDisplayHtml = currentTeam === "全部球隊" 
