@@ -179,24 +179,19 @@
     <script>
         const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT9l-hRhzMwcRdyQHsRs_97fja0Gg4RCcDDMk31u-dSbbQmk_JIUmbPTAj2gaNYmb6bYTwUvv4_1IxN/pub?output=csv&gid=0&t=" + new Date().getTime();
 
-        // 🌟 啦啦隊精準配色方案
         const teamThemes = {
             "全部啦啦隊": { dark: "#0f0f0f", light: "#1a1a1a", accent: "#ffffff", logo: "" },
-            
-            // ⚾ 棒球區塊
             "Wing Stars_棒球": { dark: "#05120a", light: "#0a2414", accent: "#00e676", logo: "images/winstars_logo.png" },
-            "Wing Stars": { dark: "#05120a", light: "#0a2414", accent: "#00e676", logo: "images/winstars_logo.png" }, // 預設(棒球)
+            "Wing Stars": { dark: "#05120a", light: "#0a2414", accent: "#00e676", logo: "images/winstars_logo.png" },
             "Uni-Girls": { dark: "#140800", light: "#291000", accent: "#ff8c00", logo: "images/unilions_logo.png" },
             "Rakuten Girls": { dark: "#140202", light: "#2e0505", accent: "#ff3333", logo: "images/rakuten_logo.png" },
             "Passion Sisters": { dark: "#141200", light: "#292400", accent: "#ffea00", logo: "images/brothers_logo.png" },
             "Fubon Angels": { dark: "#020812", light: "#04152b", accent: "#33a1ff", logo: "images/fubon_logo.png" },
             "Dragon Beauties": { dark: "#170205", light: "#2e050b", accent: "#ff4d6d", logo: "images/dragons_logo.png" },
-
-            // 🏐 TVBL 排球區塊
-            "Tokki Cutie": { dark: "#1a0f00", light: "#2e1a05", accent: "#ff8c00", logo: "images/tokki_logo.png" },      // 伊絲特 - 橘色
-            "Little witches": { dark: "#001414", light: "#002b2b", accent: "#00d2d3", logo: "images/witches_logo.png" }, // 連莊 - 藍綠色
-            "Peach Girls": { dark: "#1a0010", light: "#2e051d", accent: "#ff3399", logo: "images/peach_logo.png" },    // 雲豹 - 桃紅色
-            "Wing Stars_排球": { dark: "#020812", light: "#04152b", accent: "#0984e3", logo: "images/skyhawks_logo.png" }  // 天鷹 - 藍色
+            "Tokki Cutie": { dark: "#1a0f00", light: "#2e1a05", accent: "#ff8c00", logo: "images/tokki_logo.png" },
+            "Little witches": { dark: "#001414", light: "#002b2b", accent: "#00d2d3", logo: "images/witches_logo.png" },
+            "Peach Girls": { dark: "#1a0010", light: "#2e051d", accent: "#ff3399", logo: "images/peach_logo.png" },
+            "Wing Stars_排球": { dark: "#020812", light: "#04152b", accent: "#0984e3", logo: "images/skyhawks_logo.png" }
         };
 
         const getNatWeight = (nat) => {
@@ -211,10 +206,7 @@
         function loadData() {
             Papa.parse(sheetUrl, {
                 download: true, header: true, skipEmptyLines: true,
-                transformHeader: h => {
-                    let ch = h.replace(/^\uFEFF/, "").trim();
-                    return ch.toLowerCase() === 'sport' ? 'sport' : ch;
-                },
+                transformHeader: h => h.replace(/^\uFEFF/, "").trim(),
                 complete: results => {
                     db = results.data.filter(item => item.realName && item.realName.trim() !== '');
                     init();
@@ -238,16 +230,13 @@
             ['searchInput', 'natFilter', 'zodiacFilter', 'sortFilter'].forEach(id => document.getElementById(id).addEventListener('input', renderCards));
         }
 
-        // 根據運動與球隊名稱抓取正確顏色
         function getThemeConfig(teamName, sportName = "") {
-            const cleanTeam = (teamName || "").trim();
-            const cleanSport = (sportName || "").trim();
-            // 先找「球隊_運動」(例如 Wing Stars_排球)，找不到再找「球隊」，最後給預設
-            return teamThemes[`${cleanTeam}_${cleanSport}`] || teamThemes[cleanTeam] || teamThemes["全部啦啦隊"];
+            const t = (teamName || "").trim();
+            const s = (sportName || "").trim();
+            return teamThemes[`${t}_${s}`] || teamThemes[t] || teamThemes["全部啦啦隊"];
         }
 
         function applyTheme(teamName) {
-            // 在特定運動下點擊球隊按鈕時呼叫
             const config = getThemeConfig(teamName, currentSport === "全部" ? "" : currentSport);
             document.documentElement.style.setProperty('--team-dark', config.dark);
             document.documentElement.style.setProperty('--team-light', config.light);
@@ -288,15 +277,15 @@
 
         function renderCards() {
             const container = document.getElementById('grid-container');
-            const search = document.getElementById('searchInput').value.toLowerCase();
+            const search = document.getElementById('searchInput').value.toLowerCase().trim();
             const nat = document.getElementById('natFilter').value;
             const zodiac = document.getElementById('zodiacFilter').value;
             const sort = document.getElementById('sortFilter').value;
 
             let result = db.filter(c => {
-                const ms = currentSport === "全部" || (c.sport || "").includes(currentSport);
+                const ms = currentSport === "全部" || (c.sport || "").trim().includes(currentSport);
                 const mt = currentTeam === "全部啦啦隊" || (c.team || "").trim() === currentTeam;
-                const mSearch = (c.nickname || "").toLowerCase().includes(search) || (c.realName || "").toLowerCase().includes(search);
+                const mSearch = search === "" || (c.nickname || "").toLowerCase().includes(search) || (c.realName || "").toLowerCase().includes(search);
                 let mNat = nat === 'all' || (nat === '韓國' && c.nat === '韓國') || (nat === '日本' && c.nat === '日本') || (nat === '臺灣' && (c.nat === '臺灣' || c.nat === '台灣')) || (nat === '其他' && !['韓國','日本','臺灣','台灣'].includes(c.nat));
                 let mZodiac = zodiac === 'all' || (c.zodiac || "").replace("魔羯","摩羯").replace("白羊","牡羊").includes(zodiac);
                 return ms && mt && mSearch && mNat && mZodiac;
@@ -319,8 +308,7 @@
             }
 
             result.sort((a, b) => {
-                let wA = getNatWeight(a.nat);
-                let wB = getNatWeight(b.nat);
+                let wA = getNatWeight(a.nat); let wB = getNatWeight(b.nat);
                 if (wA !== wB) return wA - wB;
                 if (sort === 'ageAsc') return (parseInt(a.dob.replace(/\//g,'')) || 0) - (parseInt(b.dob.replace(/\//g,'')) || 0);
                 if (sort === 'heightDesc') return (parseInt(b.height) || 0) - (parseInt(a.height) || 0);
@@ -332,17 +320,13 @@
                 const sports = c.mS || [c.sport];
                 const teams = (c.mT || [c.team]).map(t => t.trim());
                 const nums = (c.mN || [c.num]).filter(n => n && n !== "-");
-                
                 let tags = sports.map(s => {
                     if(s.includes("棒球")) return `<div class="sport-tag tag-baseball">棒球</div>`;
                     if(s.includes("籃球")) return `<div class="sport-tag tag-basketball">籃球</div>`;
                     if(s.includes("排球")) return `<div class="sport-tag tag-volleyball">排球</div>`;
                     return '';
                 }).join('');
-
-                // 抓取卡片代表色 (取第一支球隊)
                 const cardAccent = getThemeConfig(teams[0], sports[0]).accent;
-
                 return `
                     <div class="card" style="border-top: 4px solid ${cardAccent};">
                         <div class="photo-area">
@@ -365,25 +349,15 @@
                                     <span class="data-label">啦啦隊</span>
                                     <span class="data-value" style="color:${cardAccent}">${teams.join("<br>")}</span>
                                 </div>
-                                <div class="data-row">
-                                    <span class="data-label">國籍</span>
-                                    <span class="data-value">${c.nat}</span>
-                                </div>
-                                <div class="data-row">
-                                    <span class="data-label">生日</span>
-                                    <span class="data-value">${c.dob}</span>
-                                </div>
-                                <div class="data-row">
-                                    <span class="data-label">身高</span>
-                                    <span class="data-value">${c.height ? c.height + ' cm' : 'N/A'}</span>
-                                </div>
+                                <div class="data-row"><span class="data-label">國籍</span><span class="data-value">${c.nat}</span></div>
+                                <div class="data-row"><span class="data-label">生日</span><span class="data-value">${c.dob}</span></div>
+                                <div class="data-row"><span class="data-label">身高</span><span class="data-value">${c.height ? c.height + ' cm' : 'N/A'}</span></div>
                             </div>
                         </div>
                     </div>
                 `;
             }).join('');
         }
-
         window.onload = loadData;
     </script>
 </body>
