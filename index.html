@@ -15,11 +15,6 @@
             --text-main: #ffffff;
             --text-sub: #888888;
             --border-color: #333333;
-            
-            --nat-kr: #4da6ff;
-            --nat-jp: #ff6666;
-            --nat-other: #d4af37;
-            --nat-tw: #66cc99;
         }
 
         * { box-sizing: border-box; font-family: 'Noto Sans TC', sans-serif; margin: 0; padding: 0; }
@@ -36,14 +31,9 @@
             position: relative; z-index: 10;
         }
 
-        .title {
-            font-size: 24px; font-weight: 900; margin-bottom: 20px;
-            letter-spacing: 1px; text-align: center;
-        }
+        .title { font-size: 24px; font-weight: 900; margin-bottom: 20px; text-align: center; letter-spacing: 1px; }
 
-        .controls-container {
-            display: flex; flex-direction: column; gap: 20px; max-width: 1200px; margin: 0 auto;
-        }
+        .controls-container { display: flex; flex-direction: column; gap: 20px; max-width: 1200px; margin: 0 auto; }
 
         .sport-tabs { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
         .sport-btn {
@@ -64,9 +54,9 @@
             color: var(--text-sub); cursor: pointer; font-size: 13px; font-weight: 700;
             border-radius: 12px; transition: all 0.2s;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 8px; width: 120px; height: 100px; padding: 10px;
+            gap: 8px; width: 120px; height: 105px; padding: 10px;
         }
-        .tab-logo { width: 45px; height: 45px; object-fit: contain; display: block; margin-bottom: 4px; }
+        .tab-logo { width: 45px; height: 45px; object-fit: contain; display: block; }
         .tab-btn.active { background-color: var(--team-accent, #fff); color: #000000; border-color: var(--team-accent, #fff); }
 
         .filters { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
@@ -88,23 +78,23 @@
         }
 
         .photo-area {
-            height: 300px; background-color: #111; position: relative;
+            height: 320px; background-color: #111; position: relative;
             border-bottom: 1px solid var(--border-color);
         }
 
-        /* 改良版運動標籤：彩色實心小區塊 */
+        /* 運動標籤：實心色塊文字 */
         .sport-tags {
-            position: absolute; top: 10px; left: 10px;
-            display: flex; flex-direction: column; gap: 5px; z-index: 5;
+            position: absolute; top: 12px; left: 12px;
+            display: flex; flex-direction: column; gap: 6px; z-index: 5;
         }
         .sport-tag {
-            padding: 5px 10px; font-size: 12px; font-weight: 900; color: #fff;
-            border-radius: 4px; text-align: center; letter-spacing: 1px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);
+            padding: 4px 10px; font-size: 11px; font-weight: 900; color: #fff;
+            border-radius: 4px; text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.5);
         }
-        .tag-baseball { background: #0066cc; }   /* 棒球藍 */
-        .tag-basketball { background: #e67e22; } /* 籃球橘 */
-        .tag-volleyball { background: #c0392b; } /* 排球紅 */
+        .tag-baseball { background: #1e3799; }   /* 棒球深藍 */
+        .tag-basketball { background: #f39c12; } /* 籃球橘 */
+        .tag-volleyball { background: #00b894; } /* 排球綠 */
 
         .info-section { padding: 20px; }
         .header-info {
@@ -112,37 +102,36 @@
             margin-bottom: 16px; border-bottom: 1px solid #333; padding-bottom: 12px;
         }
 
-        .nickname { font-size: 20px; font-weight: 900; color: var(--team-accent, #fff); }
+        .nickname { font-size: 22px; font-weight: 900; color: var(--team-accent, #fff); }
         .realname { font-size: 13px; color: var(--text-sub); margin-top: 4px; }
-        .number-group { text-align: right; min-width: 50px; }
+        
+        .number-group { text-align: right; min-width: 60px; }
         .number-label { font-size: 10px; color: var(--text-sub); font-weight: 700; margin-bottom: 3px; }
-        .number { font-size: 18px; font-weight: 900; line-height: 1.4; color: #fff; }
+        .number { font-size: 18px; font-weight: 900; line-height: 1.5; color: #fff; }
 
         .data-grid { display: flex; flex-direction: column; gap: 12px; }
         .data-row { display: flex; justify-content: space-between; font-size: 13px; align-items: flex-start; }
-        .data-label { color: var(--text-sub); min-width: 65px; }
-        .data-value { font-weight: 700; text-align: right; line-height: 1.5; }
+        .data-label { color: var(--text-sub); min-width: 70px; }
+        .data-value { font-weight: 700; text-align: right; line-height: 1.6; }
 
-        .ig-link { margin-left: 8px; vertical-align: middle; }
+        .ig-link { margin-left: 8px; vertical-align: middle; display: inline-flex; }
         .ig-icon { width: 18px; height: 18px; fill: url(#ig-gradient); }
 
         @media (max-width: 768px) {
             .grid-container { padding: 0 10px; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .photo-area { height: 180px; }
+            .photo-area { height: 200px; }
+            .nickname { font-size: 18px; }
             .tab-btn { width: calc(33% - 6px); height: 90px; }
-            .tab-logo { width: 35px; height: 35px; }
         }
     </style>
 </head>
 <body>
 
     <svg width="0" height="0" style="position:absolute;">
-        <linearGradient id="ig-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+        <linearGradient id="ig-gradient" x1="100%" y1="100%" x2="0%" y2="0%">
             <stop offset="0%" style="stop-color:#f09433;" /><stop offset="50%" style="stop-color:#dc2743;" /><stop offset="100%" style="stop-color:#bc1888;" />
         </linearGradient>
     </svg>
-
-    <div id="bg-logo"></div>
 
     <header class="header">
         <h1 class="title">台灣啦啦隊資料庫</h1>
@@ -157,13 +146,24 @@
             <div class="filters">
                 <input type="text" id="searchInput" placeholder="搜尋姓名或綽號...">
                 <select id="natFilter">
-                    <option value="all">所有國籍</option><option value="韓國">韓國</option><option value="日本">日本</option><option value="臺灣">臺灣</option><option value="其他">其他</option>
+                    <option value="all">所有國籍</option>
+                    <option value="韓國">韓國</option><option value="日本">日本</option>
+                    <option value="臺灣">臺灣</option><option value="其他">其他國家</option>
                 </select>
                 <select id="zodiacFilter">
-                    <option value="all">所有星座</option><option value="牡羊座">牡羊座</option><option value="金牛座">金牛座</option><option value="雙子座">雙子座</option><option value="巨蟹座">巨蟹座</option><option value="獅子座">獅子座</option><option value="處女座">處女座</option><option value="天秤座">天秤座</option><option value="天蠍座">天蠍座</option><option value="射手座">射手座</option><option value="摩羯座">摩羯座</option><option value="水瓶座">水瓶座</option><option value="雙魚座">雙魚座</option>
+                    <option value="all">所有星座</option>
+                    <option value="牡羊座">牡羊座</option><option value="金牛座">金牛座</option>
+                    <option value="雙子座">雙子座</option><option value="巨蟹座">巨蟹座</option>
+                    <option value="獅子座">獅子座</option><option value="處女座">處女座</option>
+                    <option value="天秤座">天秤座</option><option value="天蠍座">天蠍座</option>
+                    <option value="射手座">射手座</option><option value="摩羯座">摩羯座</option>
+                    <option value="水瓶座">水瓶座</option><option value="雙魚座">雙魚座</option>
                 </select>
                 <select id="sortFilter">
-                    <option value="default">預設排序 (國籍)</option><option value="ageAsc">年齡 (小到大)</option><option value="heightDesc">身高 (高到矮)</option><option value="numberAsc">背號 (小到大)</option>
+                    <option value="default">預設排序 (國籍)</option>
+                    <option value="ageAsc">年齡 (小到大)</option>
+                    <option value="heightDesc">身高 (高到矮)</option>
+                    <option value="numberAsc">背號 (小到大)</option>
                 </select>
             </div>
         </div>
@@ -174,23 +174,29 @@
     <script>
         const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT9l-hRhzMwcRdyQHsRs_97fja0Gg4RCcDDMk31u-dSbbQmk_JIUmbPTAj2gaNYmb6bYTwUvv4_1IxN/pub?output=csv&gid=0&t=" + new Date().getTime();
 
-        // 🌟 代表色與 Logo 設定 (請確保名稱與試算表完全一致)
+        // 🌟 啦啦隊代表色與 Logo (TVBL 顏色更新)
         const teamThemes = {
             "全部啦啦隊": { accent: "#ffffff", logo: "" },
+            // ⚾ 棒球
             "Wing Stars": { accent: "#00e676", logo: "images/winstars_logo.png" },
             "Uni-Girls": { accent: "#ff8c00", logo: "images/unilions_logo.png" },
             "Rakuten Girls": { accent: "#ff3333", logo: "images/rakuten_logo.png" },
             "Passion Sisters": { accent: "#ffea00", logo: "images/brothers_logo.png" },
             "Fubon Angels": { accent: "#33a1ff", logo: "images/fubon_logo.png" },
             "Dragon Beauties": { accent: "#ff4d6d", logo: "images/dragons_logo.png" },
-            "臺北鯨華": { accent: "#3399ff", logo: "images/kingwhale_logo.png" }
+            // 🏐 排球 (TVBL 官方色調)
+            "Tokki Cutie": { accent: "#ff8c00", logo: "images/tokki_logo.png" },      // 臺北伊絲特 - 橘色
+            "Little witches": { accent: "#00d2d3", logo: "images/witches_logo.png" }, // 台中連莊 - 藍綠色
+            "Peach Girls": { accent: "#a29bfe", logo: "images/peach_logo.png" },    // 桃園雲豹 - 亮紫色
+            "台鋼天鷹": { accent: "#0984e3", logo: "images/skyhawks_logo.png" }     // 台鋼天鷹 - 藍色
         };
 
+        // 國籍權重：韓國(1) > 日本(2) > 其他(3) > 臺灣(4)
         const getNatWeight = (nat) => {
             if (nat === "韓國") return 1;
             if (nat === "日本") return 2;
             if (nat === "臺灣" || nat === "台灣") return 4;
-            return 3;
+            return 3; 
         };
 
         let db = []; let currentSport = "全部"; let currentTeam = "全部啦啦隊";
@@ -198,7 +204,10 @@
         function loadData() {
             Papa.parse(sheetUrl, {
                 download: true, header: true, skipEmptyLines: true,
-                transformHeader: h => h.replace(/^\uFEFF/, "").trim().toLowerCase() === 'sport' ? 'sport' : h.replace(/^\uFEFF/, "").trim(),
+                transformHeader: h => {
+                    let ch = h.replace(/^\uFEFF/, "").trim();
+                    return ch.toLowerCase() === 'sport' ? 'sport' : ch;
+                },
                 complete: results => {
                     db = results.data.filter(item => item.realName && item.realName.trim() !== '');
                     init();
@@ -224,8 +233,8 @@
         function updateTeamTabs() {
             const teamsSet = new Set();
             db.forEach(c => {
-                const sportValue = (c.sport || "").trim();
-                if (currentSport === "全部" || sportValue.includes(currentSport)) {
+                const sv = (c.sport || "").trim();
+                if (currentSport === "全部" || sv.includes(currentSport)) {
                     if (c.team) teamsSet.add(c.team.trim());
                 }
             });
@@ -234,18 +243,14 @@
             container.innerHTML = '';
             container.style.display = (currentSport === "全部" || activeTeams.length <= 1) ? 'none' : 'flex';
 
-            activeTeams.forEach(teamName => {
-                const config = teamThemes[teamName] || { accent: "#ccc", logo: "" };
+            activeTeams.forEach(tName => {
+                const config = teamThemes[tName] || { accent: "#ccc", logo: "" };
                 const btn = document.createElement('button');
-                btn.className = `tab-btn ${teamName === currentTeam ? 'active' : ''}`;
-                
-                // 確保 Logo 顯示
-                let logoImg = config.logo ? `<img src="${config.logo}" class="tab-logo" onerror="this.style.display='none'">` : '';
-                btn.innerHTML = `${logoImg}<span>${teamName}</span>`;
-                
+                btn.className = `tab-btn ${tName === currentTeam ? 'active' : ''}`;
+                btn.innerHTML = `${config.logo ? `<img src="${config.logo}" class="tab-logo" onerror="this.style.display='none'">` : ''}<span>${tName}</span>`;
                 btn.style.setProperty('--team-accent', config.accent);
                 btn.onclick = () => {
-                    currentTeam = teamName;
+                    currentTeam = tName;
                     document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
                     btn.classList.add('active');
                     renderCards();
@@ -263,79 +268,78 @@
             const sort = document.getElementById('sortFilter').value;
 
             let result = db.filter(c => {
-                const matchSport = currentSport === "全部" || (c.sport || "").includes(currentSport);
-                const matchTeam = currentTeam === "全部啦啦隊" || (c.team || "").trim() === currentTeam;
-                const matchSearch = (c.nickname || "").toLowerCase().includes(search) || (c.realName || "").toLowerCase().includes(search);
-                let matchNat = nat === 'all' || (nat === '韓國' && c.nat === '韓國') || (nat === '日本' && c.nat === '日本') || (nat === '臺灣' && (c.nat === '臺灣' || c.nat === '台灣')) || (nat === '其他' && !['韓國','日本','臺灣','台灣'].includes(c.nat));
-                let matchZodiac = zodiac === 'all' || (c.zodiac || "").replace("魔羯","摩羯").replace("白羊","牡羊").includes(zodiac);
-                return matchSport && matchTeam && matchSearch && matchNat && matchZodiac;
+                const ms = currentSport === "全部" || (c.sport || "").includes(currentSport);
+                const mt = currentTeam === "全部啦啦隊" || (c.team || "").trim() === currentTeam;
+                const mSearch = (c.nickname || "").toLowerCase().includes(search) || (c.realName || "").toLowerCase().includes(search);
+                let mNat = nat === 'all' || (nat === '韓國' && c.nat === '韓國') || (nat === '日本' && c.nat === '日本') || (nat === '臺灣' && (c.nat === '臺灣' || c.nat === '台灣')) || (nat === '其他' && !['韓國','日本','臺灣','台灣'].includes(c.nat));
+                let mZodiac = zodiac === 'all' || (c.zodiac || "").replace("魔羯","摩羯").replace("白羊","牡羊").includes(zodiac);
+                return ms && mt && mSearch && mNat && mZodiac;
             });
 
-            // 智慧合併
+            // 智慧合併 (本名相同合併)
             if (currentSport === "全部" && currentTeam === "全部啦啦隊") {
-                const mergedMap = new Map();
+                const mMap = new Map();
                 result.forEach(c => {
-                    const nameKey = c.realName.trim();
-                    if (!mergedMap.has(nameKey)) {
-                        mergedMap.set(nameKey, { ...c, mSports: [c.sport], mTeams: [c.team], mNums: [c.num] });
+                    const k = c.realName.trim();
+                    if (!mMap.has(k)) {
+                        mMap.set(k, { ...c, mS: [c.sport], mT: [c.team], mN: [c.num] });
                     } else {
-                        let e = mergedMap.get(nameKey);
-                        if (!e.mSports.includes(c.sport)) e.mSports.push(c.sport);
-                        if (!e.mTeams.includes(c.team)) e.mTeams.push(c.team);
-                        if (!e.mNums.includes(c.num)) e.mNums.push(c.num);
+                        let e = mMap.get(k);
+                        if (!e.mS.includes(c.sport)) e.mS.push(c.sport);
+                        if (!e.mT.includes(c.team)) e.mT.push(c.team);
+                        if (!e.mN.includes(c.num)) e.mN.push(c.num);
                     }
                 });
-                result = Array.from(mergedMap.values());
+                result = Array.from(mMap.values());
             }
 
-            // 排序邏輯：國籍(韓國>日本>其他>台灣) 優先
+            // 國籍權重排序優先，其後才是篩選器排序
             result.sort((a, b) => {
                 let wA = getNatWeight(a.nat);
                 let wB = getNatWeight(b.nat);
                 if (wA !== wB) return wA - wB;
 
-                if (sort === 'ageAsc') return (parseInt(a.dob) || 0) - (parseInt(b.dob) || 0);
+                if (sort === 'ageAsc') return (parseInt(a.dob.replace(/\//g,'')) || 0) - (parseInt(b.dob.replace(/\//g,'')) || 0);
                 if (sort === 'heightDesc') return (parseInt(b.height) || 0) - (parseInt(a.height) || 0);
                 if (sort === 'numberAsc') return (parseInt(a.num) || 99) - (parseInt(b.num) || 99);
                 return 0;
             });
 
             container.innerHTML = result.map(c => {
-                const sList = c.mSports || [c.sport];
-                const tList = (c.mTeams || [c.team]).map(t => t.trim());
-                const nList = (c.mNums || [c.num]).filter(n => n && n !== "-");
+                const sports = c.mS || [c.sport];
+                const teams = (c.mT || [c.team]).map(t => t.trim());
+                const nums = (c.mN || [c.num]).filter(n => n && n !== "-");
                 
-                // 彩色標籤
-                let tagsHtml = sList.map(s => {
+                let tags = sports.map(s => {
                     if(s.includes("棒球")) return `<div class="sport-tag tag-baseball">棒球</div>`;
                     if(s.includes("籃球")) return `<div class="sport-tag tag-basketball">籃球</div>`;
                     if(s.includes("排球")) return `<div class="sport-tag tag-volleyball">排球</div>`;
                     return '';
                 }).join('');
 
-                const accentColor = (teamThemes[tList[0]] || {accent:"#fff"}).accent;
+                const accent = (teamThemes[teams[0]] || {accent:"#fff"}).accent;
 
                 return `
-                    <div class="card" style="border-top: 4px solid ${accentColor};">
+                    <div class="card" style="border-top: 4px solid ${accent};">
                         <div class="photo-area">
-                            <div class="sport-tags">${tagsHtml}</div>
+                            <div class="sport-tags">${tags}</div>
                             ${c.img ? `<img src="${c.img}" style="width:100%;height:100%;object-fit:cover;object-position:top center;">` : `<span style="color:#333;">NO PHOTO</span>`}
                         </div>
                         <div class="info-section">
                             <div class="header-info">
                                 <div class="names">
-                                    <div class="nickname" style="color:${accentColor}">${c.nickname}${c.ig ? `<a href="${c.ig}" target="_blank" class="ig-link"><svg class="ig-icon" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.332 3.608 1.308.975.975 1.245 2.242 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.332 2.633-1.308 3.608-.975.975-2.242 1.245-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.332-3.608-1.308-.975-.975-1.245-2.242-1.308-3.608-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.062-1.366.332-2.633 1.308-3.608.975-.975 2.242-1.245 3.608-1.308 1.266-.058 1.646-.07 4.85-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.358-.2 6.78-2.618 6.98-6.98.058-1.281.072-1.689.072-4.948s-.014-3.667-.072-4.947c-.2-4.358-2.618-6.78-6.98-6.98-1.281-.058-1.689-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>` : ''}</div>
+                                    <div class="nickname" style="color:${accent}">${c.nickname}${c.ig ? `<a href="${c.ig}" target="_blank" class="ig-link"><svg class="ig-icon" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.332 3.608 1.308.975.975 1.245 2.242 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.332 2.633-1.308 3.608-.975.975-2.242 1.245-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.332-3.608-1.308-.975-.975-1.245-2.242-1.308-3.608-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.062-1.366.332-2.633 1.308-3.608.975-.975 2.242-1.245 3.608-1.308 1.266-.058 1.646-.07 4.85-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.358-.2 6.78-2.618 6.98-6.98.058-1.281.072-1.689.072-4.948s-.014-3.667-.072-4.947c-.2-4.358-2.618-6.78-6.98-6.98-1.281-.058-1.689-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>` : ''}</div>
                                     <div class="realname">${c.realName}</div>
                                 </div>
                                 <div class="number-group">
                                     <div class="number-label">背號</div>
-                                    <div class="number">${nList.join("<br>") || "-"}</div>
+                                    <div class="number">${nums.join("<br>") || "-"}</div>
                                 </div>
                             </div>
                             <div class="data-grid">
                                 <div class="data-row">
                                     <span class="data-label">啦啦隊</span>
-                                    <span class="data-value" style="color:${accentColor}">${tList.join("<br>")}</span>
+                                    <span class="data-value" style="color:${accent}">${teams.join("<br>")}</span>
                                 </div>
                                 <div class="data-row">
                                     <span class="data-label">國籍</span>
