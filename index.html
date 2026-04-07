@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>全能啦啦隊資訊站</title>
+    <title>全能啦啦隊圖鑑</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
@@ -27,13 +27,8 @@
 
         #bg-logo { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80vw; max-width: 600px; height: 80vh; opacity: 0.08; z-index: -1; background-size: contain; background-position: center; background-repeat: no-repeat; pointer-events: none; transition: all 0.5s ease; }
 
-        /* 全域導覽列 */
-        .main-nav { background-color: #000; display: flex; justify-content: center; border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 50; }
-        .main-nav-btn { background: transparent; border: none; color: #666; font-size: 16px; font-weight: 900; padding: 15px 30px; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.3s; }
-        .main-nav-btn:hover { color: #ccc; }
-        .main-nav-btn.active { color: #fff; border-bottom-color: var(--team-accent, #fff); }
-
-        .header { background-color: #0a0a0a; border-bottom: 1px solid var(--border-color); padding: 20px 40px; z-index: 10; position: relative; }
+        .header { background-color: #0a0a0a; border-bottom: 1px solid var(--border-color); padding: 20px 40px; z-index: 10; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+        .title { font-size: 24px; font-weight: 900; margin-bottom: 20px; letter-spacing: 1px; text-align: center; text-transform: uppercase; }
         
         .sport-tabs { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
         .sport-btn { background: #222; border: 1px solid #444; color: #fff; padding: 8px 20px; border-radius: 30px; cursor: pointer; font-size: 14px; font-weight: 700; transition: 0.3s; }
@@ -52,22 +47,6 @@
         /* 圖鑑網格 */
         .grid-container { max-width: 1200px; width: 100%; margin: 20px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; flex: 1; }
         
-        /* 行程表版面 */
-        .schedule-container { max-width: 800px; width: 100%; margin: 20px auto; padding: 0 20px; display: none; flex-direction: column; gap: 15px; flex: 1; }
-        .schedule-card { background: var(--team-light); border-left: 5px solid var(--nat-tw); border-radius: 6px; padding: 15px; display: flex; gap: 20px; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3); transition: transform 0.2s; }
-        .schedule-card:hover { transform: translateX(5px); border-left-color: var(--team-accent); }
-        
-        .sch-datetime { min-width: 80px; text-align: center; border-right: 1px solid #333; padding-right: 15px; }
-        .sch-date { font-size: 20px; font-weight: 900; color: #fff; }
-        .sch-time { font-size: 13px; color: var(--text-sub); margin-top: 4px; font-weight: 700; }
-        
-        .sch-avatar { width: 65px; height: 65px; border-radius: 50%; object-fit: cover; object-position: top center; border: 2px solid #444; flex-shrink: 0; background-color: #000; }
-        
-        .sch-info { flex: 1; display: flex; flex-direction: column; gap: 5px; }
-        .sch-name { font-size: 18px; font-weight: 900; color: #fff; }
-        .sch-host { font-size: 13px; font-weight: 500; color: #aaa; display: flex; align-items: center; gap: 5px; }
-        .sch-loc { font-size: 13px; color: #888; display: flex; align-items: center; gap: 5px; }
-
         /* 卡片設計 */
         .card { background-color: var(--team-light); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; transition: 0.3s; position: relative; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
@@ -93,20 +72,13 @@
 
         @media (max-width: 768px) {
             .header { padding: 15px 10px; }
-            .title { display: none; }
+            .title { font-size: 20px; margin-bottom: 15px; }
             #searchInput { width: 100%; }
             .tab-btn { width: calc(33.3% - 8px); height: 75px; min-width: 90px; }
             .grid-container { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 0 10px; margin-top: 10px; }
             .photo-area { height: 200px; }
             .nickname { font-size: 16px; }
             .info-section { padding: 12px; }
-            
-            .schedule-card { padding: 12px; gap: 12px; }
-            .sch-datetime { min-width: 65px; padding-right: 10px; }
-            .sch-date { font-size: 16px; }
-            .sch-avatar { width: 50px; height: 50px; }
-            .sch-name { font-size: 16px; }
-            .sch-host, .sch-loc { font-size: 12px; }
         }
     </style>
 </head>
@@ -119,12 +91,8 @@
     </svg>
     <div id="bg-logo"></div>
 
-    <nav class="main-nav">
-        <button class="main-nav-btn active" onclick="switchView('roster')">女孩圖鑑</button>
-        <button class="main-nav-btn" onclick="switchView('schedule')">活動行程</button>
-    </nav>
-
     <header class="header" id="roster-header">
+        <h1 class="title">全方位運動啦啦隊圖鑑</h1>
         <div class="controls-container">
             <div class="sport-tabs" id="sport-tabs">
                 <button class="sport-btn active" onclick="changeSport('全部')">全部</button>
@@ -151,29 +119,15 @@
         </div>
     </header>
 
-    <header class="header" id="schedule-header" style="display: none; text-align: center; padding: 15px;">
-        <h2 style="font-size: 18px; color: #fff; letter-spacing: 1px;">🗓️ 近期活動行程表</h2>
-    </header>
-
     <main class="grid-container" id="grid-container">
         <div class="loader">正在讀取雲端資料庫...</div>
     </main>
 
-    <main class="schedule-container" id="schedule-container">
-        <div class="loader">正在讀取行程表...</div>
-    </main>
-
     <script>
         // =========================================================================
-        // 🔴 真．絕對正確資料庫連線區 🔴
+        // 🔴 單純的女孩圖鑑 CSV 網址 🔴
         // =========================================================================
-        
-        // 1. 女孩圖鑑 CSV 網址 (修正為你剛剛貼給我的這串絕對正確的網址！！)
-        const rosterSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT9l-hRhzMwcRdyQHsRs_97fja0Gg4RCcDDMk31u-dSbbQmk_JIUmbPTAj2gaNYmb6bYTwUvv4_1IxN/pub?gid=0&single=true&output=csv&t=" + new Date().getTime();
-        
-        // 2. 行程表 CSV 網址
-        const scheduleSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTdkYFMELT3B0v0e1rz3k0rhJUinpI9xStZzNGANOVvPG96OF-9Vz06guztjaw21k7HTaudblcpqwkQ/pub?gid=1901788112&single=true&output=csv&t=" + new Date().getTime();
-
+        const rosterSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTdkYFMELT3B0v0e1rz3k0rhJUinpI9xStZzNGANOVvPG96OF-9Vz06guztjaw21k7HTaudblcpqwkQ/pub?gid=0&single=true&output=csv&t=" + new Date().getTime();
         // =========================================================================
 
         const teamsConfig = {
@@ -199,39 +153,15 @@
         };
 
         let db = [];
-        let scheduleDb = [];
         let currentSport = "全部";
         let currentTeam = "全部";
-        let isScheduleLoaded = false;
-
-        function switchView(view) {
-            document.querySelectorAll('.main-nav-btn').forEach(btn => btn.classList.remove('active'));
-            if (view === 'roster') {
-                document.querySelectorAll('.main-nav-btn')[0].classList.add('active');
-                document.getElementById('roster-header').style.display = 'block';
-                document.getElementById('grid-container').style.display = 'grid';
-                document.getElementById('schedule-header').style.display = 'none';
-                document.getElementById('schedule-container').style.display = 'none';
-                changeTheme(currentTeam);
-            } else {
-                document.querySelectorAll('.main-nav-btn')[1].classList.add('active');
-                document.getElementById('roster-header').style.display = 'none';
-                document.getElementById('grid-container').style.display = 'none';
-                document.getElementById('schedule-header').style.display = 'block';
-                document.getElementById('schedule-container').style.display = 'flex';
-                
-                document.documentElement.style.setProperty('--team-dark', '#0f0f0f');
-                document.getElementById('bg-logo').style.opacity = '0';
-                
-                if (!isScheduleLoaded) loadScheduleData();
-            }
-        }
 
         function loadRosterData() {
             Papa.parse(rosterSheetUrl, {
                 download: true, 
                 header: true, 
                 skipEmptyLines: true,
+                // 防禦魔法：自動清除隱形符號
                 transformHeader: function(h) {
                     return h.trim().replace(/^\uFEFF/, ''); 
                 },
@@ -245,60 +175,6 @@
                     document.getElementById('grid-container').innerHTML = '<div class="empty-state">無法讀取圖鑑資料庫，請檢查網址連線。<br>(如果是在電腦裡直接開啟，請嘗試使用 Netlify Drop 測試)</div>';
                 }
             });
-        }
-
-        function loadScheduleData() {
-            Papa.parse(scheduleSheetUrl, {
-                download: true, 
-                header: true, 
-                skipEmptyLines: true,
-                transformHeader: function(h) {
-                    return h.trim().replace(/^\uFEFF/, ''); 
-                },
-                complete: function(results) {
-                    scheduleDb = results.data.filter(item => item.date && item.date.trim() !== '');
-                    renderSchedule();
-                    isScheduleLoaded = true;
-                },
-                error: function(error) {
-                    console.error("行程表載入失敗:", error);
-                    document.getElementById('schedule-container').innerHTML = '<div class="empty-state">無法讀取行程表資料庫，請檢查網址連線。<br>(如果是在電腦裡直接開啟，請嘗試使用 Netlify Drop 測試)</div>';
-                }
-            });
-        }
-
-        function renderSchedule() {
-            const container = document.getElementById('schedule-container');
-            if (scheduleDb.length === 0) {
-                container.innerHTML = '<div class="empty-state">目前尚未新增活動行程資料</div>';
-                return;
-            }
-
-            scheduleDb.sort((a, b) => (a.date || "").localeCompare(b.date || ""));
-
-            container.innerHTML = scheduleDb.map(s => {
-                let avatarUrl = 'https://via.placeholder.com/100x100?text=Event'; 
-                let matchedGirl = db.find(g => s.name && (s.name.includes(g.nickname) || s.name.includes(g.realName)));
-                
-                if (matchedGirl && matchedGirl.img) {
-                    avatarUrl = matchedGirl.img;
-                }
-
-                return `
-                    <div class="schedule-card">
-                        <div class="sch-datetime">
-                            <div class="sch-date">${s.date || '-'}</div>
-                            <div class="sch-time">${s.time || '全天'}</div>
-                        </div>
-                        <img src="${avatarUrl}" class="sch-avatar" onerror="this.src='https://via.placeholder.com/100x100?text=Event'">
-                        <div class="sch-info">
-                            <div class="sch-name">✨ ${s.name || '未定'}</div>
-                            <div class="sch-host">🏢 ${s.host || '無主辦單位'}</div>
-                            <div class="sch-loc">📍 ${s.location || '地點待確認'}</div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
         }
 
         function changeSport(sport) {
@@ -315,7 +191,15 @@
             let teamsInSport = ["全部"];
             db.forEach(item => {
                 let itemType = (item.type || "").trim();
-                if ((currentSport === "全部" || itemType === currentSport) && !teamsInSport.includes(item.team)) {
+                
+                // 寬容配對：打「棒球」也能算進「職棒」
+                let isMatch = false;
+                if (currentSport === "全部") isMatch = true;
+                else if (itemType === currentSport) isMatch = true;
+                else if (currentSport === "職棒" && itemType.includes("棒")) isMatch = true;
+                else if (currentSport === "職籃" && itemType.includes("籃")) isMatch = true;
+
+                if (isMatch && !teamsInSport.includes(item.team)) {
                     teamsInSport.push(item.team);
                 }
             });
@@ -359,7 +243,14 @@
 
             let filtered = db.filter(c => {
                 let cType = (c.type || "").trim();
-                const matchSport = currentSport === "全部" || cType === currentSport;
+                
+                // 寬容配對邏輯
+                let matchSport = false;
+                if (currentSport === "全部") matchSport = true;
+                else if (cType === currentSport) matchSport = true;
+                else if (currentSport === "職棒" && cType.includes("棒")) matchSport = true;
+                else if (currentSport === "職籃" && cType.includes("籃")) matchSport = true;
+
                 const matchTeam = currentTeam === "全部" || (c.team || "").trim() === currentTeam;
                 const matchSearch = (c.nickname + c.realName).toLowerCase().includes(search);
                 
@@ -372,10 +263,12 @@
                 return matchSport && matchTeam && matchSearch && matchNat;
             });
 
+            // 完美的預設排序：確保台灣女孩在最後
             filtered.sort((a, b) => {
                 if (sort === 'heightDesc') return (parseInt(b.height)||0) - (parseInt(a.height)||0);
                 if (sort === 'numberAsc') return (parseInt(a.num)||999) - (parseInt(b.num)||999);
                 
+                // 預設排序：韓國(1) -> 日本(2) -> 其他(3) -> 台灣(4)
                 let wA = getNatWeight(a.nat);
                 let wB = getNatWeight(b.nat);
                 if (wA !== wB) return wA - wB; 
