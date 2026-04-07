@@ -165,13 +165,13 @@
 
     <script>
         // =========================================================================
-        // 🔴 雙資料庫連線區 🔴
+        // 🔴 這次絕對沒錯的雙資料庫連線區 🔴
         // =========================================================================
         
-        // 1. 女孩圖鑑 CSV 網址 (你提供的新網址, gid=0)
-        const rosterSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTdkYFMELT3B0v0e1rz3k0rhJUinpI9xStZzNGANOVvPG96OF-9Vz06guztjaw21k7HTaudblcpqwkQ/pub?gid=0&single=true&output=csv&t=" + new Date().getTime();
+        // 1. 女孩圖鑑 CSV 網址 (舊檔案, gid=0)
+        const rosterSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT9l-hRhzMwcRdyQHsRs_97fja0Gg4RCcDDMk31u-dSbbQmk_JIUmbPTAj2gaNYmb6bYTwUvv4_1IxN/pub?gid=0&single=true&output=csv&t=" + new Date().getTime();
         
-        // 2. 行程表 CSV 網址 (你提供的新網址, gid=1901788112)
+        // 2. 行程表 CSV 網址 (新檔案, gid=1901788112)
         const scheduleSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTdkYFMELT3B0v0e1rz3k0rhJUinpI9xStZzNGANOVvPG96OF-9Vz06guztjaw21k7HTaudblcpqwkQ/pub?gid=1901788112&single=true&output=csv&t=" + new Date().getTime();
 
         // =========================================================================
@@ -187,7 +187,6 @@
             "Formosa Sexy": { dark: "#000000", light: "#111111", accent: "#00ff00", logo: "" },
             "Pilots Crew": { dark: "#1a0d00", light: "#331a00", accent: "#ff6600", logo: "" },
             "電豹女": { dark: "#0d001a", light: "#1a0033", accent: "#cc33ff", logo: "" },
-            // 新增排球隊伍色塊
             "Tokki Cutie": { dark: "#001a1a", light: "#003333", accent: "#00ffff", logo: "" }
         };
 
@@ -230,7 +229,7 @@
                 },
                 error: function(error) {
                     console.error("圖鑑載入失敗:", error);
-                    document.getElementById('grid-container').innerHTML = '<div class="empty-state">無法讀取圖鑑資料庫，請檢查網址連線。</div>';
+                    document.getElementById('grid-container').innerHTML = '<div class="empty-state">無法讀取圖鑑資料庫，請檢查網址連線。<br>(如果是在電腦裡直接開啟，請嘗試使用 Netlify Drop 測試)</div>';
                 }
             });
         }
@@ -245,7 +244,7 @@
                 },
                 error: function(error) {
                     console.error("行程表載入失敗:", error);
-                    document.getElementById('schedule-container').innerHTML = '<div class="empty-state">無法讀取行程表資料庫，請檢查網址連線。</div>';
+                    document.getElementById('schedule-container').innerHTML = '<div class="empty-state">無法讀取行程表資料庫，請檢查網址連線。<br>(如果是在電腦裡直接開啟，請嘗試使用 Netlify Drop 測試)</div>';
                 }
             });
         }
@@ -344,7 +343,6 @@
                 const matchTeam = currentTeam === "全部" || c.team === currentTeam;
                 const matchSearch = (c.nickname + c.realName).toLowerCase().includes(search);
                 
-                // 國籍過濾邏輯（支援「其他」類別）
                 let matchNat = true;
                 if (nat === '韓國') matchNat = c.nat === '韓國';
                 else if (nat === '日本') matchNat = c.nat === '日本';
@@ -362,7 +360,6 @@
 
             container.innerHTML = filtered.length === 0 ? '<div class="empty-state">找不到符合條件的女孩</div>' : filtered.map(c => {
                 
-                // 根據國籍給予不同顏色的 Class
                 let natClass = 'text-other';
                 if (c.nat === '韓國') natClass = 'text-kr';
                 else if (c.nat === '日本') natClass = 'text-jp';
