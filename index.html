@@ -15,7 +15,11 @@
             --text-main: #ffffff;
             --text-sub: #888888;
             --border-color: #333333;
-            --nat-kr: #4da6ff; --nat-jp: #ff6666; --nat-other: #d4af37; --nat-tw: #66cc99;
+            /* 國籍專屬色 */
+            --nat-kr: #4da6ff; 
+            --nat-jp: #ff6666; 
+            --nat-other: #d4af37; 
+            --nat-tw: #66cc99;
         }
 
         * { box-sizing: border-box; font-family: 'Noto Sans TC', sans-serif; margin: 0; padding: 0; }
@@ -57,7 +61,6 @@
         .sch-date { font-size: 20px; font-weight: 900; color: #fff; }
         .sch-time { font-size: 13px; color: var(--text-sub); margin-top: 4px; font-weight: 700; }
         
-        /* 自動頭像 */
         .sch-avatar { width: 65px; height: 65px; border-radius: 50%; object-fit: cover; object-position: top center; border: 2px solid #444; flex-shrink: 0; background-color: #000; }
         
         .sch-info { flex: 1; display: flex; flex-direction: column; gap: 5px; }
@@ -79,7 +82,12 @@
         .data-row { display: flex; justify-content: space-between; font-size: 13px; }
         .data-label { color: var(--text-sub); }
         .data-value { font-weight: 700; }
-        .text-kr { color: var(--nat-kr); } .text-jp { color: var(--nat-jp); } .text-tw { color: var(--nat-tw); }
+        
+        /* 國籍文字顏色 */
+        .text-kr { color: var(--nat-kr); } 
+        .text-jp { color: var(--nat-jp); } 
+        .text-tw { color: var(--nat-tw); }
+        .text-other { color: var(--nat-other); }
         
         .loader { grid-column: 1 / -1; text-align: center; padding: 100px; color: var(--team-accent); font-weight: 700; }
 
@@ -127,8 +135,18 @@
             <div class="team-tabs" id="tabs-container"></div>
             <div class="filters">
                 <input type="text" id="searchInput" placeholder="搜尋姓名或綽號...">
-                <select id="natFilter"><option value="all">所有國籍</option><option value="韓國">韓國</option><option value="日本">日本</option><option value="臺灣">臺灣</option></select>
-                <select id="sortFilter"><option value="default">預設排序</option><option value="heightDesc">身高 (高到矮)</option><option value="numberAsc">背號 (小到大)</option></select>
+                <select id="natFilter">
+                    <option value="all">所有國籍</option>
+                    <option value="韓國">韓國</option>
+                    <option value="日本">日本</option>
+                    <option value="臺灣">臺灣</option>
+                    <option value="其他">其他國籍</option>
+                </select>
+                <select id="sortFilter">
+                    <option value="default">預設排序</option>
+                    <option value="heightDesc">身高 (高到矮)</option>
+                    <option value="numberAsc">背號 (小到大)</option>
+                </select>
             </div>
         </div>
     </header>
@@ -150,10 +168,10 @@
         // 🔴 雙資料庫連線區 🔴
         // =========================================================================
         
-        // 1. 最新的「女孩圖鑑」CSV網址 (gid=0, single=true)
-        const rosterSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT9l-hRhzMwcRdyQHsRs_97fja0Gg4RCcDDMk31u-dSbbQmk_JIUmbPTAj2gaNYmb6bYTwUvv4_1IxN/pub?gid=0&single=true&output=csv&t=" + new Date().getTime();
+        // 1. 女孩圖鑑 CSV 網址 (你提供的新網址, gid=0)
+        const rosterSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTdkYFMELT3B0v0e1rz3k0rhJUinpI9xStZzNGANOVvPG96OF-9Vz06guztjaw21k7HTaudblcpqwkQ/pub?gid=0&single=true&output=csv&t=" + new Date().getTime();
         
-        // 2. 你的「行程表」CSV網址 (gid=1901788112, single=true)
+        // 2. 行程表 CSV 網址 (你提供的新網址, gid=1901788112)
         const scheduleSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTdkYFMELT3B0v0e1rz3k0rhJUinpI9xStZzNGANOVvPG96OF-9Vz06guztjaw21k7HTaudblcpqwkQ/pub?gid=1901788112&single=true&output=csv&t=" + new Date().getTime();
 
         // =========================================================================
@@ -168,7 +186,9 @@
             "Dragon Beauties": { dark: "#170205", light: "#2e050b", accent: "#ff4d6d", logo: "images/dragons_logo.png" },
             "Formosa Sexy": { dark: "#000000", light: "#111111", accent: "#00ff00", logo: "" },
             "Pilots Crew": { dark: "#1a0d00", light: "#331a00", accent: "#ff6600", logo: "" },
-            "電豹女": { dark: "#0d001a", light: "#1a0033", accent: "#cc33ff", logo: "" }
+            "電豹女": { dark: "#0d001a", light: "#1a0033", accent: "#cc33ff", logo: "" },
+            // 新增排球隊伍色塊
+            "Tokki Cutie": { dark: "#001a1a", light: "#003333", accent: "#00ffff", logo: "" }
         };
 
         let db = [];
@@ -323,7 +343,14 @@
                 const matchSport = currentSport === "全部" || c.type === currentSport;
                 const matchTeam = currentTeam === "全部" || c.team === currentTeam;
                 const matchSearch = (c.nickname + c.realName).toLowerCase().includes(search);
-                const matchNat = nat === 'all' || c.nat === nat;
+                
+                // 國籍過濾邏輯（支援「其他」類別）
+                let matchNat = true;
+                if (nat === '韓國') matchNat = c.nat === '韓國';
+                else if (nat === '日本') matchNat = c.nat === '日本';
+                else if (nat === '臺灣') matchNat = c.nat === '臺灣' || c.nat === '台灣';
+                else if (nat === '其他') matchNat = !['韓國', '日本', '臺灣', '台灣'].includes(c.nat);
+
                 return matchSport && matchTeam && matchSearch && matchNat;
             });
 
@@ -334,7 +361,13 @@
             });
 
             container.innerHTML = filtered.length === 0 ? '<div class="empty-state">找不到符合條件的女孩</div>' : filtered.map(c => {
-                const natClass = c.nat === '韓國' ? 'text-kr' : (c.nat === '日本' ? 'text-jp' : 'text-tw');
+                
+                // 根據國籍給予不同顏色的 Class
+                let natClass = 'text-other';
+                if (c.nat === '韓國') natClass = 'text-kr';
+                else if (c.nat === '日本') natClass = 'text-jp';
+                else if (c.nat === '臺灣' || c.nat === '台灣') natClass = 'text-tw';
+
                 const accentColor = teamsConfig[c.team]?.accent || '#fff';
                 const igHtml = c.ig ? `<a href="${c.ig}" target="_blank" class="ig-link"><svg class="ig-icon" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.332 3.608 1.308.975.975 1.245 2.242 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.332 2.633-1.308 3.608-.975.975-2.242 1.245-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.332-3.608-1.308-.975-.975-1.245-2.242-1.308-3.608-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.062-1.366.332-2.633 1.308-3.608.975-.975 2.242-1.245 3.608-1.308 1.266-.058 1.646-.07 4.85-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.358-.2 6.78-2.618 6.98-6.98.058-1.281.072-1.689.072-4.948s-.014-3.667-.072-4.947c-.2-4.358-2.618-6.78-6.98-6.98-1.281-.058-1.689-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>` : '';
                 return `
@@ -357,7 +390,7 @@
                             <div class="data-grid">
                                 <div class="data-row"><span class="data-label">球隊</span><span class="data-value" style="color:${accentColor}">${c.team}</span></div>
                                 <div class="data-row"><span class="data-label">國籍</span><span class="data-value ${natClass}">${c.nat}</span></div>
-                                <div class="data-row"><span class="data-label">身高</span><span class="data-value">${c.height} cm</span></div>
+                                <div class="data-row"><span class="data-label">身高</span><span class="data-value">${c.height ? c.height + ' cm' : 'N/A'}</span></div>
                             </div>
                             ${c.remark ? `<div style="font-size:11px;color:#d4af37;margin-top:10px;text-align:right;">${c.remark}</div>` : ''}
                         </div>
