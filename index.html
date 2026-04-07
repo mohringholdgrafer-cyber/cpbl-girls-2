@@ -10,11 +10,16 @@
 
         :root {
             --team-dark: #0f0f0f;
-            --team-light: #1f1f1f;
+            --team-light: #1a1a1a;
             --team-accent: #ffffff;
             --text-main: #ffffff;
             --text-sub: #888888;
             --border-color: #333333;
+            
+            --nat-kr: #4da6ff;
+            --nat-jp: #ff6666;
+            --nat-other: #d4af37;
+            --nat-tw: #66cc99;
         }
 
         * { box-sizing: border-box; font-family: 'Noto Sans TC', sans-serif; margin: 0; padding: 0; }
@@ -22,7 +27,8 @@
         html, body {
             max-width: 100vw; overflow-x: hidden;
             background-color: var(--team-dark); color: var(--text-main);
-            min-height: 100vh; display: flex; flex-direction: column;
+            transition: background-color 0.4s ease; min-height: 100vh;
+            display: flex; flex-direction: column;
         }
 
         .header {
@@ -54,10 +60,14 @@
             color: var(--text-sub); cursor: pointer; font-size: 13px; font-weight: 700;
             border-radius: 12px; transition: all 0.2s;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 8px; width: 120px; height: 105px; padding: 10px;
+            gap: 6px; width: 120px; height: 105px; padding: 10px;
         }
         .tab-logo { width: 45px; height: 45px; object-fit: contain; display: block; }
-        .tab-btn.active { background-color: var(--team-accent, #fff); color: #000000; border-color: var(--team-accent, #fff); }
+        .tab-btn.active { 
+            background-color: var(--team-accent, #fff); 
+            color: #000000; 
+            border-color: var(--team-accent, #fff); 
+        }
 
         .filters { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
         .filters input, .filters select {
@@ -75,6 +85,7 @@
         .card {
             background-color: var(--team-light); border: 1px solid var(--border-color);
             border-radius: 6px; overflow: hidden; display: flex; flex-direction: column;
+            transition: border-color 0.4s ease;
         }
 
         .photo-area {
@@ -92,9 +103,9 @@
             border-radius: 4px; text-align: center;
             box-shadow: 0 2px 6px rgba(0,0,0,0.5);
         }
-        .tag-baseball { background: #1e3799; }   /* 棒球深藍 */
-        .tag-basketball { background: #f39c12; } /* 籃球橘 */
-        .tag-volleyball { background: #00b894; } /* 排球綠 */
+        .tag-baseball { background: #1e3799; }
+        .tag-basketball { background: #f39c12; }
+        .tag-volleyball { background: #00b894; }
 
         .info-section { padding: 20px; }
         .header-info {
@@ -121,7 +132,8 @@
             .grid-container { padding: 0 10px; grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .photo-area { height: 200px; }
             .nickname { font-size: 18px; }
-            .tab-btn { width: calc(33% - 6px); height: 90px; }
+            .tab-btn { width: calc(33% - 6px); height: 95px; }
+            .tab-logo { width: 35px; height: 35px; }
         }
     </style>
 </head>
@@ -162,7 +174,7 @@
                 <select id="sortFilter">
                     <option value="default">預設排序 (國籍)</option>
                     <option value="ageAsc">年齡 (小到大)</option>
-                    <option value="heightDesc">身高 (高到矮)</option>
+                    <option value="heightDesc">身高 (由高到矮)</option>
                     <option value="numberAsc">背號 (小到大)</option>
                 </select>
             </div>
@@ -174,24 +186,23 @@
     <script>
         const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT9l-hRhzMwcRdyQHsRs_97fja0Gg4RCcDDMk31u-dSbbQmk_JIUmbPTAj2gaNYmb6bYTwUvv4_1IxN/pub?output=csv&gid=0&t=" + new Date().getTime();
 
-        // 🌟 啦啦隊代表色與 Logo (TVBL 顏色更新)
+        // 🌟 啦啦隊代表色與 Logo 設定 (顏色已修正為對應圖片)
         const teamThemes = {
-            "全部啦啦隊": { accent: "#ffffff", logo: "" },
+            "全部啦啦隊": { dark: "#0f0f0f", light: "#1a1a1a", accent: "#ffffff", logo: "" },
             // ⚾ 棒球
-            "Wing Stars": { accent: "#00e676", logo: "images/winstars_logo.png" },
-            "Uni-Girls": { accent: "#ff8c00", logo: "images/unilions_logo.png" },
-            "Rakuten Girls": { accent: "#ff3333", logo: "images/rakuten_logo.png" },
-            "Passion Sisters": { accent: "#ffea00", logo: "images/brothers_logo.png" },
-            "Fubon Angels": { accent: "#33a1ff", logo: "images/fubon_logo.png" },
-            "Dragon Beauties": { accent: "#ff4d6d", logo: "images/dragons_logo.png" },
-            // 🏐 排球 (TVBL 官方色調)
-            "Tokki Cutie": { accent: "#ff8c00", logo: "images/tokki_logo.png" },      // 臺北伊絲特 - 橘色
-            "Little witches": { accent: "#00d2d3", logo: "images/witches_logo.png" }, // 台中連莊 - 藍綠色
-            "Peach Girls": { accent: "#a29bfe", logo: "images/peach_logo.png" },    // 桃園雲豹 - 亮紫色
-            "台鋼天鷹": { accent: "#0984e3", logo: "images/skyhawks_logo.png" }     // 台鋼天鷹 - 藍色
+            "Wing Stars": { dark: "#05120a", light: "#0a2414", accent: "#00e676", logo: "images/winstars_logo.png" },
+            "Uni-Girls": { dark: "#140800", light: "#291000", accent: "#ff8c00", logo: "images/unilions_logo.png" },
+            "Rakuten Girls": { dark: "#140202", light: "#2e0505", accent: "#ff3333", logo: "images/rakuten_logo.png" },
+            "Passion Sisters": { dark: "#141200", light: "#292400", accent: "#ffea00", logo: "images/brothers_logo.png" },
+            "Fubon Angels": { dark: "#020812", light: "#04152b", accent: "#33a1ff", logo: "images/fubon_logo.png" },
+            "Dragon Beauties": { dark: "#170205", light: "#2e050b", accent: "#ff4d6d", logo: "images/dragons_logo.png" },
+            // 🏐 TVBL 排球
+            "Tokki Cutie": { dark: "#1a0f00", light: "#2e1a05", accent: "#ff8c00", logo: "images/tokki_logo.png" },      // 伊絲特 - 橘色
+            "Little witches": { dark: "#001414", light: "#002b2b", accent: "#00d2d3", logo: "images/witches_logo.png" }, // 連莊 - 藍綠色
+            "Peach Girls": { dark: "#1a0010", light: "#2e051d", accent: "#ff3399", logo: "images/peach_logo.png" },    // 雲豹 - 桃紅色
+            "台鋼天鷹": { dark: "#020812", light: "#04152b", accent: "#0984e3", logo: "images/skyhawks_logo.png" }      // 天鷹 - 藍色
         };
 
-        // 國籍權重：韓國(1) > 日本(2) > 其他(3) > 臺灣(4)
         const getNatWeight = (nat) => {
             if (nat === "韓國") return 1;
             if (nat === "日本") return 2;
@@ -224,10 +235,18 @@
                     currentSport = btn.getAttribute('data-sport');
                     currentTeam = "全部啦啦隊";
                     updateTeamTabs();
+                    applyTheme("全部啦啦隊");
                 };
             });
             updateTeamTabs();
             ['searchInput', 'natFilter', 'zodiacFilter', 'sortFilter'].forEach(id => document.getElementById(id).addEventListener('input', renderCards));
+        }
+
+        function applyTheme(teamName) {
+            const config = teamThemes[teamName] || teamThemes["全部啦啦隊"];
+            document.documentElement.style.setProperty('--team-dark', config.dark);
+            document.documentElement.style.setProperty('--team-light', config.light);
+            document.documentElement.style.setProperty('--team-accent', config.accent);
         }
 
         function updateTeamTabs() {
@@ -253,6 +272,7 @@
                     currentTeam = tName;
                     document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
                     btn.classList.add('active');
+                    applyTheme(tName);
                     renderCards();
                 };
                 container.appendChild(btn);
@@ -276,7 +296,6 @@
                 return ms && mt && mSearch && mNat && mZodiac;
             });
 
-            // 智慧合併 (本名相同合併)
             if (currentSport === "全部" && currentTeam === "全部啦啦隊") {
                 const mMap = new Map();
                 result.forEach(c => {
@@ -293,12 +312,10 @@
                 result = Array.from(mMap.values());
             }
 
-            // 國籍權重排序優先，其後才是篩選器排序
             result.sort((a, b) => {
                 let wA = getNatWeight(a.nat);
                 let wB = getNatWeight(b.nat);
                 if (wA !== wB) return wA - wB;
-
                 if (sort === 'ageAsc') return (parseInt(a.dob.replace(/\//g,'')) || 0) - (parseInt(b.dob.replace(/\//g,'')) || 0);
                 if (sort === 'heightDesc') return (parseInt(b.height) || 0) - (parseInt(a.height) || 0);
                 if (sort === 'numberAsc') return (parseInt(a.num) || 99) - (parseInt(b.num) || 99);
