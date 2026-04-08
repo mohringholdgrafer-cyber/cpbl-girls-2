@@ -63,10 +63,10 @@
             color: var(--text-sub); cursor: pointer; font-size: 13px; font-weight: 700;
             border-radius: 12px; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 6px; width: 110px; height: 90px; padding: 10px;
+            gap: 6px; min-width: 110px; height: 90px; padding: 10px;
         }
         .tab-btn:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
-        .tab-logo { width: 38px; height: 38px; object-fit: contain; display: block; }
+        .tab-logo { width: 35px; height: 35px; object-fit: contain; display: block; }
         .tab-btn.active { background-color: var(--team-accent, #fff); color: #000000; border-color: var(--team-accent, #fff); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
 
         .filters { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
@@ -74,9 +74,7 @@
             background-color: #111; border: 1px solid var(--border-color);
             color: var(--text-main); padding: 9px 14px; font-size: 13px;
             border-radius: 6px; outline: none; min-width: 130px;
-            transition: border-color 0.2s;
         }
-        .filters input:focus, .filters select:focus { border-color: #777; }
 
         #main-content { flex: 1; }
 
@@ -155,6 +153,7 @@
         .data-row { display: flex; justify-content: space-between; font-size: 13px; align-items: center; }
         .data-label { color: var(--text-sub); min-width: 60px; }
         .data-value { font-weight: 700; text-align: right; }
+        
         .note-row { margin-top: 4px; padding-top: 10px; border-top: 1px dashed #333; }
         .note-value { color: var(--event-accent); font-weight: 900; }
 
@@ -204,7 +203,7 @@
                 <button class="sport-btn" data-mode="girls" data-sport="棒球">職業棒球</button>
                 <button class="sport-btn" data-mode="girls" data-sport="籃球">職業籃球</button>
                 <button class="sport-btn" data-mode="girls" data-sport="排球">職業排球</button>
-                <button class="sport-btn btn-event" data-mode="events">活動行程</button>
+                <button class="sport-btn btn-event" data-mode="events">外籍啦啦隊活動行程</button>
             </div>
             <div class="team-tabs" id="tabs-container"></div>
             <div class="filters">
@@ -250,14 +249,12 @@
 
         const teamThemes = {
             "全部啦啦隊": { dark: "#0f0f0f", light: "#1a1a1a", accent: "#ffffff", logo: "", noLogo: false, league: "" },
-            
             "Wing Stars_棒球": { dark: "#05120a", light: "#0a2414", accent: "#00e676", logo: "images/winstars_logo.png", noLogo: false },
             "Passion Sisters_棒球": { dark: "#141200", light: "#292400", accent: "#ffea00", logo: "images/brothers_logo.png", noLogo: false },
             "Fubon Angels_棒球": { dark: "#020812", light: "#04152b", accent: "#33a1ff", logo: "images/fubon_logo.png", noLogo: false },
             "Uni-Girls": { dark: "#140800", light: "#291000", accent: "#ff8c00", logo: "images/unilions_logo.png", noLogo: false },
             "Rakuten Girls": { dark: "#140202", light: "#2e0505", accent: "#ff3333", logo: "images/rakuten_logo.png", noLogo: false },
             "Dragon Beauties": { dark: "#170205", light: "#2e050b", accent: "#ff4d6d", logo: "images/dragons_logo.png", noLogo: false },
-
             "Formosa Sexy": { dark: "#000000", light: "#1a1a1a", accent: "#39ff14", logo: "", noLogo: true, league: "TPBL" },
             "Passion Sisters_籃球": { dark: "#000033", light: "#000066", accent: "#ffea00", logo: "", noLogo: true, league: "TPBL" },
             "Muse Girls": { dark: "#1a1029", light: "#2a1a3a", accent: "#d8bfd8", logo: "", noLogo: true, league: "TPBL" },
@@ -265,12 +262,10 @@
             "Leopard Girls": { dark: "#260033", light: "#3a004f", accent: "#ffffff", logo: "", noLogo: true, league: "TPBL" },
             "New Taipei Queens": { dark: "#000000", light: "#1a1a1a", accent: "#ffff00", logo: "", noLogo: true, league: "TPBL" },
             "Aqua Mermaids": { dark: "#001a4d", light: "#04152b", accent: "#00aaff", logo: "", noLogo: true, league: "TPBL" },
-
             "Pilots Crew": { dark: "#1a0800", light: "#2a1a05", accent: "#ff8c00", logo: "", noLogo: true, league: "P. LEAGUE+" },
             "Youngkey Girls": { dark: "#001a00", light: "#0a240a", accent: "#00ff00", logo: "", noLogo: true, league: "P. LEAGUE+" },
             "Wing Stars_籃球": { dark: "#1a050a", light: "#2e1a1e", accent: "#ffb6c1", logo: "", noLogo: true, league: "P. LEAGUE+" },
             "Fubon Angels_籃球": { dark: "#001f33", light: "#0a2e4a", accent: "#add8e6", logo: "", noLogo: true, league: "P. LEAGUE+" },
-
             "Tokki Cutie": { dark: "#1a0f00", light: "#2e1a05", accent: "#ff8c00", logo: "", noLogo: true },
             "Little witches": { dark: "#001414", light: "#002b2b", accent: "#00d2d3", logo: "", noLogo: true },
             "Peach Girls": { dark: "#1a000d", light: "#2e0518", accent: "#d63384", logo: "", noLogo: true },
@@ -299,9 +294,7 @@
             let y=0, m=0, d_val=0;
             if(p.length >= 3) {
                 y = parseInt(p[0]); m = parseInt(p[1]); d_val = parseInt(p[2]);
-            } else if(p.length === 2) {
-                m = parseInt(p[0]); d_val = parseInt(p[1]);
-            }
+            } else if(p.length === 2) { m = parseInt(p[0]); d_val = parseInt(p[1]); }
             return { num: parseInt(`${String(y).padStart(4,'0')}${String(m).padStart(2,'0')}${String(d_val).padStart(2,'0')}`), mmdd: parseInt(`${String(m).padStart(2,'0')}${String(d_val).padStart(2,'0')}`) };
         }
 
@@ -352,26 +345,14 @@
 
         function updateTeamTabs() {
             const container = document.getElementById('tabs-container');
-            // 🌟 當前模式為全部女孩時，徹底隱藏隊伍選單區塊
             if (currentMode === 'events' || currentSport === "全部") { 
-                container.style.display = 'none'; 
-                renderContent(); 
-                return; 
+                container.style.display = 'none'; renderContent(); return; 
             }
-            
             const teamsSet = new Set();
-            dbGirls.forEach(c => { 
-                if ((c.sport || "").includes(currentSport)) {
-                    if (c.team && c.team.trim() !== "") teamsSet.add(c.team.trim()); 
-                }
-            });
-            
+            dbGirls.forEach(c => { if ((c.sport || "").includes(currentSport)) if (c.team && c.team.trim() !== "") teamsSet.add(c.team.trim()); });
             const activeTeams = Array.from(teamsSet).sort();
             container.innerHTML = ''; container.style.display = 'flex';
-
-            const allBtn = createTeamBtn("全部啦啦隊");
-            container.appendChild(allBtn);
-
+            container.appendChild(createTeamBtn("全部啦啦隊"));
             if (currentSport === "籃球") {
                 const getLeague = (t) => (teamThemes[`${t}_籃球`] || teamThemes[t] || {}).league;
                 renderLeagueGroup(container, "TPBL 聯盟", activeTeams.filter(t => getLeague(t) === "TPBL"));
@@ -395,19 +376,12 @@
             const safeTeam = (tName || "").trim();
             const safeSport = currentSport === "全部" ? "" : currentSport;
             const config = teamThemes[`${safeTeam}_${safeSport}`] || teamThemes[safeTeam] || { accent: "#ccc", logo: "", noLogo: false };
-            
             const btn = document.createElement('button');
             btn.className = `tab-btn ${safeTeam === currentTeam ? 'active' : ''}`;
             const logoHtml = (config.logo && !config.noLogo) ? `<img src="${config.logo}" class="tab-logo">` : '';
             btn.innerHTML = `${logoHtml}<span>${safeTeam}</span>`;
             btn.style.setProperty('--team-accent', config.accent);
-            btn.onclick = () => { 
-                currentTeam = safeTeam; 
-                document.querySelectorAll('.tab-btn').forEach(tb => tb.classList.remove('active')); 
-                btn.classList.add('active'); 
-                applyTheme(safeTeam); 
-                renderContent(); 
-            };
+            btn.onclick = () => { currentTeam = safeTeam; document.querySelectorAll('.tab-btn').forEach(tb => tb.classList.remove('active')); btn.classList.add('active'); applyTheme(safeTeam); renderContent(); };
             return btn;
         }
 
@@ -431,11 +405,12 @@
 
             const buildItem = (e, isExp) => {
                 const day = String(e.safeDate.day).padStart(2,'0');
+                // 🌟 改良：如果成員不在資料庫中，依然顯示名字與預設頭像
                 const attendHtml = (e.girls || "").split(',').map(n => {
-                    const name = n.trim(); 
-                    if(!name) return '';
+                    const name = n.trim(); if(!name) return '';
                     const g = dbGirls.find(girl => (girl.realname || "").trim() === name || (girl.nickname || "").trim() === name);
-                    return g ? `<div class="girl-hero-card"><img src="${g.img}" class="girl-hero-img"><span class="girl-hero-name">${g.realname}</span></div>` : '';
+                    if (!g) return `<div class="girl-hero-card"><div class="girl-hero-img" style="display:flex;align-items:center;justify-content:center;background:#222;color:#555;font-size:24px;border-color:#333;">👤</div><span class="girl-hero-name" style="color:#888;">${name}</span></div>`;
+                    return `<div class="girl-hero-card"><img src="${g.img}" class="girl-hero-img"><span class="girl-hero-name">${g.realname}</span></div>`;
                 }).join('');
                 return `<div class="event-item ${isExp ? 'expired' : ''}">${isExp ? '<div class="expired-badge">已結束</div>' : ''}<div class="event-date-box"><span class="date-month">${e.safeDate.monStr}</span><span class="date-day">${day}</span></div><div class="event-content-wrapper"><div class="event-girls-hero">${attendHtml}</div><div class="event-details-sub"><div class="event-title-small">${e.eventname || "活動"}</div><div class="event-meta-row"><span class="meta-item"><i>🕒</i> ${e.time || "未定"}</span><span class="meta-item"><i>📍</i> ${e.address || "官網"}</span>${e.host ? `<span class="meta-item"><i>🏢</i> ${e.host}</span>` : ''}</div></div></div></div>`;
             };
@@ -458,15 +433,9 @@
             if (currentSport === "全部" && currentTeam === "全部啦啦隊") {
                 const mMap = new Map();
                 result.forEach(c => { 
-                    const k = (c.realname || "").trim(); 
-                    if (!k) return;
+                    const k = (c.realname || "").trim(); if (!k) return;
                     if (!mMap.has(k)) mMap.set(k, { ...c, mS: [c.sport || ""], mT: [c.team || ""], mN: [c.num || ""] }); 
-                    else { 
-                        let e = mMap.get(k); 
-                        if (!e.mS.includes(c.sport || "")) e.mS.push(c.sport || ""); 
-                        if (!e.mT.includes(c.team || "")) e.mT.push(c.team || ""); 
-                        if (!e.mN.includes(c.num || "")) e.mN.push(c.num || ""); 
-                    } 
+                    else { let e = mMap.get(k); if (!e.mS.includes(c.sport || "")) e.mS.push(c.sport || ""); if (!e.mT.includes(c.team || "")) e.mT.push(c.team || ""); if (!e.mN.includes(c.num || "")) e.mN.push(c.num || ""); } 
                 });
                 result = Array.from(mMap.values());
             }
@@ -480,22 +449,11 @@
                 return 0;
             });
             container.innerHTML = result.map(c => {
-                const sports = c.mS || [c.sport || ""]; 
-                const teams = (c.mT || [c.team || ""]).map(t => t.trim()).filter(t => t); 
-                const nums = (c.mN || [c.num || ""]).filter(n => n && n !== "-");
-                
-                let tags = sports.filter(s => s).map(s => { 
-                    if(s.includes("棒球")) return `<div class="sport-tag tag-baseball">棒球</div>`; 
-                    if(s.includes("籃球")) return `<div class="sport-tag tag-basketball">籃球</div>`; 
-                    if(s.includes("排球")) return `<div class="sport-tag tag-volleyball">排球</div>`; 
-                    return ''; 
-                }).join('');
-                
-                const lookupTeam = teams[0] || "全部啦啦隊";
-                const lookupSport = currentSport === "全部" ? "" : currentSport;
+                const sports = c.mS || [c.sport || ""]; const teams = (c.mT || [c.team || ""]).map(t => t.trim()).filter(t => t); const nums = (c.mN || [c.num || ""]).filter(n => n && n !== "-");
+                let tags = sports.filter(s => s).map(s => `<div class="sport-tag tag-${s.includes("棒")?'baseball':s.includes("籃")?'basketball':'volleyball'}">${s}</div>`).join('');
+                const lookupTeam = teams[0] || "全部啦啦隊"; const lookupSport = currentSport === "全部" ? "" : currentSport;
                 const cardAccent = (teamThemes[`${lookupTeam}_${lookupSport}`] || teamThemes[lookupTeam] || teamThemes["全部啦啦隊"]).accent;
                 const noteText = (c.note || c['備註'] || c.備註 || "").trim();
-                
                 return `<div class="card" style="border-top: 4px solid ${cardAccent};"><div class="photo-area"><div class="sport-tags">${tags}</div>${c.img ? `<img src="${c.img}" style="width:100%;height:100%;object-fit:cover;object-position:top center;">` : ''}</div><div class="info-section"><div class="header-info"><div><div class="nickname-container"><div class="nickname" style="color:${cardAccent}">${c.nickname}</div>${c.ig?`<a href="${c.ig}" target="_blank" class="ig-link"><svg class="ig-icon"><use xlink:href="#icon-ig"></use></svg></a>`:''}</div><div class="realname">${c.realname}</div></div><div class="number">${nums.join('<br>') || "-"}</div></div><div class="data-grid"><div class="data-row"><span class="data-label">啦啦隊</span><span class="data-value" style="color:${cardAccent}">${teams.join('<br>')}</span></div><div class="data-row"><span class="data-label">國籍</span><span class="data-value">${c.nat || "-"}</span></div><div class="data-row"><span class="data-label">生日</span><span class="data-value">${c.dob || "-"}</span></div><div class="data-row"><span class="data-label">星座</span><span class="data-value">${c.zodiac || "-"}</span></div><div class="data-row"><span class="data-label">身高</span><span class="data-value">${c.height ? c.height + ' cm' : 'N/A'}</span></div>${noteText?`<div class="data-row note-row"><span class="data-label">備註</span><span class="data-value note-value">${noteText}</span></div>`:''}</div></div></div>`;
             }).join('');
         }
