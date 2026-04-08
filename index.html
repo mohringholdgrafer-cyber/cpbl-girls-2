@@ -82,7 +82,7 @@
         }
 
         /* =========================================
-           ✨ 行程表 (女孩主角版) ✨
+           行程表 (女孩主角版) 
         ========================================= */
         .event-list-container { max-width: 900px; width: 100%; margin: 20px auto 50px; padding: 0 20px; display: flex; flex-direction: column; gap: 20px; }
         
@@ -94,7 +94,6 @@
             content: ''; flex: 1; border-bottom: 1px dashed #333; margin: 0 15px;
         }
 
-        /* 行程卡片外框 */
         .event-item { 
             background: #111; border-radius: 16px; padding: 20px; 
             display: flex; align-items: flex-start; gap: 25px; 
@@ -111,7 +110,6 @@
             background: #151515;
         }
 
-        /* 已過期樣式 */
         .event-item.expired { opacity: 0.6; filter: grayscale(0.85); }
         .event-item.expired::before { background: #444; }
         .event-item.expired:hover { transform: none; box-shadow: 0 8px 24px rgba(0,0,0,0.3); background: #111; cursor: not-allowed; }
@@ -120,7 +118,6 @@
             color: #888; font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 900;
         }
 
-        /* 日期方塊 */
         .event-date-box { 
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             background: linear-gradient(145deg, #1f1f1f, #0a0a0a);
@@ -133,10 +130,8 @@
         .event-item.expired .date-month { background: #555; color: #ddd; }
         .date-day { font-size: 32px; font-weight: 900; color: #fff; line-height: 1; }
 
-        /* 主內容區塊 (包含女孩與詳細資訊) */
         .event-content-wrapper { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 15px; }
 
-        /* 👑 出席女孩主角區 */
         .event-girls-hero { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
         .girl-hero-card { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 80px; }
         .girl-hero-img { 
@@ -149,7 +144,6 @@
         .event-item:not(.expired) .girl-hero-img:hover { transform: scale(1.08); box-shadow: 0 6px 15px rgba(255,159,67,0.3); }
         .girl-hero-name { font-size: 15px; font-weight: 900; color: #fff; text-align: center; letter-spacing: 1px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* 📉 次要資訊區 (活動名稱、時間地點) */
         .event-details-sub {
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
             border-radius: 12px; padding: 12px 16px;
@@ -164,7 +158,7 @@
         .event-item.expired .meta-item i { color: #666; }
 
         /* =========================================
-           女孩卡片樣式維持原樣
+           女孩卡片樣式
         ========================================= */
         .card { background-color: var(--team-light); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         .card:hover { transform: translateY(-4px); }
@@ -244,7 +238,7 @@
                         <option value="牡羊座">牡羊座</option><option value="金牛座">金牛座</option><option value="雙子座">雙子座</option><option value="巨蟹座">巨蟹座</option><option value="獅子座">獅子座</option><option value="處女座">處女座</option><option value="天秤座">天秤座</option><option value="天蠍座">天蠍座</option><option value="射手座">射手座</option><option value="摩羯座">摩羯座</option><option value="水瓶座">水瓶座</option><option value="雙魚座">雙魚座</option>
                     </select>
                     <select id="sortFilter">
-                        <option value="default">預設排序 (國籍)</option>
+                        <option value="default">預設排序</option>
                         <option value="ageAsc">年齡 (小到大)</option>
                         <option value="heightDesc">身高 (高到矮)</option>
                         <option value="numberAsc">背號 (小到大)</option>
@@ -281,19 +275,27 @@
 
         const monthMap = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
+        // 智慧日期解析器
         function parseSafeDate(dateStr) {
             if (!dateStr) return null;
             let s = dateStr.replace(/-/g, '/').trim();
             let parts = s.split('/');
             let y, m, d;
+
             if (parts.length === 3) {
-                if (parts[0].length === 4) { y = parseInt(parts[0]); m = parseInt(parts[1]); d = parseInt(parts[2]); } 
-                else { m = parseInt(parts[0]); d = parseInt(parts[1]); y = parseInt(parts[2]); if (y < 100) y += 2000; }
+                if (parts[0].length === 4) {
+                    y = parseInt(parts[0]); m = parseInt(parts[1]); d = parseInt(parts[2]);
+                } else {
+                    m = parseInt(parts[0]); d = parseInt(parts[1]); y = parseInt(parts[2]);
+                    if (y < 100) y += 2000;
+                }
             } else if (parts.length === 2) {
-                y = new Date().getFullYear(); m = parseInt(parts[0]); d = parseInt(parts[1]);
+                y = new Date().getFullYear();
+                m = parseInt(parts[0]); d = parseInt(parts[1]);
             } else return null;
 
             if (isNaN(y) || isNaN(m) || isNaN(d)) return null;
+
             return {
                 year: y, month: m, day: d,
                 num: parseInt(`${y}${String(m).padStart(2,'0')}${String(d).padStart(2,'0')}`),
@@ -315,7 +317,10 @@
                         download: true, header: true, skipEmptyLines: true,
                         transformHeader: h => h.trim().toLowerCase().replace(/[\s_]/g, ""),
                         complete: resEvents => { 
-                            dbEvents = resEvents.data.map(e => { e.safeDate = parseSafeDate(e.date); return e; }).filter(e => e.safeDate !== null);
+                            dbEvents = resEvents.data.map(e => {
+                                e.safeDate = parseSafeDate(e.date);
+                                return e;
+                            }).filter(e => e.safeDate !== null);
                             init(); 
                         }
                     });
@@ -392,7 +397,6 @@
                 const day = String(e.safeDate.day).padStart(2,'0');
                 const mon = e.safeDate.monStr;
                 
-                // 產生出席女孩的大頭貼 (主角)
                 const attendHtml = (e.girls || "").split(',').map(n => {
                     const name = n.trim(); const g = dbGirls.find(girl => (girl.realname || "").trim() === name || (girl.nickname || "").trim() === name);
                     if (!g) return `<div class="girl-hero-card"><div class="girl-hero-img" style="display:flex;align-items:center;justify-content:center;color:#666;">?</div><span class="girl-hero-name">${name}</span></div>`;
@@ -467,16 +471,19 @@
 
             const w = {"韓國":1, "日本":2, "臺灣":4, "台灣":4};
             result.sort((a,b) => {
-                let wA = w[a.nat] || 3; let wB = w[b.nat] || 3; 
-                if (wA !== wB) return wA - wB; 
-
-                if (sort === 'ageAsc') {
+                if (sort === 'default') {
+                    let wA = w[a.nat] || 3; let wB = w[b.nat] || 3; 
+                    if (wA !== wB) return wA - wB; 
+                    return 0;
+                } else if (sort === 'ageAsc') {
                     const dateA = parseSafeDate(a.dob)?.num || 0;
                     const dateB = parseSafeDate(b.dob)?.num || 0;
                     return dateB - dateA;
+                } else if (sort === 'heightDesc') {
+                    return (parseFloat(b.height) || 0) - (parseFloat(a.height) || 0);
+                } else if (sort === 'numberAsc') {
+                    return (parseInt(a.num) || 999) - (parseInt(b.num) || 999);
                 }
-                if (sort === 'heightDesc') return (parseFloat(b.height) || 0) - (parseFloat(a.height) || 0);
-                if (sort === 'numberAsc') return (parseInt(a.num) || 99) - (parseInt(b.num) || 99);
                 return 0;
             });
 
