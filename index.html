@@ -75,24 +75,24 @@
             gap: 20px; flex: 1;
         }
 
-        /* --- 行程表清單優化 --- */
+        /* --- 行程表清單 --- */
         .event-list-container { max-width: 1000px; width: 100%; margin: 20px auto; padding: 0 20px; display: flex; flex-direction: column; gap: 10px; }
         .event-section-title { font-size: 18px; font-weight: 900; color: #777; margin: 25px 0 10px; padding-left: 12px; border-left: 4px solid #444; }
         .event-item { background: #181818; border-radius: 10px; padding: 15px 20px; display: flex; align-items: center; gap: 15px; border: 1px solid #2a2a2a; }
-        .event-item.expired { opacity: 0.55; filter: grayscale(0.7); }
+        .event-item.expired { opacity: 0.5; filter: grayscale(0.8); }
         .event-date-box { min-width: 70px; text-align: center; border-right: 1px solid #444; padding-right: 15px; }
         .date-day { font-size: 22px; font-weight: 900; color: #ff9f43; line-height: 1; }
         .event-item.expired .date-day { color: #888; }
         .date-month { font-size: 11px; color: #777; margin-top: 3px; display: block; }
         .event-main-info { flex: 1; min-width: 0; }
         .event-title { font-size: 17px; font-weight: 900; color: #fff; margin-bottom: 5px; }
-        .event-sub-info { font-size: 13px; color: #888; line-height: 1.4; }
+        .event-sub-info { font-size: 13px; color: #888; }
         .event-girls-container { display: flex; flex-wrap: wrap; gap: 10px; margin-left: 15px; }
         .event-girl-item { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 55px; }
         .attend-girl-img { width: 48px; height: 48px; border-radius: 50%; border: 2px solid #333; object-fit: cover; object-position: top center; background: #222; }
         .attend-girl-name { font-size: 10px; color: #ccc; text-align: center; font-weight: 700; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-        /* --- 女孩卡片樣式 --- */
+        /* --- 女孩卡片 --- */
         .card { background-color: var(--team-light); border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; }
         .photo-area { height: 320px; background-color: #111; position: relative; border-bottom: 1px solid var(--border-color); }
         .sport-tags { position: absolute; top: 10px; left: 10px; display: flex; flex-direction: column; gap: 5px; z-index: 5; }
@@ -109,12 +109,12 @@
         .number { font-size: 17px; font-weight: 900; color: #fff; text-align: right; }
 
         .data-grid { display: flex; flex-direction: column; gap: 8px; }
-        .data-row { display: flex; justify-content: space-between; font-size: 12.5px; align-items: flex-start; }
+        .data-row { display: flex; justify-content: space-between; font-size: 12.5px; }
         .data-label { color: var(--text-sub); min-width: 60px; }
-        .data-value { font-weight: 700; text-align: right; line-height: 1.4; }
+        .data-value { font-weight: 700; text-align: right; }
 
         .ig-link { display: inline-flex; vertical-align: middle; }
-        .ig-icon { width: 15px; height: 15px; fill: url(#ig-grad-final); }
+        .ig-icon { width: 16px; height: 16px; fill: url(#ig-grad-new); }
 
         @media (max-width: 768px) {
             .grid-container { padding: 0 10px; grid-template-columns: repeat(2, 1fr); gap: 10px; }
@@ -129,7 +129,7 @@
 
     <svg width="0" height="0" style="position:absolute;">
         <defs>
-            <linearGradient id="ig-grad-final" x1="0%" y1="100%" x2="100%" y2="0%">
+            <linearGradient id="ig-grad-new" x1="0%" y1="100%" x2="100%" y2="0%">
                 <stop offset="0%" style="stop-color:#f09433;" /><stop offset="25%" style="stop-color:#e6683c;" /><stop offset="50%" style="stop-color:#dc2743;" /><stop offset="75%" style="stop-color:#cc2366;" /><stop offset="100%" style="stop-color:#bc1888;" />
             </linearGradient>
             <symbol id="icon-ig" viewBox="0 0 24 24">
@@ -159,7 +159,12 @@
                     </select>
                     <select id="zodiacFilter">
                         <option value="all">所有星座</option>
-                        <option value="牡羊座">牡羊座</option><option value="金牛座">金牛座</option><option value="雙子座">雙子座</option><option value="巨蟹座">巨蟹座</option><option value="獅子座">獅子座</option><option value="處女座">處女座</option><option value="天秤座">天秤座</option><option value="天蠍座">天蠍座</option><option value="射手座">射手座</option><option value="摩羯座">摩羯座</option><option value="水瓶座">水瓶座</option><option value="雙魚座">雙魚座</option>
+                        <option value="牡羊座">牡羊座</option><option value="金牛座">金牛座</option>
+                        <option value="雙子座">雙子座</option><option value="巨蟹座">巨蟹座</option>
+                        <option value="獅子座">獅子座</option><option value="處女座">處女座</option>
+                        <option value="天秤座">天秤座</option><option value="天蠍座">天蠍座</option>
+                        <option value="射手座">射手座</option><option value="摩羯座">摩羯座</option>
+                        <option value="水瓶座">水瓶座</option><option value="雙魚座">雙魚座</option>
                     </select>
                     <select id="sortFilter">
                         <option value="default">預設排序</option>
@@ -196,19 +201,15 @@
             "Wing Stars_排球": { dark: "#020812", light: "#04152b", accent: "#0984e3", logo: "" }
         };
 
-        const getNatWeight = (n) => {
-            const w = {"韓國":1, "日本":2, "臺灣":4, "台灣":4};
-            return w[n] || 3;
-        };
+        const monthMap = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
-        // 🌟 穩定日期轉數字 (YYYYMMDD)
-        const getEventNum = (dateStr) => {
-            if(!dateStr) return 0;
-            // 處理斜線或橫線
-            const parts = dateStr.split(/[/ -]/);
+        // 🌟 文字拆解日期轉數字，不依賴瀏覽器 Date 物件
+        function dateStrToNum(str) {
+            if(!str) return 0;
+            const parts = str.split(/[/ -]/);
             if(parts.length < 3) return 0;
             return parseInt(`${parts[0]}${parts[1].padStart(2,'0')}${parts[2].padStart(2,'0')}`);
-        };
+        }
 
         let dbGirls = []; let dbEvents = [];
         let currentMode = "girls"; let currentSport = "全部"; let currentTeam = "全部啦啦隊";
@@ -282,7 +283,7 @@
         }
 
         function renderEvents(container, search) {
-            // 🌟 獲取今天日期的數字格式 (例如 20260408)
+            // 🌟 獲取今天日期的數字格式
             const now = new Date();
             const todayNum = parseInt(`${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`);
 
@@ -291,25 +292,29 @@
                 return search === "" || evN.includes(search) || girls.includes(search) || host.includes(search);
             });
 
-            filtered.sort((a,b) => getEventNum(a.date) - getEventNum(b.date));
-            const upcoming = filtered.filter(e => getEventNum(e.date) >= todayNum);
-            const expired = filtered.filter(e => getEventNum(e.date) < todayNum).reverse();
+            filtered.sort((a,b) => dateStrToNum(a.date) - dateStrToNum(b.date));
+            const upcoming = filtered.filter(e => dateStrToNum(e.date) >= todayNum);
+            const expired = filtered.filter(e => dateStrToNum(e.date) < todayNum).reverse();
 
             const buildItem = (e, isExp) => {
-                const dParts = e.date.split(/[/ -]/);
-                const day = dParts[2] || "--";
-                // 轉換月份顯示
-                const tempDate = new Date(dParts[0], dParts[1]-1, dParts[2]);
-                const mon = tempDate.toLocaleDateString('en-US', { month: 'short' });
+                // 手動拆解日期字串，避開 iOS Date 錯誤
+                const parts = e.date.split(/[/ -]/);
+                const day = parts[2] || "--";
+                const monIndex = parseInt(parts[1]) - 1;
+                const monStr = monthMap[monIndex] || "N/A";
                 
                 const attendHtml = (e.girls || "").split(',').map(n => {
-                    const name = n.trim(); const g = dbGirls.find(girl => (girl.realname || "").trim() === name);
+                    const name = n.trim(); const g = dbGirls.find(girl => (girl.realname || "").trim() === name || (girl.nickname || "").trim() === name);
                     return g ? `<div class="event-girl-item"><img src="${g.img}" class="attend-girl-img"><span class="attend-girl-name">${g.realname}</span></div>` : '';
                 }).join('');
+
                 return `
                     <div class="event-item ${isExp ? 'expired' : ''}">
-                        <div class="event-date-box"><span class="date-day">${day}</span><span class="date-month">${mon}</span></div>
-                        <div class="event-main-info"><div class="event-title">${e.eventname || "活動"}</div><div class="event-sub-info">🕒 ${e.time || "全天"} | 📍 ${e.address || "官網公告"} | 🏢 ${e.host || "未知"}</div></div>
+                        <div class="event-date-box"><span class="date-day">${day}</span><span class="date-month">${monStr}</span></div>
+                        <div class="event-main-info">
+                            <div class="event-title">${e.eventname || "活動行程"}</div>
+                            <div class="event-sub-info">🕒 ${e.time || "全天"} | 📍 ${e.address || "請洽官網"} | 🏢 ${e.host || ""}</div>
+                        </div>
                         <div class="event-girls-container">${attendHtml}</div>
                     </div>
                 `;
@@ -330,22 +335,35 @@
                 const cz = (c.zodiac || "").trim().replace("魔羯","摩羯").replace("白羊","牡羊");
                 return ms && mt && mSearch && mNat && (zodiac === 'all' || cz === zodiac);
             });
+
             if (currentSport === "全部" && currentTeam === "全部啦啦隊") {
                 const mMap = new Map();
-                result.forEach(c => { const k = (c.realname || "").trim(); if (!mMap.has(k)) mMap.set(k, { ...c, mS: [c.sport], mT: [c.team], mN: [c.num] }); else { let e = mMap.get(k); if (!e.mS.includes(c.sport)) e.mS.push(c.sport); if (!e.mT.includes(c.team)) e.mT.push(c.team); if (!e.mN.includes(c.num)) e.mN.push(c.num); } });
+                result.forEach(c => {
+                    const k = (c.realname || "").trim();
+                    if (!mMap.has(k)) { mMap.set(k, { ...c, mS: [c.sport], mT: [c.team], mN: [c.num] }); }
+                    else {
+                        let e = mMap.get(k);
+                        if (!e.mS.includes(c.sport)) e.mS.push(c.sport);
+                        if (!e.mT.includes(c.team)) e.mT.push(c.team);
+                        if (!e.mN.includes(c.num)) e.mN.push(c.num);
+                    }
+                });
                 result = Array.from(mMap.values());
             }
+
             const w = {"韓國":1, "日本":2, "臺灣":4, "台灣":4};
             result.sort((a,b) => {
                 let wA = w[a.nat] || 3; let wB = w[b.nat] || 3; if (wA !== wB) return wA - wB;
-                if (sort === 'ageAsc') return (parseInt(a.dob.replace(/\//g,'')) || 0) - (parseInt(b.dob.replace(/\//g,'')) || 0);
+                if (sort === 'ageAsc') return dateStrToNum(a.dob) - dateStrToNum(b.dob);
                 if (sort === 'numberAsc') return (parseInt(a.num) || 99) - (parseInt(b.num) || 99); return 0;
             });
+
             container.innerHTML = result.map(c => {
                 const sports = c.mS || [c.sport]; const teams = (c.mT || [c.team]).map(t => t.trim()); const nums = (c.mN || [c.num]).filter(n => n && n !== "-");
                 let tags = sports.map(s => { if(s.includes("棒球")) return `<div class="sport-tag tag-baseball">棒球</div>`; if(s.includes("籃球")) return `<div class="sport-tag tag-basketball">籃球</div>`; if(s.includes("排球")) return `<div class="sport-tag tag-volleyball">排球</div>`; return ''; }).join('');
                 const cardAccent = (teamThemes[`${teams[0]}_${sports[0]}`] || teamThemes[teams[0]] || {accent:"#fff"}).accent;
                 const igIcon = c.ig ? `<a href="${c.ig}" target="_blank" class="ig-link"><svg class="ig-icon"><use xlink:href="#icon-ig"></use></svg></a>` : '';
+                
                 return `
                     <div class="card" style="border-top: 4px solid ${cardAccent};">
                         <div class="photo-area"><div class="sport-tags">${tags}</div>${c.img ? `<img src="${c.img}" style="width:100%;height:100%;object-fit:cover;object-position:top center;">` : `<span style="color:#333;">NO PHOTO</span>`}</div>
