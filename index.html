@@ -75,7 +75,7 @@
             gap: 20px; flex: 1;
         }
 
-        /* --- 行程表清單 --- */
+        /* --- 行程表清單優化 --- */
         .event-list-container { max-width: 1000px; width: 100%; margin: 20px auto; padding: 0 20px; display: flex; flex-direction: column; gap: 10px; }
         .event-section-title { font-size: 18px; font-weight: 900; color: #777; margin: 25px 0 10px; padding-left: 12px; border-left: 4px solid #444; }
         .event-item { background: #181818; border-radius: 10px; padding: 15px 20px; display: flex; align-items: center; gap: 15px; border: 1px solid #2a2a2a; }
@@ -113,8 +113,9 @@
         .data-label { color: var(--text-sub); min-width: 60px; }
         .data-value { font-weight: 700; text-align: right; }
 
+        /* IG 小圖標優化 */
         .ig-link { display: inline-flex; vertical-align: middle; }
-        .ig-icon { width: 16px; height: 16px; fill: url(#ig-grad-new); }
+        .ig-icon { width: 14px; height: 14px; fill: url(#ig-grad-final); }
 
         @media (max-width: 768px) {
             .grid-container { padding: 0 10px; grid-template-columns: repeat(2, 1fr); gap: 10px; }
@@ -129,7 +130,7 @@
 
     <svg width="0" height="0" style="position:absolute;">
         <defs>
-            <linearGradient id="ig-grad-new" x1="0%" y1="100%" x2="100%" y2="0%">
+            <linearGradient id="ig-grad-final" x1="0%" y1="100%" x2="100%" y2="0%">
                 <stop offset="0%" style="stop-color:#f09433;" /><stop offset="25%" style="stop-color:#e6683c;" /><stop offset="50%" style="stop-color:#dc2743;" /><stop offset="75%" style="stop-color:#cc2366;" /><stop offset="100%" style="stop-color:#bc1888;" />
             </linearGradient>
             <symbol id="icon-ig" viewBox="0 0 24 24">
@@ -159,16 +160,12 @@
                     </select>
                     <select id="zodiacFilter">
                         <option value="all">所有星座</option>
-                        <option value="牡羊座">牡羊座</option><option value="金牛座">金牛座</option>
-                        <option value="雙子座">雙子座</option><option value="巨蟹座">巨蟹座</option>
-                        <option value="獅子座">獅子座</option><option value="處女座">處女座</option>
-                        <option value="天秤座">天秤座</option><option value="天蠍座">天蠍座</option>
-                        <option value="射手座">射手座</option><option value="摩羯座">摩羯座</option>
-                        <option value="水瓶座">水瓶座</option><option value="雙魚座">雙魚座</option>
+                        <option value="牡羊座">牡羊座</option><option value="金牛座">金牛座</option><option value="雙子座">雙子座</option><option value="巨蟹座">巨蟹座</option><option value="獅子座">獅子座</option><option value="處女座">處女座</option><option value="天秤座">天秤座</option><option value="天蠍座">天蠍座</option><option value="射手座">射手座</option><option value="摩羯座">摩羯座</option><option value="水瓶座">水瓶座</option><option value="雙魚座">雙魚座</option>
                     </select>
                     <select id="sortFilter">
-                        <option value="default">預設排序</option>
+                        <option value="default">預設排序 (國籍)</option>
                         <option value="ageAsc">年齡 (小到大)</option>
+                        <option value="heightDesc">身高 (高到矮)</option>
                         <option value="numberAsc">背號 (小到大)</option>
                     </select>
                 </div>
@@ -203,12 +200,12 @@
 
         const monthMap = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
-        // 🌟 文字拆解日期轉數字，不依賴瀏覽器 Date 物件
-        function dateStrToNum(str) {
-            if(!str) return 0;
-            const parts = str.split(/[/ -]/);
-            if(parts.length < 3) return 0;
-            return parseInt(`${parts[0]}${parts[1].padStart(2,'0')}${parts[2].padStart(2,'0')}`);
+        // 🌟 文字拆解日期轉數字 (YYYYMMDD)
+        function dateToNum(s) {
+            if(!s) return 0;
+            const p = s.split(/[/ -]/);
+            if(p.length < 3) return 0;
+            return parseInt(`${p[0]}${p[1].padStart(2,'0')}${p[2].padStart(2,'0')}`);
         }
 
         let dbGirls = []; let dbEvents = [];
@@ -283,7 +280,6 @@
         }
 
         function renderEvents(container, search) {
-            // 🌟 獲取今天日期的數字格式
             const now = new Date();
             const todayNum = parseInt(`${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`);
 
@@ -292,22 +288,21 @@
                 return search === "" || evN.includes(search) || girls.includes(search) || host.includes(search);
             });
 
-            filtered.sort((a,b) => dateStrToNum(a.date) - dateStrToNum(b.date));
-            const upcoming = filtered.filter(e => dateStrToNum(e.date) >= todayNum);
-            const expired = filtered.filter(e => dateStrToNum(e.date) < todayNum).reverse();
+            filtered.sort((a,b) => dateToNum(a.date) - dateToNum(b.date));
+            const upcoming = filtered.filter(e => dateToNum(e.date) >= todayNum);
+            const expired = filtered.filter(e => dateToNum(e.date) < todayNum).reverse();
 
             const buildItem = (e, isExp) => {
-                // 手動拆解日期字串，避開 iOS Date 錯誤
-                const parts = e.date.split(/[/ -]/);
-                const day = parts[2] || "--";
-                const monIndex = parseInt(parts[1]) - 1;
-                const monStr = monthMap[monIndex] || "N/A";
+                const p = e.date.split(/[/ -]/);
+                const year = p[0];
+                const month = p[1];
+                const day = p[2] || "--";
+                const monStr = monthMap[parseInt(month) - 1] || "N/A";
                 
                 const attendHtml = (e.girls || "").split(',').map(n => {
                     const name = n.trim(); const g = dbGirls.find(girl => (girl.realname || "").trim() === name || (girl.nickname || "").trim() === name);
                     return g ? `<div class="event-girl-item"><img src="${g.img}" class="attend-girl-img"><span class="attend-girl-name">${g.realname}</span></div>` : '';
                 }).join('');
-
                 return `
                     <div class="event-item ${isExp ? 'expired' : ''}">
                         <div class="event-date-box"><span class="date-day">${day}</span><span class="date-month">${monStr}</span></div>
@@ -326,7 +321,10 @@
         }
 
         function renderGirls(container, search) {
-            const nat = document.getElementById('natFilter').value; const zodiac = document.getElementById('zodiacFilter').value; const sort = document.getElementById('sortFilter').value;
+            const nat = document.getElementById('natFilter').value; 
+            const zodiac = document.getElementById('zodiacFilter').value; 
+            const sort = document.getElementById('sortFilter').value;
+
             let result = dbGirls.filter(c => {
                 const ms = currentSport === "全部" || (c.sport || "").includes(currentSport);
                 const mt = currentTeam === "全部啦啦隊" || (c.team || "").trim() === currentTeam;
@@ -353,9 +351,13 @@
 
             const w = {"韓國":1, "日本":2, "臺灣":4, "台灣":4};
             result.sort((a,b) => {
-                let wA = w[a.nat] || 3; let wB = w[b.nat] || 3; if (wA !== wB) return wA - wB;
-                if (sort === 'ageAsc') return dateStrToNum(a.dob) - dateStrToNum(b.dob);
-                if (sort === 'numberAsc') return (parseInt(a.num) || 99) - (parseInt(b.num) || 99); return 0;
+                let wA = w[a.nat] || 3; let wB = w[b.nat] || 3; 
+                if (wA !== wB) return wA - wB; // 國籍優先
+
+                if (sort === 'ageAsc') return dateToNum(b.dob) - dateToNum(a.dob); // 年齡小到大 = 出生日期大到小
+                if (sort === 'heightDesc') return (parseFloat(b.height) || 0) - (parseFloat(a.height) || 0);
+                if (sort === 'numberAsc') return (parseInt(a.num) || 99) - (parseInt(b.num) || 99);
+                return 0;
             });
 
             container.innerHTML = result.map(c => {
