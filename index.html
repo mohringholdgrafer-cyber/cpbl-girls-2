@@ -82,11 +82,10 @@
         }
 
         /* =========================================
-           ✨ 行程表專業優化 UI ✨
+           ✨ 行程表 (女孩主角版) ✨
         ========================================= */
-        .event-list-container { max-width: 900px; width: 100%; margin: 20px auto 50px; padding: 0 20px; display: flex; flex-direction: column; gap: 16px; }
+        .event-list-container { max-width: 900px; width: 100%; margin: 20px auto 50px; padding: 0 20px; display: flex; flex-direction: column; gap: 20px; }
         
-        /* 歷史行程分隔線 */
         .event-section-divider {
             display: flex; align-items: center; text-align: center; 
             color: #555; font-size: 13px; font-weight: 900; margin: 30px 0 10px; letter-spacing: 1px;
@@ -95,70 +94,74 @@
             content: ''; flex: 1; border-bottom: 1px dashed #333; margin: 0 15px;
         }
 
-        /* 行程卡片主體 */
+        /* 行程卡片外框 */
         .event-item { 
-            background: #131313; border-radius: 16px; padding: 20px; 
-            display: flex; align-items: stretch; gap: 20px; 
-            border: 1px solid #222; box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            background: #111; border-radius: 16px; padding: 20px; 
+            display: flex; align-items: flex-start; gap: 25px; 
+            border: 1px solid #252525; box-shadow: 0 8px 24px rgba(0,0,0,0.3);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative; overflow: hidden;
         }
         .event-item::before {
-            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
-            background: var(--event-accent); opacity: 0.8;
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px;
+            background: var(--event-accent); opacity: 0.9;
         }
         .event-item:hover { 
-            border-color: #333; transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-            background: #181818;
+            border-color: #444; transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+            background: #151515;
         }
 
         /* 已過期樣式 */
-        .event-item.expired { opacity: 0.6; filter: grayscale(0.8); }
-        .event-item.expired::before { background: #555; }
-        .event-item.expired:hover { transform: none; box-shadow: 0 4px 20px rgba(0,0,0,0.2); background: #131313; cursor: not-allowed; }
+        .event-item.expired { opacity: 0.6; filter: grayscale(0.85); }
+        .event-item.expired::before { background: #444; }
+        .event-item.expired:hover { transform: none; box-shadow: 0 8px 24px rgba(0,0,0,0.3); background: #111; cursor: not-allowed; }
         .expired-badge {
-            position: absolute; top: 15px; right: 15px; border: 1px solid #555;
-            color: #777; font-size: 11px; padding: 2px 6px; border-radius: 4px; font-weight: 900;
+            position: absolute; top: 12px; right: 15px; border: 1px solid #555;
+            color: #888; font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 900;
         }
 
-        /* 日曆方塊設計 */
+        /* 日期方塊 */
         .event-date-box { 
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background: linear-gradient(145deg, #1f1f1f, #111);
-            border: 1px solid #2a2a2a; border-radius: 12px;
-            min-width: 80px; padding: 12px 10px;
-            box-shadow: inset 0 2px 0 rgba(255,255,255,0.02);
+            background: linear-gradient(145deg, #1f1f1f, #0a0a0a);
+            border: 1px solid #333; border-radius: 14px;
+            min-width: 85px; padding: 15px 10px;
+            box-shadow: inset 0 2px 0 rgba(255,255,255,0.05);
+            flex-shrink: 0;
         }
-        .date-month { background: var(--event-accent); color: #000; font-size: 11px; font-weight: 900; padding: 2px 8px; border-radius: 4px; margin-bottom: 6px; text-transform: uppercase; }
-        .event-item.expired .date-month { background: #555; color: #ccc; }
-        .date-day { font-size: 28px; font-weight: 900; color: #fff; line-height: 1; }
+        .date-month { background: var(--event-accent); color: #000; font-size: 12px; font-weight: 900; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; text-transform: uppercase; }
+        .event-item.expired .date-month { background: #555; color: #ddd; }
+        .date-day { font-size: 32px; font-weight: 900; color: #fff; line-height: 1; }
 
-        /* 行程資訊區 */
-        .event-main-info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
-        .event-title { font-size: 19px; font-weight: 900; color: #fff; margin-bottom: 12px; line-height: 1.3; }
-        
-        /* 膠囊標籤 */
-        .event-sub-info { display: flex; flex-wrap: wrap; gap: 8px; }
-        .info-pill {
-            display: inline-flex; align-items: center; gap: 6px;
-            background: #1e1e1e; padding: 5px 12px; border-radius: 20px;
-            font-size: 12px; color: #aaa; border: 1px solid #2a2a2a;
-            font-weight: 500; white-space: nowrap;
-        }
-        .info-pill i { font-style: normal; color: var(--event-accent); opacity: 0.8; }
-        .event-item.expired .info-pill i { color: #888; }
+        /* 主內容區塊 (包含女孩與詳細資訊) */
+        .event-content-wrapper { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 15px; }
 
-        /* 出席女孩 (名牌樣式 Chip) */
-        .event-girls-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; border-top: 1px solid #222; padding-top: 16px; }
-        .event-girl-item { 
-            display: inline-flex; align-items: center; gap: 8px; 
-            background: rgba(255,255,255,0.03); padding: 4px 12px 4px 4px; 
-            border-radius: 30px; border: 1px solid rgba(255,255,255,0.05);
+        /* 👑 出席女孩主角區 */
+        .event-girls-hero { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
+        .girl-hero-card { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 80px; }
+        .girl-hero-img { 
+            width: 75px; height: 75px; border-radius: 50%; 
+            border: 3px solid #333; object-fit: cover; object-position: top center; 
+            background: #222; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
             transition: all 0.2s;
         }
-        .event-item:not(.expired) .event-girl-item:hover { background: rgba(255,159,67,0.1); border-color: var(--event-accent); }
-        .attend-girl-img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; object-position: top center; background: #222; }
-        .attend-girl-name { font-size: 12px; color: #eee; font-weight: 700; }
+        .event-item:not(.expired) .girl-hero-img { border-color: var(--event-accent); }
+        .event-item:not(.expired) .girl-hero-img:hover { transform: scale(1.08); box-shadow: 0 6px 15px rgba(255,159,67,0.3); }
+        .girl-hero-name { font-size: 15px; font-weight: 900; color: #fff; text-align: center; letter-spacing: 1px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* 📉 次要資訊區 (活動名稱、時間地點) */
+        .event-details-sub {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px; padding: 12px 16px;
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .event-title-small { font-size: 14px; font-weight: 700; color: #bbb; display: flex; align-items: center; gap: 6px; }
+        .event-title-small::before { content: '📣'; font-size: 12px; }
+        
+        .event-meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; color: #888; }
+        .meta-item { display: inline-flex; align-items: center; gap: 5px; }
+        .meta-item i { font-style: normal; color: var(--event-accent); opacity: 0.8; }
+        .event-item.expired .meta-item i { color: #666; }
 
         /* =========================================
            女孩卡片樣式維持原樣
@@ -195,11 +198,12 @@
             .number { font-size: 14px; padding: 3px 6px; }
             
             .event-list-container { padding: 0 10px; }
-            .event-item { flex-direction: column; align-items: flex-start; gap: 12px; padding: 15px; }
-            .event-date-box { flex-direction: row; width: 100%; justify-content: flex-start; gap: 12px; padding: 10px; background: transparent; border: 1px solid #333; box-shadow: none; }
+            .event-item { flex-direction: column; align-items: stretch; gap: 15px; padding: 18px 15px; }
+            .event-date-box { flex-direction: row; width: 100%; justify-content: flex-start; gap: 12px; padding: 12px; }
             .date-month { margin-bottom: 0; }
-            .date-day { font-size: 24px; }
-            .event-girls-container { margin-top: 10px; padding-top: 10px; width: 100%; }
+            .girl-hero-img { width: 60px; height: 60px; }
+            .girl-hero-name { font-size: 14px; }
+            .girl-hero-card { width: 65px; }
         }
     </style>
 </head>
@@ -277,27 +281,19 @@
 
         const monthMap = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
-        // 智慧日期解析器
         function parseSafeDate(dateStr) {
             if (!dateStr) return null;
             let s = dateStr.replace(/-/g, '/').trim();
             let parts = s.split('/');
             let y, m, d;
-
             if (parts.length === 3) {
-                if (parts[0].length === 4) {
-                    y = parseInt(parts[0]); m = parseInt(parts[1]); d = parseInt(parts[2]);
-                } else {
-                    m = parseInt(parts[0]); d = parseInt(parts[1]); y = parseInt(parts[2]);
-                    if (y < 100) y += 2000;
-                }
+                if (parts[0].length === 4) { y = parseInt(parts[0]); m = parseInt(parts[1]); d = parseInt(parts[2]); } 
+                else { m = parseInt(parts[0]); d = parseInt(parts[1]); y = parseInt(parts[2]); if (y < 100) y += 2000; }
             } else if (parts.length === 2) {
-                y = new Date().getFullYear();
-                m = parseInt(parts[0]); d = parseInt(parts[1]);
+                y = new Date().getFullYear(); m = parseInt(parts[0]); d = parseInt(parts[1]);
             } else return null;
 
             if (isNaN(y) || isNaN(m) || isNaN(d)) return null;
-
             return {
                 year: y, month: m, day: d,
                 num: parseInt(`${y}${String(m).padStart(2,'0')}${String(d).padStart(2,'0')}`),
@@ -319,10 +315,7 @@
                         download: true, header: true, skipEmptyLines: true,
                         transformHeader: h => h.trim().toLowerCase().replace(/[\s_]/g, ""),
                         complete: resEvents => { 
-                            dbEvents = resEvents.data.map(e => {
-                                e.safeDate = parseSafeDate(e.date);
-                                return e;
-                            }).filter(e => e.safeDate !== null);
+                            dbEvents = resEvents.data.map(e => { e.safeDate = parseSafeDate(e.date); return e; }).filter(e => e.safeDate !== null);
                             init(); 
                         }
                     });
@@ -399,12 +392,19 @@
                 const day = String(e.safeDate.day).padStart(2,'0');
                 const mon = e.safeDate.monStr;
                 
+                // 產生出席女孩的大頭貼 (主角)
                 const attendHtml = (e.girls || "").split(',').map(n => {
                     const name = n.trim(); const g = dbGirls.find(girl => (girl.realname || "").trim() === name || (girl.nickname || "").trim() === name);
-                    return g ? `<div class="event-girl-item"><img src="${g.img}" class="attend-girl-img"><span class="attend-girl-name">${g.realname}</span></div>` : '';
+                    if (!g) return `<div class="girl-hero-card"><div class="girl-hero-img" style="display:flex;align-items:center;justify-content:center;color:#666;">?</div><span class="girl-hero-name">${name}</span></div>`;
+                    return `
+                        <div class="girl-hero-card">
+                            <img src="${g.img}" class="girl-hero-img" title="${g.realname}">
+                            <span class="girl-hero-name">${g.realname}</span>
+                        </div>
+                    `;
                 }).join('');
 
-                const expiredBadge = isExp ? `<span class="expired-badge">已結束</span>` : '';
+                const expiredBadge = isExp ? `<div class="expired-badge">已結束</div>` : '';
 
                 return `
                     <div class="event-item ${isExp ? 'expired' : ''}">
@@ -413,14 +413,19 @@
                             <span class="date-month">${mon}</span>
                             <span class="date-day">${day}</span>
                         </div>
-                        <div class="event-main-info">
-                            <div class="event-title">${e.eventname || "活動行程"}</div>
-                            <div class="event-sub-info">
-                                <span class="info-pill"><i>🕒</i> ${e.time || "全天"}</span>
-                                <span class="info-pill"><i>📍</i> ${e.address || "請洽官網"}</span>
-                                ${e.host ? `<span class="info-pill"><i>🏢</i> ${e.host}</span>` : ''}
+                        <div class="event-content-wrapper">
+                            <div class="event-girls-hero">
+                                ${attendHtml}
                             </div>
-                            <div class="event-girls-container">${attendHtml}</div>
+                            
+                            <div class="event-details-sub">
+                                <div class="event-title-small">${e.eventname || "特別活動"}</div>
+                                <div class="event-meta-row">
+                                    <span class="meta-item"><i>🕒</i> ${e.time || "時間未定"}</span>
+                                    <span class="meta-item"><i>📍</i> ${e.address || "地點請參考官方公告"}</span>
+                                    ${e.host ? `<span class="meta-item"><i>🏢</i> ${e.host}</span>` : ''}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -463,7 +468,7 @@
             const w = {"韓國":1, "日本":2, "臺灣":4, "台灣":4};
             result.sort((a,b) => {
                 let wA = w[a.nat] || 3; let wB = w[b.nat] || 3; 
-                if (wA !== wB) return wA - wB; // 國籍優先
+                if (wA !== wB) return wA - wB; 
 
                 if (sort === 'ageAsc') {
                     const dateA = parseSafeDate(a.dob)?.num || 0;
