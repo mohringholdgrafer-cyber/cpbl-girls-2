@@ -82,10 +82,9 @@
         }
 
         /* =========================================
-           ✨ 行程表 (女孩主角版) ✨
+           行程表 (女孩主角版) 
         ========================================= */
         .event-list-container { max-width: 900px; width: 100%; margin: 20px auto 50px; padding: 0 20px; display: flex; flex-direction: column; gap: 20px; }
-        
         .event-section-divider { display: flex; align-items: center; text-align: center; color: #555; font-size: 13px; font-weight: 900; margin: 30px 0 10px; letter-spacing: 1px; }
         .event-section-divider::before, .event-section-divider::after { content: ''; flex: 1; border-bottom: 1px dashed #333; margin: 0 15px; }
 
@@ -128,7 +127,6 @@
         .event-details-sub { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
         .event-title-small { font-size: 14px; font-weight: 700; color: #bbb; display: flex; align-items: center; gap: 6px; }
         .event-title-small::before { content: '📣'; font-size: 12px; }
-        
         .event-meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; color: #888; }
         .meta-item { display: inline-flex; align-items: center; gap: 5px; }
         .meta-item i { font-style: normal; color: var(--event-accent); opacity: 0.8; }
@@ -162,7 +160,6 @@
         .ig-link:hover { transform: scale(1.15); opacity: 1; }
         .ig-icon { width: 16px; height: 16px; fill: url(#ig-grad-final); }
 
-        /* RWD 手機版優化 */
         @media (max-width: 768px) {
             .grid-container { padding: 0 10px; grid-template-columns: repeat(2, 1fr); gap: 12px; }
             .photo-area { height: 200px; }
@@ -235,30 +232,67 @@
         const girlsGid = "0";
         const eventsGid = "925411186";
 
+        // 🌟 完整的球隊配色與 LOGO 控制中心
         const teamThemes = {
-            "全部啦啦隊": { dark: "#0f0f0f", light: "#1a1a1a", accent: "#ffffff", logo: "" },
-            "Wing Stars_棒球": { dark: "#05120a", light: "#0a2414", accent: "#00e676", logo: "images/winstars_logo.png" },
-            "Wing Stars": { dark: "#05120a", light: "#0a2414", accent: "#00e676", logo: "images/winstars_logo.png" },
-            "Uni-Girls": { dark: "#140800", light: "#291000", accent: "#ff8c00", logo: "images/unilions_logo.png" },
-            "Rakuten Girls": { dark: "#140202", light: "#2e0505", accent: "#ff3333", logo: "images/rakuten_logo.png" },
-            "Passion Sisters": { dark: "#141200", light: "#292400", accent: "#ffea00", logo: "images/brothers_logo.png" },
-            "Fubon Angels": { dark: "#020812", light: "#04152b", accent: "#33a1ff", logo: "images/fubon_logo.png" },
-            "Dragon Beauties": { dark: "#170205", light: "#2e050b", accent: "#ff4d6d", logo: "images/dragons_logo.png" },
-            "Tokki Cutie": { dark: "#1a0f00", light: "#2e1a05", accent: "#ff8c00", logo: "" },
-            "Little witches": { dark: "#001414", light: "#002b2b", accent: "#00d2d3", logo: "" },
-            "Peach Girls": { dark: "#1a000d", light: "#2e0518", accent: "#d63384", logo: "" },
-            "Wing Stars_排球": { dark: "#020812", light: "#04152b", accent: "#0984e3", logo: "" }
+            "全部啦啦隊": { dark: "#0f0f0f", light: "#1a1a1a", accent: "#ffffff", logo: "", noLogo: false },
+            
+            // --- 預設 (跨棲球隊以發源地為主，保留 LOGO) ---
+            "Wing Stars": { dark: "#05120a", light: "#0a2414", accent: "#00e676", logo: "images/winstars_logo.png", noLogo: false },
+            "Passion Sisters": { dark: "#141200", light: "#292400", accent: "#ffea00", logo: "images/brothers_logo.png", noLogo: false },
+            "Fubon Angels": { dark: "#020812", light: "#04152b", accent: "#33a1ff", logo: "images/fubon_logo.png", noLogo: false },
+            "Uni-Girls": { dark: "#140800", light: "#291000", accent: "#ff8c00", logo: "images/unilions_logo.png", noLogo: false },
+            "Rakuten Girls": { dark: "#140202", light: "#2e0505", accent: "#ff3333", logo: "images/rakuten_logo.png", noLogo: false },
+            "Dragon Beauties": { dark: "#170205", light: "#2e050b", accent: "#ff4d6d", logo: "images/dragons_logo.png", noLogo: false },
+            
+            // --- 棒球專屬 (保留 LOGO) ---
+            "Wing Stars_棒球": { dark: "#05120a", light: "#0a2414", accent: "#00e676", logo: "images/winstars_logo.png", noLogo: false },
+            "Passion Sisters_棒球": { dark: "#141200", light: "#292400", accent: "#ffea00", logo: "images/brothers_logo.png", noLogo: false },
+            "Fubon Angels_棒球": { dark: "#020812", light: "#04152b", accent: "#33a1ff", logo: "images/fubon_logo.png", noLogo: false },
+            "Uni-Girls_棒球": { dark: "#140800", light: "#291000", accent: "#ff8c00", logo: "images/unilions_logo.png", noLogo: false },
+            "Rakuten Girls_棒球": { dark: "#140202", light: "#2e0505", accent: "#ff3333", logo: "images/rakuten_logo.png", noLogo: false },
+            "Dragon Beauties_棒球": { dark: "#170205", light: "#2e050b", accent: "#ff4d6d", logo: "images/dragons_logo.png", noLogo: false },
+
+            // --- 籃球專屬：跨棲隊伍移除 LOGO，更改專屬配色 ---
+            "Wing Stars_籃球": { dark: "#1a050a", light: "#2e1a1e", accent: "#ffb6c1", logo: "", noLogo: true }, // 粉色
+            "Passion Sisters_籃球": { dark: "#000033", light: "#000066", accent: "#ffea00", logo: "", noLogo: true }, // 黃色配深藍色
+            "Fubon Angels_籃球": { dark: "#001f33", light: "#0a2e4a", accent: "#add8e6", logo: "", noLogo: true }, // 淺藍色
+            "Uni-Girls_籃球": { dark: "#140800", light: "#291000", accent: "#ff8c00", logo: "images/unilions_logo.png", noLogo: false },
+
+            // --- 籃球專屬：純籃球隊伍 ---
+            "Formosa Sexy": { dark: "#000000", light: "#1a1a1a", accent: "#39ff14", logo: "images/sexy_logo.png", noLogo: false }, // 螢光綠
+            "Formosa Sexy_籃球": { dark: "#000000", light: "#1a1a1a", accent: "#39ff14", logo: "images/sexy_logo.png", noLogo: false },
+            "Muse Girls": { dark: "#1a1029", light: "#2a1a3a", accent: "#d8bfd8", logo: "images/muse_logo.png", noLogo: false }, // 淺紫
+            "Muse Girls_籃球": { dark: "#1a1029", light: "#2a1a3a", accent: "#d8bfd8", logo: "images/muse_logo.png", noLogo: false },
+            "Taishin Wonders": { dark: "#1a0202", light: "#2a0505", accent: "#ff0000", logo: "images/wonders_logo.png", noLogo: false }, // 紅
+            "Taishin Wonders_籃球": { dark: "#1a0202", light: "#2a0505", accent: "#ff0000", logo: "images/wonders_logo.png", noLogo: false },
+            "New Taipei Queens": { dark: "#000000", light: "#1a1a1a", accent: "#ffff00", logo: "images/queens_logo.png", noLogo: false }, // 亮黃
+            "New Taipei Queens_籃球": { dark: "#000000", light: "#1a1a1a", accent: "#ffff00", logo: "images/queens_logo.png", noLogo: false },
+            "Aqua Mermaids": { dark: "#001a4d", light: "#04152b", accent: "#00aaff", logo: "images/aqua_logo.png", noLogo: false }, // 亮藍
+            "Aqua Mermaids_籃球": { dark: "#001a4d", light: "#04152b", accent: "#00aaff", logo: "images/aqua_logo.png", noLogo: false },
+            "Pilots Crew": { dark: "#1a0800", light: "#2a1a05", accent: "#ff8c00", logo: "images/crew_logo.png", noLogo: false }, // 橘
+            "Pilots Crew_籃球": { dark: "#1a0800", light: "#2a1a05", accent: "#ff8c00", logo: "images/crew_logo.png", noLogo: false },
+            "Youngkey Girls": { dark: "#001a00", light: "#0a240a", accent: "#00ff00", logo: "images/youngkey_logo.png", noLogo: false }, // 亮綠
+            "Youngkey Girls_籃球": { dark: "#001a00", light: "#0a240a", accent: "#00ff00", logo: "images/youngkey_logo.png", noLogo: false },
+            "Leopard Girls": { dark: "#260033", light: "#3a004f", accent: "#ffffff", logo: "images/leopard_logo.png", noLogo: false }, // 深紫搭白
+            "Leopard Girls_籃球": { dark: "#260033", light: "#3a004f", accent: "#ffffff", logo: "images/leopard_logo.png", noLogo: false },
+
+            // --- 職業排球 ---
+            "Tokki Cutie": { dark: "#1a0f00", light: "#2e1a05", accent: "#ff8c00", logo: "", noLogo: true },
+            "Tokki Cutie_排球": { dark: "#1a0f00", light: "#2e1a05", accent: "#ff8c00", logo: "", noLogo: true },
+            "Little witches": { dark: "#001414", light: "#002b2b", accent: "#00d2d3", logo: "", noLogo: true },
+            "Little witches_排球": { dark: "#001414", light: "#002b2b", accent: "#00d2d3", logo: "", noLogo: true },
+            "Peach Girls": { dark: "#1a000d", light: "#2e0518", accent: "#d63384", logo: "", noLogo: true },
+            "Peach Girls_排球": { dark: "#1a000d", light: "#2e0518", accent: "#d63384", logo: "", noLogo: true },
+            "Wing Stars_排球": { dark: "#020812", light: "#04152b", accent: "#0984e3", logo: "", noLogo: true }
         };
 
         const monthMap = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
-        // 🌟 活動專用：強制賦予年份，確保判斷是否過期
         function parseEventDate(dateStr) {
             if (!dateStr) return null;
             let s = dateStr.replace(/年|月|-/g, '/').replace(/日/g, '').trim();
             let parts = s.split('/').filter(p => p !== '');
             let y, m, d;
-
             if (parts.length >= 3) {
                 if (parts[0].length === 4) { y = parseInt(parts[0]); m = parseInt(parts[1]); d = parseInt(parts[2]); } 
                 else { m = parseInt(parts[0]); d = parseInt(parts[1]); y = parseInt(parts[2]); if (y < 100) y += 2000; }
@@ -267,11 +301,9 @@
             } else return null;
 
             if (isNaN(y) || isNaN(m) || isNaN(d)) return null;
-
             return { year: y, month: m, day: d, num: parseInt(`${y}${String(m).padStart(2,'0')}${String(d).padStart(2,'0')}`), monStr: monthMap[m - 1] || "N/A" };
         }
 
-        // 🌟 女孩生日專用：無年份則不強制賦予，確保排序正確
         function parseGirlDOB(dateStr) {
             if (!dateStr) return { num: 0, mmdd: 9999 };
             let s = dateStr.replace(/年|月|-/g, '/').replace(/日/g, '').trim();
@@ -281,14 +313,13 @@
             if (parts.length >= 3) {
                 if (parts[0].length === 4) { y = parseInt(parts[0]); m = parseInt(parts[1]); d = parseInt(parts[2]); } 
                 else { m = parseInt(parts[0]); d = parseInt(parts[1]); y = parseInt(parts[2]); if (y < 100) y += 2000; }
-            } else if (parts.length === 2) {
-                m = parseInt(parts[0]); d = parseInt(parts[1]);
-            } else return { num: 0, mmdd: 9999 };
+            } else if (parts.length === 2) { m = parseInt(parts[0]); d = parseInt(parts[1]); } 
+            else return { num: 0, mmdd: 9999 };
 
             if (isNaN(m) || isNaN(d)) return { num: 0, mmdd: 9999 };
-
+            const yearNum = (parts.length < 3) ? 0 : y;
             return {
-                num: parseInt(`${y}${String(m).padStart(2,'0')}${String(d).padStart(2,'0')}`),
+                num: parseInt(`${String(yearNum).padStart(4,'0')}${String(m).padStart(2,'0')}${String(d).padStart(2,'0')}`),
                 mmdd: parseInt(`${String(m).padStart(2,'0')}${String(d).padStart(2,'0')}`)
             };
         }
@@ -307,10 +338,7 @@
                         download: true, header: true, skipEmptyLines: true,
                         transformHeader: h => h.trim().toLowerCase().replace(/[\s_]/g, ""),
                         complete: resEvents => { 
-                            dbEvents = resEvents.data.map(e => {
-                                e.safeDate = parseEventDate(e.date);
-                                return e;
-                            }).filter(e => e.safeDate !== null);
+                            dbEvents = resEvents.data.map(e => { e.safeDate = parseEventDate(e.date); return e; }).filter(e => e.safeDate !== null);
                             init(); 
                         }
                     });
@@ -350,14 +378,26 @@
             dbGirls.forEach(c => { if (currentSport === "全部" || (c.sport || "").includes(currentSport)) if (c.team) teamsSet.add(c.team.trim()); });
             const activeTeams = ["全部啦啦隊", ...Array.from(teamsSet).sort()];
             container.innerHTML = ''; container.style.display = (currentSport === "全部" || activeTeams.length <= 1) ? 'none' : 'flex';
+            
             activeTeams.forEach(tName => {
-                const config = teamThemes[`${tName.trim()}_${currentSport === "全部" ? "" : currentSport}`] || teamThemes[tName.trim()] || { accent: "#ccc", logo: "" };
+                const t = tName.trim(); const s = currentSport === "全部" ? "" : currentSport;
+                const config = teamThemes[`${t}_${s}`] || teamThemes[t] || { accent: "#ccc", logo: "", noLogo: false };
+                
                 const btn = document.createElement('button');
                 btn.className = `tab-btn ${tName === currentTeam ? 'active' : ''}`;
-                const logoHtml = (config.logo) ? `<img src="${config.logo}" class="tab-logo" onerror="this.style.display='none'">` : '';
+                
+                // 控制 LOGO 的顯示與否
+                const logoHtml = (config.logo && !config.noLogo) ? `<img src="${config.logo}" class="tab-logo" onerror="this.style.display='none'">` : '';
+                
                 btn.innerHTML = `${logoHtml}<span>${tName}</span>`;
                 btn.style.setProperty('--team-accent', config.accent);
-                btn.onclick = () => { currentTeam = tName; document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active')); btn.classList.add('active'); applyTheme(tName); renderContent(); };
+                btn.onclick = () => { 
+                    currentTeam = tName; 
+                    document.querySelectorAll('.tab-btn').forEach(tb => tb.classList.remove('active')); 
+                    btn.classList.add('active'); 
+                    applyTheme(tName); 
+                    renderContent(); 
+                };
                 container.appendChild(btn);
             });
             renderContent();
@@ -463,9 +503,7 @@
                     if (wA !== wB) return wA - wB; 
                     return 0;
                 } else if (sort === 'birthdayAsc') {
-                    const dobA = parseGirlDOB(a.dob).mmdd;
-                    const dobB = parseGirlDOB(b.dob).mmdd;
-                    return dobA - dobB; 
+                    return parseGirlDOB(a.dob).mmdd - parseGirlDOB(b.dob).mmdd; 
                 } else if (sort === 'ageAsc') {
                     const dateA = parseGirlDOB(a.dob).num;
                     const dateB = parseGirlDOB(b.dob).num;
@@ -483,7 +521,11 @@
             container.innerHTML = result.map(c => {
                 const sports = c.mS || [c.sport]; const teams = (c.mT || [c.team]).map(t => t.trim()); const nums = (c.mN || [c.num]).filter(n => n && n !== "-");
                 let tags = sports.map(s => { if(s.includes("棒球")) return `<div class="sport-tag tag-baseball">棒球</div>`; if(s.includes("籃球")) return `<div class="sport-tag tag-basketball">籃球</div>`; if(s.includes("排球")) return `<div class="sport-tag tag-volleyball">排球</div>`; return ''; }).join('');
-                const cardAccent = (teamThemes[`${teams[0]}_${sports[0]}`] || teamThemes[teams[0]] || {accent:"#fff"}).accent;
+                
+                // 動態判斷卡片顏色 (依據目前選擇的運動標籤)
+                const lookupSport = currentSport === "全部" ? "" : currentSport;
+                const cardAccent = (teamThemes[`${teams[0]}_${lookupSport}`] || teamThemes[teams[0]] || {accent:"#fff"}).accent;
+                
                 const igIcon = c.ig ? `<a href="${c.ig}" target="_blank" class="ig-link"><svg class="ig-icon"><use xlink:href="#icon-ig"></use></svg></a>` : '';
                 
                 return `
