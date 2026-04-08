@@ -113,9 +113,8 @@
         .data-label { color: var(--text-sub); min-width: 60px; }
         .data-value { font-weight: 700; text-align: right; }
 
-        /* IG 小圖標優化 */
         .ig-link { display: inline-flex; vertical-align: middle; }
-        .ig-icon { width: 14px; height: 14px; fill: url(#ig-grad-final); }
+        .ig-icon { width: 15px; height: 15px; fill: url(#ig-grad-final); }
 
         @media (max-width: 768px) {
             .grid-container { padding: 0 10px; grid-template-columns: repeat(2, 1fr); gap: 10px; }
@@ -200,12 +199,34 @@
 
         const monthMap = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
-        // 🌟 文字拆解日期轉數字 (YYYYMMDD)
-        function dateToNum(s) {
-            if(!s) return 0;
-            const p = s.split(/[/ -]/);
-            if(p.length < 3) return 0;
-            return parseInt(`${p[0]}${p[1].padStart(2,'0')}${p[2].padStart(2,'0')}`);
+        // 🌟 智慧日期解析器：處理 2026/4/9 或 4/9 或 04/09 
+        function parseSafeDate(dateStr) {
+            if (!dateStr) return null;
+            let s = dateStr.replace(/-/g, '/').trim();
+            let parts = s.split('/');
+            let y, m, d;
+
+            if (parts.length === 3) {
+                if (parts[0].length === 4) {
+                    y = parseInt(parts[0]); m = parseInt(parts[1]); d = parseInt(parts[2]);
+                } else {
+                    m = parseInt(parts[0]); d = parseInt(parts[1]); y = parseInt(parts[2]);
+                    if (y < 100) y += 2000;
+                }
+            } else if (parts.length === 2) {
+                y = new Date().getFullYear();
+                m = parseInt(parts[0]); d = parseInt(parts[1]);
+            } else {
+                return null;
+            }
+
+            if (isNaN(y) || isNaN(m) || isNaN(d)) return null;
+
+            return {
+                year: y, month: m, day: d,
+                num: parseInt(`${y}${String(m).padStart(2,'0')}${String(d).padStart(2,'0')}`),
+                monStr: monthMap[m - 1] || "N/A"
+            };
         }
 
         let dbGirls = []; let dbEvents = [];
@@ -221,7 +242,14 @@
                     Papa.parse(`${baseSheetUrl}&gid=${eventsGid}&t=${t}`, {
                         download: true, header: true, skipEmptyLines: true,
                         transformHeader: h => h.trim().toLowerCase().replace(/[\s_]/g, ""),
-                        complete: resEvents => { dbEvents = resEvents.data.filter(e => e.date); init(); }
+                        complete: resEvents => { 
+                            // 預處理行程日期
+                            dbEvents = resEvents.data.map(e => {
+                                e.safeDate = parseSafeDate(e.date);
+                                return e;
+                            }).filter(e => e.safeDate !== null);
+                            init(); 
+                        }
                     });
                 }
             });
@@ -288,16 +316,13 @@
                 return search === "" || evN.includes(search) || girls.includes(search) || host.includes(search);
             });
 
-            filtered.sort((a,b) => dateToNum(a.date) - dateToNum(b.date));
-            const upcoming = filtered.filter(e => dateToNum(e.date) >= todayNum);
-            const expired = filtered.filter(e => dateToNum(e.date) < todayNum).reverse();
+            filtered.sort((a,b) => a.safeDate.num - b.safeDate.num);
+            const upcoming = filtered.filter(e => e.safeDate.num >= todayNum);
+            const expired = filtered.filter(e => e.safeDate.num < todayNum).reverse();
 
             const buildItem = (e, isExp) => {
-                const p = e.date.split(/[/ -]/);
-                const year = p[0];
-                const month = p[1];
-                const day = p[2] || "--";
-                const monStr = monthMap[parseInt(month) - 1] || "N/A";
+                const day = e.safeDate.day;
+                const mon = e.safeDate.monStr;
                 
                 const attendHtml = (e.girls || "").split(',').map(n => {
                     const name = n.trim(); const g = dbGirls.find(girl => (girl.realname || "").trim() === name || (girl.nickname || "").trim() === name);
@@ -305,10 +330,10 @@
                 }).join('');
                 return `
                     <div class="event-item ${isExp ? 'expired' : ''}">
-                        <div class="event-date-box"><span class="date-day">${day}</span><span class="date-month">${monStr}</span></div>
+                        <div class="event-date-box"><span class="date-day">${day}</span><span class="date-month">${mon}</span></div>
                         <div class="event-main-info">
                             <div class="event-title">${e.eventname || "活動行程"}</div>
-                            <div class="event-sub-info">🕒 ${e.time || "全天"} | 📍 ${e.address || "請洽官網"} | 🏢 ${e.host || ""}</div>
+                            <div class="event-sub-info">🕒 ${e.time || "全天"} | 📍 ${e.address || "請洽官網"} | 🏢 ${e.host || "未知"}</div>
                         </div>
                         <div class="event-girls-container">${attendHtml}</div>
                     </div>
@@ -354,7 +379,12 @@
                 let wA = w[a.nat] || 3; let wB = w[b.nat] || 3; 
                 if (wA !== wB) return wA - wB; // 國籍優先
 
-                if (sort === 'ageAsc') return dateToNum(b.dob) - dateToNum(a.dob); // 年齡小到大 = 出生日期大到小
+                if (sort === 'ageAsc') {
+                    // 年齡小到大 = 出生日期大到小
+                    const dateA = parseSafeDate(a.dob)?.num || 0;
+                    const dateB = parseSafeDate(b.dob)?.num || 0;
+                    return dateB - dateA;
+                }
                 if (sort === 'heightDesc') return (parseFloat(b.height) || 0) - (parseFloat(a.height) || 0);
                 if (sort === 'numberAsc') return (parseInt(a.num) || 99) - (parseInt(b.num) || 99);
                 return 0;
