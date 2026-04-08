@@ -47,11 +47,8 @@
         .sport-btn:hover { border-color: #555; color: #ddd; }
         .sport-btn.active { background: #ffffff; color: #000000; border-color: #ffffff; }
         .sport-btn.btn-event { border-color: var(--event-accent); color: var(--event-accent); }
+        .sport-btn.btn-event:hover { background: rgba(255, 159, 67, 0.1); }
         .sport-btn.btn-event.active { background: var(--event-accent); color: #000000; box-shadow: 0 0 15px rgba(255, 159, 67, 0.4); }
-
-        /* 聯盟分類標籤樣式 */
-        .league-group { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 10px; }
-        .league-title { font-size: 11px; font-weight: 900; color: #555; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #222; width: 80%; text-align: center; padding-bottom: 5px; margin: 10px 0; }
 
         .team-tabs {
             display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; 
@@ -66,7 +63,7 @@
             gap: 6px; width: 110px; height: 90px; padding: 10px;
         }
         .tab-btn:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
-        .tab-logo { width: 35px; height: 35px; object-fit: contain; display: block; }
+        .tab-logo { width: 38px; height: 38px; object-fit: contain; display: block; }
         .tab-btn.active { background-color: var(--team-accent, #fff); color: #000000; border-color: var(--team-accent, #fff); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
 
         .filters { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
@@ -74,7 +71,9 @@
             background-color: #111; border: 1px solid var(--border-color);
             color: var(--text-main); padding: 9px 14px; font-size: 13px;
             border-radius: 6px; outline: none; min-width: 130px;
+            transition: border-color 0.2s;
         }
+        .filters input:focus, .filters select:focus { border-color: #777; }
 
         #main-content { flex: 1; }
 
@@ -100,6 +99,7 @@
         .event-item:hover { border-color: #444; transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.5); background: #151515; }
         .event-item.expired { opacity: 0.6; filter: grayscale(0.85); }
         .event-item.expired::before { background: #444; }
+        .event-item.expired:hover { transform: none; box-shadow: 0 8px 24px rgba(0,0,0,0.3); background: #111; cursor: not-allowed; }
         .expired-badge { position: absolute; top: 12px; right: 15px; border: 1px solid #555; color: #888; font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 900; }
 
         .event-date-box { 
@@ -112,10 +112,15 @@
         .date-day { font-size: 32px; font-weight: 900; color: #fff; line-height: 1; }
 
         .event-content-wrapper { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 15px; }
+
         .event-girls-hero { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
         .girl-hero-card { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 80px; }
-        .girl-hero-img { width: 75px; height: 75px; border-radius: 50%; border: 3px solid #333; object-fit: cover; object-position: top center; background: #222; box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: all 0.2s; }
+        .girl-hero-img { 
+            width: 75px; height: 75px; border-radius: 50%; border: 3px solid #333; 
+            object-fit: cover; object-position: top center; background: #222; box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: all 0.2s;
+        }
         .event-item:not(.expired) .girl-hero-img { border-color: var(--event-accent); }
+        .event-item:not(.expired) .girl-hero-img:hover { transform: scale(1.08); box-shadow: 0 6px 15px rgba(255,159,67,0.3); }
         .girl-hero-name { font-size: 15px; font-weight: 900; color: #fff; text-align: center; letter-spacing: 1px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
         .event-details-sub { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
@@ -124,6 +129,7 @@
         .event-meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; color: #888; }
         .meta-item { display: inline-flex; align-items: center; gap: 5px; }
         .meta-item i { font-style: normal; color: var(--event-accent); opacity: 0.8; }
+        .event-item.expired .meta-item i { color: #666; }
 
         /* --- 女孩卡片 --- */
         .card { background-color: var(--team-light); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
@@ -146,6 +152,7 @@
         .data-row { display: flex; justify-content: space-between; font-size: 13px; align-items: center; }
         .data-label { color: var(--text-sub); min-width: 60px; }
         .data-value { font-weight: 700; text-align: right; }
+        
         .note-row { margin-top: 4px; padding-top: 10px; border-top: 1px dashed #333; }
         .note-value { color: var(--event-accent); font-weight: 900; }
 
@@ -153,15 +160,22 @@
         .ig-link:hover { transform: scale(1.15); opacity: 1; }
         .ig-icon { width: 16px; height: 16px; fill: url(#ig-grad-final); }
 
+        /* --- Footer 備註與警語 --- */
         .footer { background-color: #050505; border-top: 1px solid var(--border-color); padding: 30px 20px; margin-top: auto; color: #777; font-size: 12px; line-height: 1.6; }
         .footer-content { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
+        .footer-content strong { color: #aaa; }
 
+        /* RWD 手機版優化 */
         @media (max-width: 768px) {
             .grid-container { padding: 0 10px; grid-template-columns: repeat(2, 1fr); gap: 12px; }
             .photo-area { height: 200px; }
+            .number { font-size: 14px; padding: 3px 6px; }
+            .event-list-container { padding: 0 10px; }
             .event-item { flex-direction: column; align-items: stretch; gap: 15px; padding: 18px 15px; }
             .event-date-box { flex-direction: row; width: 100%; justify-content: flex-start; gap: 12px; padding: 12px; }
+            .date-month { margin-bottom: 0; }
             .girl-hero-img { width: 60px; height: 60px; }
+            .girl-hero-name { font-size: 14px; }
             .girl-hero-card { width: 65px; }
             .tab-btn { width: calc(33% - 6px); height: 85px; }
         }
@@ -236,7 +250,6 @@
         const teamThemes = {
             "全部啦啦隊": { dark: "#0f0f0f", light: "#1a1a1a", accent: "#ffffff", logo: "", noLogo: false, league: "" },
             
-            // ⚾ 棒球區塊 (顯示 Logo)
             "Wing Stars_棒球": { dark: "#05120a", light: "#0a2414", accent: "#00e676", logo: "images/winstars_logo.png", noLogo: false },
             "Passion Sisters_棒球": { dark: "#141200", light: "#292400", accent: "#ffea00", logo: "images/brothers_logo.png", noLogo: false },
             "Fubon Angels_棒球": { dark: "#020812", light: "#04152b", accent: "#33a1ff", logo: "images/fubon_logo.png", noLogo: false },
@@ -244,7 +257,6 @@
             "Rakuten Girls": { dark: "#140202", light: "#2e0505", accent: "#ff3333", logo: "images/rakuten_logo.png", noLogo: false },
             "Dragon Beauties": { dark: "#170205", light: "#2e050b", accent: "#ff4d6d", logo: "images/dragons_logo.png", noLogo: false },
 
-            // 🏀 職籃 TPBL 聯盟
             "Formosa Sexy": { dark: "#000000", light: "#1a1a1a", accent: "#39ff14", logo: "images/sexy_logo.png", noLogo: false, league: "TPBL" },
             "Passion Sisters_籃球": { dark: "#000033", light: "#000066", accent: "#ffea00", logo: "", noLogo: true, league: "TPBL" },
             "Muse Girls": { dark: "#1a1029", light: "#2a1a3a", accent: "#d8bfd8", logo: "images/muse_logo.png", noLogo: false, league: "TPBL" },
@@ -253,22 +265,23 @@
             "New Taipei Queens": { dark: "#000000", light: "#1a1a1a", accent: "#ffff00", logo: "images/queens_logo.png", noLogo: false, league: "TPBL" },
             "Aqua Mermaids": { dark: "#001a4d", light: "#04152b", accent: "#00aaff", logo: "images/aqua_logo.png", noLogo: false, league: "TPBL" },
 
-            // 🏀 職籃 P. LEAGUE+ 聯盟
             "Pilots Crew": { dark: "#1a0800", light: "#2a1a05", accent: "#ff8c00", logo: "images/crew_logo.png", noLogo: false, league: "P. LEAGUE+" },
             "Youngkey Girls": { dark: "#001a00", light: "#0a240a", accent: "#00ff00", logo: "images/youngkey_logo.png", noLogo: false, league: "P. LEAGUE+" },
             "Wing Stars_籃球": { dark: "#1a050a", light: "#2e1a1e", accent: "#ffb6c1", logo: "", noLogo: true, league: "P. LEAGUE+" },
             "Fubon Angels_籃球": { dark: "#001f33", light: "#0a2e4a", accent: "#add8e6", logo: "", noLogo: true, league: "P. LEAGUE+" },
 
-            // 🏐 排球
             "Tokki Cutie": { dark: "#1a0f00", light: "#2e1a05", accent: "#ff8c00", logo: "", noLogo: true },
             "Little witches": { dark: "#001414", light: "#002b2b", accent: "#00d2d3", logo: "", noLogo: true },
             "Peach Girls": { dark: "#1a000d", light: "#2e0518", accent: "#d63384", logo: "", noLogo: true },
             "Wing Stars_排球": { dark: "#020812", light: "#04152b", accent: "#0984e3", logo: "", noLogo: true }
         };
 
+        const monthMap = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+
+        // 終極防護日期解析器
         function parseEventDate(d) {
             if(!d) return null;
-            let s = d.replace(/年|月|-/g, '/').replace(/日/g, '').trim();
+            let s = String(d).replace(/年|月|-/g, '/').replace(/日/g, '').trim();
             let p = s.split('/').filter(x => x !== '');
             let y, m, d_val;
             if(p.length >= 3) {
@@ -281,7 +294,7 @@
 
         function parseGirlDOB(d) {
             if(!d) return { num:0, mmdd:9999 };
-            let s = d.replace(/年|月|-/g, '/').replace(/日/g, '').trim();
+            let s = String(d).replace(/年|月|-/g, '/').replace(/日/g, '').trim();
             let p = s.split('/').filter(x => x !== '');
             let y=0, m=0, d_val=0;
             if(p.length >= 3) {
@@ -329,7 +342,10 @@
         }
 
         function applyTheme(tName) {
-            const config = teamThemes[`${tName.trim()}_${currentSport === "全部" ? "" : currentSport}`] || teamThemes[tName.trim()] || teamThemes["全部啦啦隊"];
+            // 防呆取隊伍顏色
+            const safeTeam = (tName || "").trim();
+            const safeSport = currentSport === "全部" ? "" : currentSport;
+            const config = teamThemes[`${safeTeam}_${safeSport}`] || teamThemes[safeTeam] || teamThemes["全部啦啦隊"] || {dark:"#0a0a0a", light:"#161616", accent:"#fff"};
             document.documentElement.style.setProperty('--team-dark', config.dark);
             document.documentElement.style.setProperty('--team-light', config.light);
             document.documentElement.style.setProperty('--team-accent', config.accent);
@@ -340,17 +356,24 @@
             if (currentMode === 'events') { container.style.display = 'none'; renderContent(); return; }
             
             const teamsSet = new Set();
-            dbGirls.forEach(c => { if (currentSport === "全部" || (c.sport || "").includes(currentSport)) if (c.team) teamsSet.add(c.team.trim()); });
+            dbGirls.forEach(c => { 
+                if (currentSport === "全部" || (c.sport || "").includes(currentSport)) {
+                    if (c.team && c.team.trim() !== "") teamsSet.add(c.team.trim()); 
+                }
+            });
+            
             const activeTeams = Array.from(teamsSet).sort();
             container.innerHTML = ''; container.style.display = 'flex';
 
-            // 全部女孩按鈕
+            // 建立全部啦啦隊按鈕
             const allBtn = createTeamBtn("全部啦啦隊");
             container.appendChild(allBtn);
 
+            // 若為籃球，自動分區 TPBL 與 PLG
             if (currentSport === "籃球") {
-                renderLeagueGroup(container, "TPBL 聯盟", activeTeams.filter(t => (teamThemes[`${t}_籃球`]?.league === "TPBL" || teamThemes[t]?.league === "TPBL")));
-                renderLeagueGroup(container, "P. LEAGUE+ 聯盟", activeTeams.filter(t => (teamThemes[`${t}_籃球`]?.league === "P. LEAGUE+" || teamThemes[t]?.league === "P. LEAGUE+")));
+                const getLeague = (t) => (teamThemes[`${t}_籃球`] || teamThemes[t] || {}).league;
+                renderLeagueGroup(container, "TPBL 聯盟", activeTeams.filter(t => getLeague(t) === "TPBL"));
+                renderLeagueGroup(container, "P. LEAGUE+ 聯盟", activeTeams.filter(t => getLeague(t) === "P. LEAGUE+"));
             } else {
                 activeTeams.forEach(t => container.appendChild(createTeamBtn(t)));
             }
@@ -367,13 +390,22 @@
         }
 
         function createTeamBtn(tName) {
-            const config = teamThemes[`${tName.trim()}_${currentSport === "全部" ? "" : currentSport}`] || teamThemes[tName.trim()] || { accent: "#ccc", logo: "", noLogo: false };
+            const safeTeam = (tName || "").trim();
+            const safeSport = currentSport === "全部" ? "" : currentSport;
+            const config = teamThemes[`${safeTeam}_${safeSport}`] || teamThemes[safeTeam] || { accent: "#ccc", logo: "", noLogo: false };
+            
             const btn = document.createElement('button');
-            btn.className = `tab-btn ${tName === currentTeam ? 'active' : ''}`;
+            btn.className = `tab-btn ${safeTeam === currentTeam ? 'active' : ''}`;
             const logoHtml = (config.logo && !config.noLogo) ? `<img src="${config.logo}" class="tab-logo">` : '';
-            btn.innerHTML = `${logoHtml}<span>${tName}</span>`;
+            btn.innerHTML = `${logoHtml}<span>${safeTeam}</span>`;
             btn.style.setProperty('--team-accent', config.accent);
-            btn.onclick = () => { currentTeam = tName; document.querySelectorAll('.tab-btn').forEach(tb => tb.classList.remove('active')); btn.classList.add('active'); applyTheme(tName); renderContent(); };
+            btn.onclick = () => { 
+                currentTeam = safeTeam; 
+                document.querySelectorAll('.tab-btn').forEach(tb => tb.classList.remove('active')); 
+                btn.classList.add('active'); 
+                applyTheme(safeTeam); 
+                renderContent(); 
+            };
             return btn;
         }
 
@@ -398,7 +430,9 @@
             const buildItem = (e, isExp) => {
                 const day = String(e.safeDate.day).padStart(2,'0');
                 const attendHtml = (e.girls || "").split(',').map(n => {
-                    const name = n.trim(); const g = dbGirls.find(girl => (girl.realname || "").trim() === name || (girl.nickname || "").trim() === name);
+                    const name = n.trim(); 
+                    if(!name) return ''; // 防呆空字串
+                    const g = dbGirls.find(girl => (girl.realname || "").trim() === name || (girl.nickname || "").trim() === name);
                     return g ? `<div class="girl-hero-card"><img src="${g.img}" class="girl-hero-img"><span class="girl-hero-name">${g.realname}</span></div>` : '';
                 }).join('');
                 return `<div class="event-item ${isExp ? 'expired' : ''}">${isExp ? '<div class="expired-badge">已結束</div>' : ''}<div class="event-date-box"><span class="date-month">${e.safeDate.monStr}</span><span class="date-day">${day}</span></div><div class="event-content-wrapper"><div class="event-girls-hero">${attendHtml}</div><div class="event-details-sub"><div class="event-title-small">${e.eventname || "活動"}</div><div class="event-meta-row"><span class="meta-item"><i>🕒</i> ${e.time || "未定"}</span><span class="meta-item"><i>📍</i> ${e.address || "官網"}</span>${e.host ? `<span class="meta-item"><i>🏢</i> ${e.host}</span>` : ''}</div></div></div></div>`;
@@ -421,22 +455,46 @@
             });
             if (currentSport === "全部" && currentTeam === "全部啦啦隊") {
                 const mMap = new Map();
-                result.forEach(c => { const k = c.realname.trim(); if (!mMap.has(k)) mMap.set(k, { ...c, mS: [c.sport], mT: [c.team], mN: [c.num] }); else { let e = mMap.get(k); if (!e.mS.includes(c.sport)) e.mS.push(c.sport); if (!e.mT.includes(c.team)) e.mT.push(c.team); if (!e.mN.includes(c.num)) e.mN.push(c.num); } });
+                result.forEach(c => { 
+                    const k = (c.realname || "").trim(); 
+                    if (!k) return; // 防呆無名字
+                    if (!mMap.has(k)) mMap.set(k, { ...c, mS: [c.sport || ""], mT: [c.team || ""], mN: [c.num || ""] }); 
+                    else { 
+                        let e = mMap.get(k); 
+                        if (!e.mS.includes(c.sport || "")) e.mS.push(c.sport || ""); 
+                        if (!e.mT.includes(c.team || "")) e.mT.push(c.team || ""); 
+                        if (!e.mN.includes(c.num || "")) e.mN.push(c.num || ""); 
+                    } 
+                });
                 result = Array.from(mMap.values());
             }
             const w = {"韓國":1, "日本":2, "臺灣":4, "台灣":4};
             result.sort((a,b) => {
                 if(sort === 'default') { let wA = w[a.nat] || 3; let wB = w[b.nat] || 3; return wA - wB; }
+                if(sort === 'birthdayAsc') return parseGirlDOB(a.dob).mmdd - parseGirlDOB(b.dob).mmdd;
                 if(sort === 'ageAsc') return parseGirlDOB(b.dob).num - parseGirlDOB(a.dob).num;
                 if(sort === 'heightDesc') return (parseFloat(b.height) || 0) - (parseFloat(a.height) || 0);
                 if(sort === 'numberAsc') return (parseInt(a.num) || 999) - (parseInt(b.num) || 999);
                 return 0;
             });
             container.innerHTML = result.map(c => {
-                const teams = (c.mT || [c.team]).map(t => t.trim());
-                const cardAccent = (teamThemes[`${teams[0]}_${currentSport === "全部" ? "" : currentSport}`] || teamThemes[teams[0]] || {accent:"#fff"}).accent;
+                const sports = c.mS || [c.sport || ""]; 
+                const teams = (c.mT || [c.team || ""]).map(t => t.trim()).filter(t => t); 
+                const nums = (c.mN || [c.num || ""]).filter(n => n && n !== "-");
+                
+                let tags = sports.filter(s => s).map(s => { 
+                    if(s.includes("棒球")) return `<div class="sport-tag tag-baseball">棒球</div>`; 
+                    if(s.includes("籃球")) return `<div class="sport-tag tag-basketball">籃球</div>`; 
+                    if(s.includes("排球")) return `<div class="sport-tag tag-volleyball">排球</div>`; 
+                    return ''; 
+                }).join('');
+                
+                const lookupTeam = teams[0] || "全部啦啦隊";
+                const lookupSport = currentSport === "全部" ? "" : currentSport;
+                const cardAccent = (teamThemes[`${lookupTeam}_${lookupSport}`] || teamThemes[lookupTeam] || teamThemes["全部啦啦隊"]).accent;
                 const noteText = (c.note || c['備註'] || c.備註 || "").trim();
-                return `<div class="card" style="border-top: 4px solid ${cardAccent};"><div class="photo-area"><div class="sport-tags">${(c.mS || [c.sport]).map(s => `<div class="sport-tag tag-${s.includes("棒")?'baseball':s.includes("籃")?'basketball':'volleyball'}">${s}</div>`).join('')}</div>${c.img ? `<img src="${c.img}" style="width:100%;height:100%;object-fit:cover;object-position:top center;">` : ''}</div><div class="info-section"><div class="header-info"><div><div class="nickname-container"><div class="nickname" style="color:${cardAccent}">${c.nickname}</div>${c.ig?`<a href="${c.ig}" target="_blank" class="ig-link"><svg class="ig-icon"><use xlink:href="#icon-ig"></use></svg></a>`:''}</div><div class="realname">${c.realname}</div></div><div class="number">${(c.mN || [c.num]).join('<br>') || "-"}</div></div><div class="data-grid"><div class="data-row"><span class="data-label">啦啦隊</span><span class="data-value" style="color:${cardAccent}">${teams.join('<br>')}</span></div><div class="data-row"><span class="data-label">國籍</span><span class="data-value">${c.nat}</span></div><div class="data-row"><span class="data-label">生日</span><span class="data-value">${c.dob || "-"}</span></div><div class="data-row"><span class="data-label">星座</span><span class="data-value">${c.zodiac || "-"}</span></div>${noteText?`<div class="data-row note-row"><span class="data-label">備註</span><span class="data-value note-value">${noteText}</span></div>`:''}</div></div></div>`;
+                
+                return `<div class="card" style="border-top: 4px solid ${cardAccent};"><div class="photo-area"><div class="sport-tags">${tags}</div>${c.img ? `<img src="${c.img}" style="width:100%;height:100%;object-fit:cover;object-position:top center;">` : ''}</div><div class="info-section"><div class="header-info"><div><div class="nickname-container"><div class="nickname" style="color:${cardAccent}">${c.nickname}</div>${c.ig?`<a href="${c.ig}" target="_blank" class="ig-link"><svg class="ig-icon"><use xlink:href="#icon-ig"></use></svg></a>`:''}</div><div class="realname">${c.realname}</div></div><div class="number">${nums.join('<br>') || "-"}</div></div><div class="data-grid"><div class="data-row"><span class="data-label">啦啦隊</span><span class="data-value" style="color:${cardAccent}">${teams.join('<br>')}</span></div><div class="data-row"><span class="data-label">國籍</span><span class="data-value">${c.nat || "-"}</span></div><div class="data-row"><span class="data-label">生日</span><span class="data-value">${c.dob || "-"}</span></div><div class="data-row"><span class="data-label">星座</span><span class="data-value">${c.zodiac || "-"}</span></div><div class="data-row"><span class="data-label">身高</span><span class="data-value">${c.height ? c.height + ' cm' : 'N/A'}</span></div>${noteText?`<div class="data-row note-row"><span class="data-label">備註</span><span class="data-value note-value">${noteText}</span></div>`:''}</div></div></div>`;
             }).join('');
         }
         window.onload = loadData;
