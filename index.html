@@ -27,6 +27,55 @@
             display: flex; flex-direction: column;
         }
 
+        /* 鎖定背景滾動 (開場畫面用) */
+        body.no-scroll { overflow: hidden; }
+
+        /* =========================================
+           ✨ 華麗入口畫面 (Landing Page) ✨
+        ========================================= */
+        .landing-page {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(135deg, #050505 0%, #1a0b12 50%, #050a15 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 9999; transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        .landing-page.hidden { opacity: 0; visibility: hidden; }
+        
+        .landing-content { text-align: center; animation: fadeInUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        
+        .landing-title { 
+            font-size: 3.5rem; font-weight: 900; color: #fff; margin-bottom: 10px; 
+            letter-spacing: 6px; text-shadow: 0 0 30px rgba(255,255,255,0.4); 
+        }
+        .landing-subtitle { 
+            font-size: 1.2rem; color: #aaa; margin-bottom: 50px; 
+            letter-spacing: 4px; text-transform: uppercase; font-weight: 500;
+        }
+        .enter-btn {
+            background: transparent; border: 2px solid var(--event-accent); color: var(--event-accent);
+            padding: 14px 40px; font-size: 1.2rem; font-weight: 900; border-radius: 50px;
+            cursor: pointer; transition: all 0.3s; letter-spacing: 3px; outline: none;
+        }
+        .enter-btn:hover { 
+            background: var(--event-accent); color: #000; 
+            box-shadow: 0 0 25px rgba(255, 159, 67, 0.6); transform: translateY(-3px) scale(1.05); 
+        }
+
+        @keyframes fadeInUp { 
+            from { opacity: 0; transform: translateY(30px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        /* --- 手機版開場調整 --- */
+        @media (max-width: 768px) {
+            .landing-title { font-size: 2.2rem; letter-spacing: 4px; }
+            .landing-subtitle { font-size: 0.9rem; margin-bottom: 40px; }
+            .enter-btn { padding: 12px 30px; font-size: 1.1rem; }
+        }
+
+        /* =========================================
+           原本的系統樣式
+        ========================================= */
         .header {
             background-color: #050505; border-bottom: 1px solid var(--border-color);
             padding: 20px 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.6);
@@ -155,6 +204,7 @@
         .data-row { display: flex; justify-content: space-between; font-size: 13px; align-items: center; }
         .data-label { color: var(--text-sub); min-width: 60px; }
         .data-value { font-weight: 700; text-align: right; }
+        
         .note-row { margin-top: 4px; padding-top: 10px; border-top: 1px dashed #333; }
         .note-value { color: var(--event-accent); font-weight: 900; }
 
@@ -183,7 +233,13 @@
         }
     </style>
 </head>
-<body>
+<body class="no-scroll"> <div id="landing-page" class="landing-page">
+        <div class="landing-content">
+            <h1 class="landing-title">台灣啦啦隊資料庫</h1>
+            <p class="landing-subtitle">Taiwan Cheerleader Database</p>
+            <button id="enter-btn" class="enter-btn">進入系統</button>
+        </div>
+    </div>
 
     <svg width="0" height="0" style="position:absolute;">
         <defs>
@@ -241,9 +297,19 @@
             <p>💡 <strong>備註：</strong>資料如需更正或是照片需下架，麻煩請聯繫告知。聯繫信箱：lc559058@gmail.com</p>
             <p>⚠️ <strong>免責聲明：</strong>本網站所有資料版權均屬原球團及所屬經紀公司所有。行程僅供參考。</p>
         </div>
+        </div>
     </footer>
 
     <script>
+        // --- 點擊進入系統邏輯 ---
+        document.getElementById('enter-btn').addEventListener('click', function() {
+            const landing = document.getElementById('landing-page');
+            landing.classList.add('hidden');
+            document.body.classList.remove('no-scroll');
+            // 延遲隱藏 DOM 元素以免影響點擊
+            setTimeout(() => { landing.style.display = 'none'; }, 800);
+        });
+
         const baseSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT9l-hRhzMwcRdyQHsRs_97fja0Gg4RCcDDMk31u-dSbbQmk_JIUmbPTAj2gaNYmb6bYTwUvv4_1IxN/pub?output=csv";
         const girlsGid = "0";
         const eventsGid = "925411186";
@@ -407,10 +473,8 @@
                 const girlsStr = (e.girls || "").toLowerCase(); 
                 const host = (e.host || "").toLowerCase();
                 
-                // 1. 基本比對
                 if (evN.includes(search) || girlsStr.includes(search) || host.includes(search)) return true;
 
-                // 2. 智慧聯動比對：用綽號找本名，再搜尋行程
                 return dbGirls.some(g => {
                     const n = (g.nickname || "").toLowerCase();
                     const r = (g.realname || "").toLowerCase();
@@ -477,22 +541,11 @@
                 return 0;
             });
             container.innerHTML = result.map(c => {
-                const sports = c.mS || [c.sport || ""]; 
-                const teams = (c.mT || [c.team || ""]).map(t => t.trim()).filter(t => t); 
-                const nums = (c.mN || [c.num || ""]).filter(n => n && n !== "-");
-                
-                let tags = sports.filter(s => s).map(s => { 
-                    if(s.includes("棒球")) return `<div class="sport-tag tag-baseball">棒球</div>`; 
-                    if(s.includes("籃球")) return `<div class="sport-tag tag-basketball">籃球</div>`; 
-                    if(s.includes("排球")) return `<div class="sport-tag tag-volleyball">排球</div>`; 
-                    return ''; 
-                }).join('');
-                
-                const lookupTeam = teams[0] || "全部啦啦隊";
-                const lookupSport = currentSport === "全部" ? "" : currentSport;
+                const sports = c.mS || [c.sport || ""]; const teams = (c.mT || [c.team || ""]).map(t => t.trim()).filter(t => t); const nums = (c.mN || [c.num || ""]).filter(n => n && n !== "-");
+                let tags = sports.filter(s => s).map(s => `<div class="sport-tag tag-${s.includes("棒")?'baseball':s.includes("籃")?'basketball':'volleyball'}">${s}</div>`).join('');
+                const lookupTeam = teams[0] || "全部啦啦隊"; const lookupSport = currentSport === "全部" ? "" : currentSport;
                 const cardAccent = (teamThemes[`${lookupTeam}_${lookupSport}`] || teamThemes[lookupTeam] || teamThemes["全部啦啦隊"]).accent;
                 const noteText = (c.note || c['備註'] || c.備註 || "").trim();
-                
                 return `<div class="card" style="border-top: 4px solid ${cardAccent};"><div class="photo-area"><div class="sport-tags">${tags}</div>${c.img ? `<img src="${c.img}" style="width:100%;height:100%;object-fit:cover;object-position:top center;">` : ''}</div><div class="info-section"><div class="header-info"><div><div class="nickname-container"><div class="nickname" style="color:${cardAccent}">${c.nickname}</div>${c.ig?`<a href="${c.ig}" target="_blank" class="ig-link"><svg class="ig-icon"><use xlink:href="#icon-ig"></use></svg></a>`:''}</div><div class="realname">${c.realname}</div></div><div class="number">${nums.join('<br>') || "-"}</div></div><div class="data-grid"><div class="data-row"><span class="data-label">啦啦隊</span><span class="data-value" style="color:${cardAccent}">${teams.join('<br>')}</span></div><div class="data-row"><span class="data-label">國籍</span><span class="data-value">${c.nat || "-"}</span></div><div class="data-row"><span class="data-label">生日</span><span class="data-value">${c.dob || "-"}</span></div><div class="data-row"><span class="data-label">星座</span><span class="data-value">${c.zodiac || "-"}</span></div><div class="data-row"><span class="data-label">身高</span><span class="data-value">${c.height ? c.height + ' cm' : 'N/A'}</span></div>${noteText?`<div class="data-row note-row"><span class="data-label">備註</span><span class="data-value note-value">${noteText}</span></div>`:''}</div></div></div>`;
             }).join('');
         }
