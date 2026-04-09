@@ -17,7 +17,7 @@
             --border-color: #2a2a2a;
             --event-accent: #ff9f43;
             --schedule-accent: #00cec9;
-            --fav-accent: #ff4757; /* 我的最愛專屬紅色 */
+            --fav-accent: #ff4757;
         }
 
         * { box-sizing: border-box; font-family: 'Noto Sans TC', sans-serif; margin: 0; padding: 0; }
@@ -29,7 +29,8 @@
             display: flex; flex-direction: column; scroll-behavior: smooth;
         }
 
-        body.no-scroll { overflow: hidden; }
+        /* 鎖定背景滾動 */
+        body.no-scroll { overflow: hidden !important; }
 
         /* =========================================
            ✨ 華麗入口畫面 ✨
@@ -38,13 +39,17 @@
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: linear-gradient(135deg, #050505 0%, #1a0b12 50%, #050a15 100%);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 9999; transition: opacity 0.6s ease, visibility 0.6s ease;
+            z-index: 99999; /* 確保在最上層 */
+            transition: opacity 0.5s ease;
         }
-        .landing-page.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
         .landing-content { text-align: center; animation: fadeInUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
         .landing-title { font-size: 3.5rem; font-weight: 900; color: #fff; margin-bottom: 10px; letter-spacing: 6px; text-shadow: 0 0 30px rgba(255,255,255,0.4); }
         .landing-subtitle { font-size: 1.2rem; color: #aaa; margin-bottom: 50px; letter-spacing: 4px; text-transform: uppercase; font-weight: 500; }
-        .enter-btn { background: transparent; border: 2px solid var(--event-accent); color: var(--event-accent); padding: 14px 40px; font-size: 1.2rem; font-weight: 900; border-radius: 50px; cursor: pointer; transition: all 0.3s; letter-spacing: 3px; outline: none; }
+        .enter-btn { 
+            background: transparent; border: 2px solid var(--event-accent); color: var(--event-accent); 
+            padding: 14px 40px; font-size: 1.2rem; font-weight: 900; border-radius: 50px; 
+            cursor: pointer; transition: all 0.3s; letter-spacing: 3px; outline: none; 
+        }
         .enter-btn:hover { background: var(--event-accent); color: #000; box-shadow: 0 0 25px rgba(255, 159, 67, 0.6); transform: translateY(-3px) scale(1.05); }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -75,19 +80,14 @@
         .league-group { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 10px; }
         .league-title { font-size: 11px; font-weight: 900; color: #555; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #222; width: 80%; text-align: center; padding-bottom: 5px; margin: 10px 0; }
         
-        .team-tabs { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; padding: 15px 0; border-top: 1px dashed var(--border-color); }
+        .team-tabs { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; padding-top: 15px; border-top: 1px dashed var(--border-color); }
         .tab-btn { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); color: var(--text-sub); cursor: pointer; font-size: 13px; font-weight: 700; border-radius: 12px; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-width: 110px; height: 90px; padding: 10px; }
         .tab-btn:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
         .tab-logo { width: 35px; height: 35px; object-fit: contain; display: block; }
         .tab-btn.active { background-color: var(--team-accent, #fff); color: #000000; border-color: var(--team-accent, #fff); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
 
-        /* ✨ 吸頂浮動搜尋列 (Sticky) ✨ */
-        .sticky-filter-wrapper {
-            position: sticky; top: 0; z-index: 40; 
-            background: rgba(5, 5, 5, 0.95); backdrop-filter: blur(10px);
-            padding: 15px 20px; border-bottom: 1px solid var(--border-color);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-        }
+        /* ✨ 吸頂浮動搜尋列 ✨ */
+        .sticky-filter-wrapper { position: sticky; top: 0; z-index: 40; background: rgba(5, 5, 5, 0.95); backdrop-filter: blur(10px); padding: 15px 20px; border-bottom: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
         .filters { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; max-width: 1200px; margin: 0 auto; }
         .filters input, .filters select { background-color: #111; border: 1px solid var(--border-color); color: var(--text-main); padding: 9px 14px; font-size: 13px; border-radius: 6px; outline: none; min-width: 130px; transition: border-color 0.2s; }
         .filters input:focus, .filters select:focus { border-color: #777; }
@@ -97,40 +97,18 @@
         /* =========================================
            ✨ 回到頂部按鈕 ✨
         ========================================= */
-        .back-to-top {
-            position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px;
-            background: var(--team-accent, #fff); color: #000; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; font-size: 24px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5); cursor: pointer; z-index: 90;
-            opacity: 0; visibility: hidden; transition: all 0.3s; transform: translateY(20px);
-        }
+        .back-to-top { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: var(--team-accent, #fff); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); cursor: pointer; z-index: 90; opacity: 0; visibility: hidden; transition: all 0.3s; transform: translateY(20px); }
         .back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
         .back-to-top:hover { transform: scale(1.1); }
 
         /* =========================================
            ✨ 個人詳細彈窗 (Modal) ✨
         ========================================= */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
-            display: flex; align-items: center; justify-content: center;
-            z-index: 10000; opacity: 0; visibility: hidden; transition: all 0.3s ease;
-            padding: 20px;
-        }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; visibility: hidden; transition: all 0.3s ease; padding: 20px; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal-content {
-            background: #151515; border: 1px solid #333; border-radius: 20px;
-            width: 100%; max-width: 450px; max-height: 90vh; overflow-y: auto;
-            position: relative; transform: scale(0.9); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-        }
+        .modal-content { background: #151515; border: 1px solid #333; border-radius: 20px; width: 100%; max-width: 450px; max-height: 90vh; overflow-y: auto; position: relative; transform: scale(0.9); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
         .modal-overlay.active .modal-content { transform: scale(1); }
-        .modal-close {
-            position: absolute; top: 15px; right: 15px; width: 35px; height: 35px;
-            background: rgba(0,0,0,0.5); color: #fff; border: none; border-radius: 50%;
-            font-size: 20px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center;
-            transition: background 0.2s;
-        }
+        .modal-close { position: absolute; top: 15px; right: 15px; width: 35px; height: 35px; background: rgba(0,0,0,0.5); color: #fff; border: none; border-radius: 50%; font-size: 20px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
         .modal-close:hover { background: var(--fav-accent); }
         .modal-photo { width: 100%; height: 400px; object-fit: cover; object-position: top center; border-radius: 20px 20px 0 0; border-bottom: 2px solid var(--modal-accent, #fff); }
         .modal-body { padding: 25px; }
@@ -142,15 +120,9 @@
         .modal-data-row { display: flex; justify-content: space-between; font-size: 15px; }
         .modal-data-label { color: #888; }
         .modal-data-value { font-weight: 700; color: #fff; text-align: right; }
-        .modal-ig-btn {
-            display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%;
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-            color: #fff; text-decoration: none; padding: 12px; border-radius: 12px; font-weight: 900; font-size: 16px;
-            margin-top: 20px; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(220, 39, 67, 0.4);
-        }
+        .modal-ig-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: #fff; text-decoration: none; padding: 12px; border-radius: 12px; font-weight: 900; font-size: 16px; margin-top: 20px; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(220, 39, 67, 0.4); }
         .modal-ig-btn:hover { transform: scale(1.03); }
         .modal-ig-btn svg { width: 20px; height: 20px; fill: #fff; }
-
 
         /* =========================================
            ✨ 班表專屬大廳 ✨
@@ -182,7 +154,7 @@
         .schedule-table th:first-child { border-right: 1px solid #222; position: sticky; left: 0; z-index: 3; width: 110px; min-width: 110px; vertical-align: middle; }
         .schedule-table th:not(:first-child), .schedule-table td:not(:first-child) { width: 95px; min-width: 95px; }
 
-        .schedule-girl-col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 8px; height: 100%; }
+        .schedule-girl-col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 8px; height: 100%; cursor: pointer; }
         .schedule-girl-img { width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 2px solid #444; background: #222; transition: all 0.2s; }
         .schedule-table th:hover .schedule-girl-img { border-color: var(--team-accent); transform: scale(1.1); box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
         .schedule-girl-name-container { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 4px; width: 100%; min-height: 28px; }
@@ -202,13 +174,8 @@
         .card { background-color: var(--team-light); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.2); cursor: pointer; position: relative; }
         .card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); border-color: #444; }
         
-        /* ✨ 愛心收藏按鈕 ✨ */
-        .fav-btn {
-            position: absolute; top: 12px; right: 12px; width: 36px; height: 36px; 
-            background: rgba(0,0,0,0.5); border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; z-index: 10; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+        /* 愛心收藏按鈕 */
+        .fav-btn { position: absolute; top: 12px; right: 12px; width: 36px; height: 36px; background: rgba(0,0,0,0.5); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .fav-btn:hover { transform: scale(1.1); background: rgba(0,0,0,0.7); }
         .fav-icon { width: 20px; height: 20px; fill: none; stroke: #fff; stroke-width: 2; transition: all 0.2s; }
         .fav-btn.active .fav-icon { fill: var(--fav-accent); stroke: var(--fav-accent); animation: popIn 0.4s; }
@@ -285,6 +252,7 @@
             .schedule-team-btn { width: calc(50% - 7.5px); flex-direction: column; text-align: center; gap: 10px; padding: 15px 10px; }
             .modal-photo { height: 300px; }
             .modal-content { max-width: 90%; }
+            .sticky-filter-wrapper { padding: 10px; }
         }
     </style>
 </head>
@@ -294,7 +262,7 @@
         <div class="landing-content">
             <h1 class="landing-title">台灣啦啦隊資料庫</h1>
             <p class="landing-subtitle">Taiwan Cheerleader Database</p>
-            <button id="enter-btn" class="enter-btn" onclick="enterSystem()">進入系統</button>
+            <button id="enter-btn" class="enter-btn" onclick="document.getElementById('landing-page').style.opacity='0'; setTimeout(()=>{document.getElementById('landing-page').style.display='none'; document.body.classList.remove('no-scroll'); document.body.style.overflow='auto';},500);">進入系統</button>
         </div>
     </div>
 
@@ -375,18 +343,18 @@
     </footer>
 
     <script>
-        // --- 初始化收藏清單 (讀取手機/瀏覽器資料) ---
+        // --- 初始化收藏清單 ---
         let myFavorites = JSON.parse(localStorage.getItem('cheer_favorites')) || [];
 
         function toggleFavorite(name, event) {
-            event.stopPropagation(); // 防止點擊愛心時打開 Modal
+            event.stopPropagation();
             if (myFavorites.includes(name)) {
                 myFavorites = myFavorites.filter(n => n !== name);
             } else {
                 myFavorites.push(name);
             }
             localStorage.setItem('cheer_favorites', JSON.stringify(myFavorites));
-            renderContent(); // 重新渲染更新愛心狀態
+            renderContent(); 
         }
 
         // --- 滾動監聽：回到頂部按鈕 ---
@@ -439,7 +407,7 @@
             `;
 
             document.getElementById('girl-modal').classList.add('active');
-            document.body.classList.add('no-scroll'); // 防止背景滾動
+            document.body.classList.add('no-scroll'); 
         }
 
         function closeModal() {
@@ -560,7 +528,6 @@
                         currentTeam = "全部啦啦隊"; 
                     }
                     
-                    // 根據模式決定是否顯示過濾器
                     document.getElementById('extra-filters').style.display = (currentMode === 'girls' || currentMode === 'favorites') ? 'flex' : 'none';
                     document.getElementById('filter-bar').style.display = (currentMode === 'schedule') ? 'none' : 'block';
                     
@@ -725,8 +692,7 @@
                 let g = dbGirls.find(girl => (girl.realname || "").trim() === name || (girl.nickname || "").trim() === name);
                 let showReal = g ? g.realname : name;
                 let showNick = (g && g.nickname && g.nickname !== g.realname) ? g.nickname : "";
-                // 點擊班表頭像也可以打開個人資訊
-                html += `<th><div class="schedule-girl-col" style="cursor:pointer;" onclick="openModal('${showReal}')">${g?`<img src="${g.img}" class="schedule-girl-img">`:`<div class="schedule-girl-img" style="display:flex;align-items:center;justify-content:center;font-size:20px;">👤</div>`}<div class="schedule-girl-name-container"><span class="schedule-girl-name">${showReal}</span>${showNick?`<span class="schedule-girl-nickname">${showNick}</span>`:''}</div></div></th>`;
+                html += `<th><div class="schedule-girl-col" onclick="openModal('${showReal}')">${g?`<img src="${g.img}" class="schedule-girl-img">`:`<div class="schedule-girl-img" style="display:flex;align-items:center;justify-content:center;font-size:20px;">👤</div>`}<div class="schedule-girl-name-container"><span class="schedule-girl-name">${showReal}</span>${showNick?`<span class="schedule-girl-nickname">${showNick}</span>`:''}</div></div></th>`;
             });
             html += `</tr></thead><tbody>`;
             dates.forEach(dNum => {
@@ -769,9 +735,7 @@
         function renderGirls(container, search) {
             const nat = document.getElementById('natFilter').value, zodiac = document.getElementById('zodiacFilter').value, sort = document.getElementById('sortFilter').value;
             let result = dbGirls.filter(c => {
-                // 🌟 我的最愛模式過濾
                 if (currentMode === 'favorites' && !myFavorites.includes(c.realname)) return false;
-
                 const ms = currentSport === "全部" || (c.sport || "").includes(currentSport);
                 const mt = currentTeam === "全部啦啦隊" || (c.team || "").trim() === currentTeam;
                 const mS = search === "" || (c.nickname || "").toLowerCase().includes(search) || (c.realname || "").toLowerCase().includes(search);
@@ -815,11 +779,9 @@
                 <div class="card" style="border-top: 4px solid ${cardAccent};" onclick="openModal('${c.realname}')">
                     <div class="photo-area">
                         <div class="sport-tags">${(c.mS||[c.sport]).map(s=>`<div class="sport-tag tag-${s.includes("棒")?'baseball':s.includes("籃")?'basketball':'volleyball'}">${s}</div>`).join('')}</div>
-                        
                         <div class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${c.realname}', event)">
                             <svg class="fav-icon" viewBox="0 0 24 24"><use xlink:href="#icon-heart"></use></svg>
                         </div>
-                        
                         ${c.img?`<img src="${c.img}" style="width:100%;height:100%;object-fit:cover;object-position:top center;">`:''}
                     </div>
                     <div class="info-section">
