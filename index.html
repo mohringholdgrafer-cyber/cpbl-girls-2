@@ -74,7 +74,9 @@
             background-color: #111; border: 1px solid var(--border-color);
             color: var(--text-main); padding: 9px 14px; font-size: 13px;
             border-radius: 6px; outline: none; min-width: 130px;
+            transition: border-color 0.2s;
         }
+        .filters input:focus, .filters select:focus { border-color: #777; }
 
         #main-content { flex: 1; }
 
@@ -153,7 +155,6 @@
         .data-row { display: flex; justify-content: space-between; font-size: 13px; align-items: center; }
         .data-label { color: var(--text-sub); min-width: 60px; }
         .data-value { font-weight: 700; text-align: right; }
-        
         .note-row { margin-top: 4px; padding-top: 10px; border-top: 1px dashed #333; }
         .note-value { color: var(--event-accent); font-weight: 900; }
 
@@ -237,7 +238,7 @@
 
     <footer class="footer">
         <div class="footer-content">
-            <p>💡 <strong>備註：</strong>資料如需更正或是照片需下架，麻煩請聯繫告知。聯繫信箱：lc559058@gmail.com</p>
+            <p>💡 <strong>練習生備註：</strong>部分女孩目前為「練習生」或「培訓生」身分，實際登場與轉正安排請依各球團公告為主。</p>
             <p>⚠️ <strong>免責聲明：</strong>本網站所有資料版權均屬原球團及所屬經紀公司所有。行程僅供參考。</p>
         </div>
     </footer>
@@ -249,12 +250,14 @@
 
         const teamThemes = {
             "全部啦啦隊": { dark: "#0f0f0f", light: "#1a1a1a", accent: "#ffffff", logo: "", noLogo: false, league: "" },
+            
             "Wing Stars_棒球": { dark: "#05120a", light: "#0a2414", accent: "#00e676", logo: "images/winstars_logo.png", noLogo: false },
             "Passion Sisters_棒球": { dark: "#141200", light: "#292400", accent: "#ffea00", logo: "images/brothers_logo.png", noLogo: false },
             "Fubon Angels_棒球": { dark: "#020812", light: "#04152b", accent: "#33a1ff", logo: "images/fubon_logo.png", noLogo: false },
             "Uni-Girls": { dark: "#140800", light: "#291000", accent: "#ff8c00", logo: "images/unilions_logo.png", noLogo: false },
             "Rakuten Girls": { dark: "#140202", light: "#2e0505", accent: "#ff3333", logo: "images/rakuten_logo.png", noLogo: false },
             "Dragon Beauties": { dark: "#170205", light: "#2e050b", accent: "#ff4d6d", logo: "images/dragons_logo.png", noLogo: false },
+
             "Formosa Sexy": { dark: "#000000", light: "#1a1a1a", accent: "#39ff14", logo: "", noLogo: true, league: "TPBL" },
             "Passion Sisters_籃球": { dark: "#000033", light: "#000066", accent: "#ffea00", logo: "", noLogo: true, league: "TPBL" },
             "Muse Girls": { dark: "#1a1029", light: "#2a1a3a", accent: "#d8bfd8", logo: "", noLogo: true, league: "TPBL" },
@@ -262,10 +265,12 @@
             "Leopard Girls": { dark: "#260033", light: "#3a004f", accent: "#ffffff", logo: "", noLogo: true, league: "TPBL" },
             "New Taipei Queens": { dark: "#000000", light: "#1a1a1a", accent: "#ffff00", logo: "", noLogo: true, league: "TPBL" },
             "Aqua Mermaids": { dark: "#001a4d", light: "#04152b", accent: "#00aaff", logo: "", noLogo: true, league: "TPBL" },
+
             "Pilots Crew": { dark: "#1a0800", light: "#2a1a05", accent: "#ff8c00", logo: "", noLogo: true, league: "P. LEAGUE+" },
             "Youngkey Girls": { dark: "#001a00", light: "#0a240a", accent: "#00ff00", logo: "", noLogo: true, league: "P. LEAGUE+" },
             "Wing Stars_籃球": { dark: "#1a050a", light: "#2e1a1e", accent: "#ffb6c1", logo: "", noLogo: true, league: "P. LEAGUE+" },
             "Fubon Angels_籃球": { dark: "#001f33", light: "#0a2e4a", accent: "#add8e6", logo: "", noLogo: true, league: "P. LEAGUE+" },
+
             "Tokki Cutie": { dark: "#1a0f00", light: "#2e1a05", accent: "#ff8c00", logo: "", noLogo: true },
             "Little witches": { dark: "#001414", light: "#002b2b", accent: "#00d2d3", logo: "", noLogo: true },
             "Peach Girls": { dark: "#1a000d", light: "#2e0518", accent: "#d63384", logo: "", noLogo: true },
@@ -395,19 +400,36 @@
         function renderEvents(container, search) {
             const now = new Date();
             const todayNum = parseInt(`${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`);
+            
             let filtered = dbEvents.filter(e => {
-                const evN = (e.eventname || "").toLowerCase(); const girls = (e.girls || "").toLowerCase(); const host = (e.host || "").toLowerCase();
-                return search === "" || evN.includes(search) || girls.includes(search) || host.includes(search);
+                if (search === "") return true;
+                const evN = (e.eventname || "").toLowerCase(); 
+                const girlsStr = (e.girls || "").toLowerCase(); 
+                const host = (e.host || "").toLowerCase();
+                
+                // 1. 基本比對
+                if (evN.includes(search) || girlsStr.includes(search) || host.includes(search)) return true;
+
+                // 2. 智慧聯動比對：用綽號找本名，再搜尋行程
+                return dbGirls.some(g => {
+                    const n = (g.nickname || "").toLowerCase();
+                    const r = (g.realname || "").toLowerCase();
+                    if (n.includes(search) || r.includes(search)) {
+                        return girlsStr.includes(r) || girlsStr.includes(n);
+                    }
+                    return false;
+                });
             });
+
             filtered.sort((a,b) => a.safeDate.num - b.safeDate.num);
             const upcoming = filtered.filter(e => e.safeDate.num >= todayNum);
             const expired = filtered.filter(e => e.safeDate.num < todayNum).reverse();
 
             const buildItem = (e, isExp) => {
                 const day = String(e.safeDate.day).padStart(2,'0');
-                // 🌟 改良：如果成員不在資料庫中，依然顯示名字與預設頭像
                 const attendHtml = (e.girls || "").split(',').map(n => {
-                    const name = n.trim(); if(!name) return '';
+                    const name = n.trim(); 
+                    if(!name) return '';
                     const g = dbGirls.find(girl => (girl.realname || "").trim() === name || (girl.nickname || "").trim() === name);
                     if (!g) return `<div class="girl-hero-card"><div class="girl-hero-img" style="display:flex;align-items:center;justify-content:center;background:#222;color:#555;font-size:24px;border-color:#333;">👤</div><span class="girl-hero-name" style="color:#888;">${name}</span></div>`;
                     return `<div class="girl-hero-card"><img src="${g.img}" class="girl-hero-img"><span class="girl-hero-name">${g.realname}</span></div>`;
@@ -433,9 +455,15 @@
             if (currentSport === "全部" && currentTeam === "全部啦啦隊") {
                 const mMap = new Map();
                 result.forEach(c => { 
-                    const k = (c.realname || "").trim(); if (!k) return;
+                    const k = (c.realname || "").trim(); 
+                    if (!k) return;
                     if (!mMap.has(k)) mMap.set(k, { ...c, mS: [c.sport || ""], mT: [c.team || ""], mN: [c.num || ""] }); 
-                    else { let e = mMap.get(k); if (!e.mS.includes(c.sport || "")) e.mS.push(c.sport || ""); if (!e.mT.includes(c.team || "")) e.mT.push(c.team || ""); if (!e.mN.includes(c.num || "")) e.mN.push(c.num || ""); } 
+                    else { 
+                        let e = mMap.get(k); 
+                        if (!e.mS.includes(c.sport || "")) e.mS.push(c.sport || ""); 
+                        if (!e.mT.includes(c.team || "")) e.mT.push(c.team || ""); 
+                        if (!e.mN.includes(c.num || "")) e.mN.push(c.num || ""); 
+                    } 
                 });
                 result = Array.from(mMap.values());
             }
@@ -449,11 +477,22 @@
                 return 0;
             });
             container.innerHTML = result.map(c => {
-                const sports = c.mS || [c.sport || ""]; const teams = (c.mT || [c.team || ""]).map(t => t.trim()).filter(t => t); const nums = (c.mN || [c.num || ""]).filter(n => n && n !== "-");
-                let tags = sports.filter(s => s).map(s => `<div class="sport-tag tag-${s.includes("棒")?'baseball':s.includes("籃")?'basketball':'volleyball'}">${s}</div>`).join('');
-                const lookupTeam = teams[0] || "全部啦啦隊"; const lookupSport = currentSport === "全部" ? "" : currentSport;
+                const sports = c.mS || [c.sport || ""]; 
+                const teams = (c.mT || [c.team || ""]).map(t => t.trim()).filter(t => t); 
+                const nums = (c.mN || [c.num || ""]).filter(n => n && n !== "-");
+                
+                let tags = sports.filter(s => s).map(s => { 
+                    if(s.includes("棒球")) return `<div class="sport-tag tag-baseball">棒球</div>`; 
+                    if(s.includes("籃球")) return `<div class="sport-tag tag-basketball">籃球</div>`; 
+                    if(s.includes("排球")) return `<div class="sport-tag tag-volleyball">排球</div>`; 
+                    return ''; 
+                }).join('');
+                
+                const lookupTeam = teams[0] || "全部啦啦隊";
+                const lookupSport = currentSport === "全部" ? "" : currentSport;
                 const cardAccent = (teamThemes[`${lookupTeam}_${lookupSport}`] || teamThemes[lookupTeam] || teamThemes["全部啦啦隊"]).accent;
                 const noteText = (c.note || c['備註'] || c.備註 || "").trim();
+                
                 return `<div class="card" style="border-top: 4px solid ${cardAccent};"><div class="photo-area"><div class="sport-tags">${tags}</div>${c.img ? `<img src="${c.img}" style="width:100%;height:100%;object-fit:cover;object-position:top center;">` : ''}</div><div class="info-section"><div class="header-info"><div><div class="nickname-container"><div class="nickname" style="color:${cardAccent}">${c.nickname}</div>${c.ig?`<a href="${c.ig}" target="_blank" class="ig-link"><svg class="ig-icon"><use xlink:href="#icon-ig"></use></svg></a>`:''}</div><div class="realname">${c.realname}</div></div><div class="number">${nums.join('<br>') || "-"}</div></div><div class="data-grid"><div class="data-row"><span class="data-label">啦啦隊</span><span class="data-value" style="color:${cardAccent}">${teams.join('<br>')}</span></div><div class="data-row"><span class="data-label">國籍</span><span class="data-value">${c.nat || "-"}</span></div><div class="data-row"><span class="data-label">生日</span><span class="data-value">${c.dob || "-"}</span></div><div class="data-row"><span class="data-label">星座</span><span class="data-value">${c.zodiac || "-"}</span></div><div class="data-row"><span class="data-label">身高</span><span class="data-value">${c.height ? c.height + ' cm' : 'N/A'}</span></div>${noteText?`<div class="data-row note-row"><span class="data-label">備註</span><span class="data-value note-value">${noteText}</span></div>`:''}</div></div></div>`;
             }).join('');
         }
