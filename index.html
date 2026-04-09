@@ -28,6 +28,7 @@
             display: flex; flex-direction: column;
         }
 
+        /* 鎖定背景滾動 (開場畫面用) */
         body.no-scroll { overflow: hidden; }
 
         /* =========================================
@@ -37,16 +38,34 @@
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: linear-gradient(135deg, #050505 0%, #1a0b12 50%, #050a15 100%);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 9999; transition: opacity 0.8s ease, visibility 0.8s ease;
+            z-index: 9999; transition: opacity 0.6s ease, visibility 0.6s ease;
         }
-        .landing-page.hidden { opacity: 0; visibility: hidden; }
+        .landing-page.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        
         .landing-content { text-align: center; animation: fadeInUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-        .landing-title { font-size: 3.5rem; font-weight: 900; color: #fff; margin-bottom: 10px; letter-spacing: 6px; text-shadow: 0 0 30px rgba(255,255,255,0.4); }
-        .landing-subtitle { font-size: 1.2rem; color: #aaa; margin-bottom: 50px; letter-spacing: 4px; text-transform: uppercase; font-weight: 500; }
-        .enter-btn { background: transparent; border: 2px solid var(--event-accent); color: var(--event-accent); padding: 14px 40px; font-size: 1.2rem; font-weight: 900; border-radius: 50px; cursor: pointer; transition: all 0.3s; letter-spacing: 3px; outline: none; }
-        .enter-btn:hover { background: var(--event-accent); color: #000; box-shadow: 0 0 25px rgba(255, 159, 67, 0.6); transform: translateY(-3px) scale(1.05); }
+        
+        .landing-title { 
+            font-size: 3.5rem; font-weight: 900; color: #fff; margin-bottom: 10px; 
+            letter-spacing: 6px; text-shadow: 0 0 30px rgba(255,255,255,0.4); 
+        }
+        .landing-subtitle { 
+            font-size: 1.2rem; color: #aaa; margin-bottom: 50px; 
+            letter-spacing: 4px; text-transform: uppercase; font-weight: 500;
+        }
+        .enter-btn {
+            background: transparent; border: 2px solid var(--event-accent); color: var(--event-accent);
+            padding: 14px 40px; font-size: 1.2rem; font-weight: 900; border-radius: 50px;
+            cursor: pointer; transition: all 0.3s; letter-spacing: 3px; outline: none;
+        }
+        .enter-btn:hover { 
+            background: var(--event-accent); color: #000; 
+            box-shadow: 0 0 25px rgba(255, 159, 67, 0.6); transform: translateY(-3px) scale(1.05); 
+        }
 
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { 
+            from { opacity: 0; transform: translateY(30px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
 
         /* =========================================
            主系統 Header 
@@ -179,7 +198,7 @@
             .date-month { margin-bottom: 0; }
             .girl-hero-img { width: 60px; height: 60px; }
             .girl-hero-card { width: 65px; }
-            .tab-btn { min-width: calc(33% - 6px); padding: 12px; }
+            .tab-btn { min-width: calc(33% - 6px); height: auto; padding: 12px; }
             .schedule-matrix-container { padding: 0 10px; }
         }
     </style>
@@ -190,7 +209,7 @@
         <div class="landing-content">
             <h1 class="landing-title">台灣啦啦隊資料庫</h1>
             <p class="landing-subtitle">Taiwan Cheerleader Database</p>
-            <button id="enter-btn" class="enter-btn">進入系統</button>
+            <button id="enter-btn" class="enter-btn" onclick="enterSystem()">進入系統</button>
         </div>
     </div>
 
@@ -217,28 +236,15 @@
                 <button class="sport-btn" data-mode="girls" data-sport="籃球">職業籃球</button>
                 <button class="sport-btn" data-mode="girls" data-sport="排球">職業排球</button>
                 <button class="sport-btn btn-schedule" data-mode="schedule">官方應援班表</button>
-                <button class="sport-btn btn-event" data-mode="events">外籍啦啦隊活動行程</button>
+                <button class="sport-btn btn-event" data-mode="events">外籍啦啦隊活動</button>
             </div>
             <div class="team-tabs" id="tabs-container"></div>
             <div class="filters">
                 <input type="text" id="searchInput" placeholder="搜尋姓名或活動...">
                 <div id="extra-filters" style="display: flex; gap: 10px;">
-                    <select id="natFilter">
-                        <option value="all">所有國籍</option>
-                        <option value="韓國">韓國</option><option value="日本">日本</option>
-                        <option value="臺灣">臺灣</option><option value="其他">其他</option>
-                    </select>
-                    <select id="zodiacFilter">
-                        <option value="all">所有星座</option>
-                        <option value="牡羊座">牡羊座</option><option value="金牛座">金牛座</option><option value="雙子座">雙子座</option><option value="巨蟹座">巨蟹座</option><option value="獅子座">獅子座</option><option value="處女座">處女座</option><option value="天秤座">天秤座</option><option value="天蠍座">天蠍座</option><option value="射手座">射手座</option><option value="摩羯座">摩羯座</option><option value="水瓶座">水瓶座</option><option value="雙魚座">雙魚座</option>
-                    </select>
-                    <select id="sortFilter">
-                        <option value="default">預設排序</option>
-                        <option value="birthdayAsc">生日 (月份先後)</option>
-                        <option value="ageAsc">年齡 (年輕到資深)</option>
-                        <option value="heightDesc">身高 (高到矮)</option>
-                        <option value="numberAsc">背號 (小到大)</option>
-                    </select>
+                    <select id="natFilter"><option value="all">所有國籍</option><option value="韓國">韓國</option><option value="日本">日本</option><option value="臺灣">臺灣</option><option value="其他">其他</option></select>
+                    <select id="zodiacFilter"><option value="all">所有星座</option><option value="牡羊座">牡羊座</option><option value="金牛座">金牛座</option><option value="雙子座">雙子座</option><option value="巨蟹座">巨蟹座</option><option value="獅子座">獅子座</option><option value="處女座">處女座</option><option value="天秤座">天秤座</option><option value="天蠍座">天蠍座</option><option value="射手座">射手座</option><option value="摩羯座">摩羯座</option><option value="水瓶座">水瓶座</option><option value="雙魚座">雙魚座</option></select>
+                    <select id="sortFilter"><option value="default">預設排序</option><option value="birthdayAsc">生日 (月份先後)</option><option value="ageAsc">年齡 (年輕到資深)</option><option value="heightDesc">身高 (高到矮)</option><option value="numberAsc">背號 (小到大)</option></select>
                 </div>
             </div>
         </div>
@@ -258,11 +264,20 @@
     </footer>
 
     <script>
+        // 🌟 絕對觸發：進入系統函數
+        function enterSystem() {
+            const landing = document.getElementById('landing-page');
+            if(landing) {
+                landing.classList.add('hidden');
+                document.body.classList.remove('no-scroll');
+                // 等待動畫結束後隱藏元素
+                setTimeout(() => { landing.style.display = 'none'; }, 600);
+            }
+        }
+
         const baseSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT9l-hRhzMwcRdyQHsRs_97fja0Gg4RCcDDMk31u-dSbbQmk_JIUmbPTAj2gaNYmb6bYTwUvv4_1IxN/pub?output=csv";
         const girlsGid = "0";
         const eventsGid = "925411186";
-        
-        // 🚨🚨🚨 在這裡填入你新建的「班表」分頁 GID！ 🚨🚨🚨
         const schedulesGid = "1702657458"; 
 
         const teamThemes = {
@@ -337,18 +352,14 @@
                         complete: resEv => { 
                             dbEvents = resEv.data.map(e => { e.safeDate = parseEventDate(e.date); return e; }).filter(e => e.safeDate !== null); 
                             
-                            if(schedulesGid !== "請填入你的班表GID") {
-                                Papa.parse(`${baseSheetUrl}&gid=${schedulesGid}&t=${t}`, {
-                                    download: true, header: true, skipEmptyLines: true,
-                                    transformHeader: h => h.trim().toLowerCase().replace(/[\s_]/g, ""),
-                                    complete: resSch => {
-                                        dbSchedules = resSch.data.map(s => { s.safeDate = parseEventDate(s.date); return s; }).filter(s => s.safeDate !== null);
-                                        init();
-                                    }
-                                });
-                            } else {
-                                init();
-                            }
+                            Papa.parse(`${baseSheetUrl}&gid=${schedulesGid}&t=${t}`, {
+                                download: true, header: true, skipEmptyLines: true,
+                                transformHeader: h => h.trim().toLowerCase().replace(/[\s_]/g, ""),
+                                complete: resSch => {
+                                    dbSchedules = resSch.data.map(s => { s.safeDate = parseEventDate(s.date); return s; }).filter(s => s.safeDate !== null);
+                                    init();
+                                }
+                            });
                         }
                     });
                 }
@@ -387,6 +398,7 @@
 
         function updateTeamTabs() {
             const container = document.getElementById('tabs-container');
+            
             if (currentMode === 'events' || (currentMode === 'girls' && currentSport === "全部")) { 
                 container.style.display = 'none'; renderContent(); return; 
             }
@@ -459,11 +471,6 @@
         }
 
         function renderSchedule(container) {
-            if (schedulesGid === "請填入你的班表GID") {
-                container.innerHTML = '<div style="text-align:center; padding:50px; color:#888;">請先在程式碼中填寫班表的 GID 才能啟動此功能喔！</div>';
-                return;
-            }
-
             if (currentTeam === "全部啦啦隊" || currentSport === "全部") {
                 container.innerHTML = '<div style="text-align:center; padding:50px; color:#888;">👆 請先在上方選擇【體育類別】與【特定球隊】，解鎖專屬應援班表！</div>';
                 return;
@@ -526,9 +533,7 @@
                 const evN = (e.eventname || "").toLowerCase(); 
                 const girlsStr = (e.girls || "").toLowerCase(); 
                 const host = (e.host || "").toLowerCase();
-                
                 if (evN.includes(search) || girlsStr.includes(search) || host.includes(search)) return true;
-
                 return dbGirls.some(g => {
                     const n = (g.nickname || "").toLowerCase();
                     const r = (g.realname || "").toLowerCase();
