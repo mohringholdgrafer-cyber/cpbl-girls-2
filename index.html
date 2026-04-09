@@ -101,26 +101,38 @@
         #main-content { flex: 1; }
 
         /* =========================================
-           ✨ 官方動態班表矩陣 ✨
+           ✨ 官方動態班表矩陣 (絕對對齊版) ✨
         ========================================= */
         .schedule-matrix-container { max-width: 1100px; width: 100%; margin: 30px auto 50px; padding: 0 20px; display: flex; flex-direction: column; gap: 20px; }
         .schedule-wrapper { width: 100%; overflow-x: auto; background: #111; border-radius: 16px; border: 1px solid #222; box-shadow: 0 8px 30px rgba(0,0,0,0.4); padding-bottom: 5px; }
         
-        .schedule-table { width: 100%; border-collapse: collapse; text-align: center; min-width: 700px; }
-        .schedule-table th, .schedule-table td { padding: 15px 10px; border-bottom: 1px solid #222; }
-        .schedule-table th { background: linear-gradient(180deg, #1a1a1a, #111); border-bottom: 2px solid var(--team-accent); position: sticky; top: 0; z-index: 2; }
+        /* 加入 table-layout: fixed 強制鎖定欄寬 */
+        .schedule-table { width: 100%; border-collapse: collapse; text-align: center; min-width: 700px; table-layout: fixed; }
+        .schedule-table th, .schedule-table td { padding: 15px 5px; border-bottom: 1px solid #222; }
+        
+        /* 加入 vertical-align: bottom 確保底部貼齊 */
+        .schedule-table th { background: linear-gradient(180deg, #1a1a1a, #111); border-bottom: 2px solid var(--team-accent); position: sticky; top: 0; z-index: 2; vertical-align: bottom; }
         .schedule-table tr:hover td { background: rgba(255,255,255,0.03); }
-        .schedule-table td:first-child { border-right: 1px solid #222; background: #151515; font-weight: 900; position: sticky; left: 0; z-index: 1; width: 120px; }
-        .schedule-table th:first-child { border-right: 1px solid #222; position: sticky; left: 0; z-index: 3; }
+        
+        /* 鎖定第一欄(日期)寬度 */
+        .schedule-table td:first-child { border-right: 1px solid #222; background: #151515; font-weight: 900; position: sticky; left: 0; z-index: 1; width: 110px; min-width: 110px; }
+        .schedule-table th:first-child { border-right: 1px solid #222; position: sticky; left: 0; z-index: 3; width: 110px; min-width: 110px; vertical-align: middle; }
 
-        .schedule-girl-col { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        /* 鎖定所有女孩欄位寬度，絕對不忽大忽小 */
+        .schedule-table th:not(:first-child), .schedule-table td:not(:first-child) {
+            width: 95px; min-width: 95px;
+        }
+
+        .schedule-girl-col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 8px; height: 100%; }
         .schedule-girl-img { width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 2px solid #444; background: #222; transition: all 0.2s; }
         .schedule-table th:hover .schedule-girl-img { border-color: var(--team-accent); transform: scale(1.1); box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
         
-        /* 新增：班表專用的姓名與綽號雙排版 */
-        .schedule-girl-name-container { display: flex; flex-direction: column; align-items: center; gap: 2px; }
-        .schedule-girl-name { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 1px; line-height: 1.2; }
-        .schedule-girl-nickname { font-size: 11px; color: var(--team-accent); font-weight: 700; line-height: 1; opacity: 0.9; }
+        /* 統一高度的名字區塊，確保即使沒綽號也能對齊 */
+        .schedule-girl-name-container { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 4px; width: 100%; min-height: 28px; }
+        
+        /* 加入 nowrap, overflow 隱藏，以及 padding-left 校正字距置中 */
+        .schedule-girl-name { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 1px; padding-left: 1px; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
+        .schedule-girl-nickname { font-size: 11px; color: var(--team-accent); font-weight: 700; line-height: 1; opacity: 0.9; letter-spacing: 1px; padding-left: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
 
         .schedule-date { font-size: 18px; color: #fff; }
         .schedule-day { font-size: 12px; color: var(--team-accent); margin-top: 4px; text-transform: uppercase; }
@@ -146,22 +158,23 @@
         .event-item:hover { border-color: #444; transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.5); background: #151515; }
         .event-item.expired { opacity: 0.6; filter: grayscale(0.85); }
         .event-item.expired::before { background: #444; }
+        .event-item.expired:hover { transform: none; box-shadow: 0 8px 24px rgba(0,0,0,0.3); background: #111; cursor: not-allowed; }
         .expired-badge { position: absolute; top: 12px; right: 15px; border: 1px solid #555; color: #888; font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 900; }
         .event-date-box { display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(145deg, #1f1f1f, #0a0a0a); border: 1px solid #333; border-radius: 14px; min-width: 85px; padding: 15px 10px; box-shadow: inset 0 2px 0 rgba(255,255,255,0.05); flex-shrink: 0; }
         .date-month { background: var(--event-accent); color: #000; font-size: 12px; font-weight: 900; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; text-transform: uppercase; }
         .event-item.expired .date-month { background: #555; color: #ddd; }
         .date-day { font-size: 32px; font-weight: 900; color: #fff; line-height: 1; }
         .event-content-wrapper { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 15px; }
+        
         .event-girls-hero { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
         .girl-hero-card { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 80px; }
         .girl-hero-img { width: 75px; height: 75px; border-radius: 50%; border: 3px solid #333; object-fit: cover; object-position: top center; background: #222; box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: all 0.2s; }
         .event-item:not(.expired) .girl-hero-img { border-color: var(--event-accent); }
         .event-item:not(.expired) .girl-hero-img:hover { transform: scale(1.08); box-shadow: 0 6px 15px rgba(255,159,67,0.3); }
         
-        /* 新增：活動行程專用的姓名與綽號雙排版 */
         .girl-hero-name-container { display: flex; flex-direction: column; align-items: center; gap: 3px; width: 100%; }
-        .girl-hero-name { font-size: 15px; font-weight: 900; color: #fff; text-align: center; letter-spacing: 1px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.1; }
-        .girl-hero-nickname { font-size: 11px; color: var(--event-accent); font-weight: 700; text-align: center; line-height: 1; }
+        .girl-hero-name { font-size: 15px; font-weight: 900; color: #fff; text-align: center; letter-spacing: 1px; padding-left: 1px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.1; }
+        .girl-hero-nickname { font-size: 11px; color: var(--event-accent); font-weight: 700; text-align: center; letter-spacing: 1px; padding-left: 1px; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
 
         .event-details-sub { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
         .event-title-small { font-size: 14px; font-weight: 700; color: #bbb; display: flex; align-items: center; gap: 6px; }
@@ -199,6 +212,7 @@
 
         .footer { background-color: #050505; border-top: 1px solid var(--border-color); padding: 30px 20px; margin-top: auto; color: #777; font-size: 12px; line-height: 1.6; }
         .footer-content { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
+        .footer-content strong { color: #aaa; }
 
         @media (max-width: 768px) {
             .landing-title { font-size: 2.2rem; letter-spacing: 4px; }
@@ -283,8 +297,8 @@
 
     <footer class="footer">
         <div class="footer-content">
-            <p>💡 <strong>備註：</strong>資料如需更正或是照片需下架，麻煩請聯繫告知。聯繫信箱：lc559058@gmail.com</p>
-            <p>⚠️ <strong>免責聲明：</strong>本網站所有資料版權均屬原球團及所屬經紀公司所有。行程僅供參考。</p>
+            <p>💡 <strong>練習生備註：</strong>部分女孩目前為「練習生」或「培訓生」身分，實際登場與轉正安排請依各球團公告為主。</p>
+            <p>⚠️ <strong>免責聲明：</strong>本網站所有資料版權均屬原球團及所屬經紀公司所有。行程與班表僅供參考。</p>
         </div>
     </footer>
 
