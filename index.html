@@ -28,7 +28,6 @@
             display: flex; flex-direction: column;
         }
 
-        /* 鎖定背景滾動 (開場畫面用) */
         body.no-scroll { overflow: hidden; }
 
         /* =========================================
@@ -117,7 +116,11 @@
         .schedule-girl-col { display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .schedule-girl-img { width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 2px solid #444; background: #222; transition: all 0.2s; }
         .schedule-table th:hover .schedule-girl-img { border-color: var(--team-accent); transform: scale(1.1); box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-        .schedule-girl-name { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 1px; }
+        
+        /* 新增：班表專用的姓名與綽號雙排版 */
+        .schedule-girl-name-container { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+        .schedule-girl-name { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 1px; line-height: 1.2; }
+        .schedule-girl-nickname { font-size: 11px; color: var(--team-accent); font-weight: 700; line-height: 1; opacity: 0.9; }
 
         .schedule-date { font-size: 18px; color: #fff; }
         .schedule-day { font-size: 12px; color: var(--team-accent); margin-top: 4px; text-transform: uppercase; }
@@ -154,12 +157,21 @@
         .girl-hero-img { width: 75px; height: 75px; border-radius: 50%; border: 3px solid #333; object-fit: cover; object-position: top center; background: #222; box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: all 0.2s; }
         .event-item:not(.expired) .girl-hero-img { border-color: var(--event-accent); }
         .event-item:not(.expired) .girl-hero-img:hover { transform: scale(1.08); box-shadow: 0 6px 15px rgba(255,159,67,0.3); }
-        .girl-hero-name { font-size: 15px; font-weight: 900; color: #fff; text-align: center; letter-spacing: 1px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        /* 新增：活動行程專用的姓名與綽號雙排版 */
+        .girl-hero-name-container { display: flex; flex-direction: column; align-items: center; gap: 3px; width: 100%; }
+        .girl-hero-name { font-size: 15px; font-weight: 900; color: #fff; text-align: center; letter-spacing: 1px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.1; }
+        .girl-hero-nickname { font-size: 11px; color: var(--event-accent); font-weight: 700; text-align: center; line-height: 1; }
+
         .event-details-sub { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
         .event-title-small { font-size: 14px; font-weight: 700; color: #bbb; display: flex; align-items: center; gap: 6px; }
+        .event-title-small::before { content: '📣'; font-size: 12px; }
         .event-meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; color: #888; }
+        .meta-item { display: inline-flex; align-items: center; gap: 5px; }
         .meta-item i { font-style: normal; color: var(--event-accent); opacity: 0.8; }
-        
+        .event-item.expired .meta-item i { color: #666; }
+
+        /* --- 女孩卡片 --- */
         .card { background-color: var(--team-light); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         .card:hover { transform: translateY(-4px); }
         .photo-area { height: 320px; background-color: #000; position: relative; border-bottom: 1px solid var(--border-color); }
@@ -236,15 +248,28 @@
                 <button class="sport-btn" data-mode="girls" data-sport="籃球">職業籃球</button>
                 <button class="sport-btn" data-mode="girls" data-sport="排球">職業排球</button>
                 <button class="sport-btn btn-schedule" data-mode="schedule">官方應援班表</button>
-                <button class="sport-btn btn-event" data-mode="events">外籍啦啦隊活動</button>
+                <button class="sport-btn btn-event" data-mode="events">外籍啦啦隊活動行程</button>
             </div>
             <div class="team-tabs" id="tabs-container"></div>
             <div class="filters">
                 <input type="text" id="searchInput" placeholder="搜尋姓名或活動...">
                 <div id="extra-filters" style="display: flex; gap: 10px;">
-                    <select id="natFilter"><option value="all">所有國籍</option><option value="韓國">韓國</option><option value="日本">日本</option><option value="臺灣">臺灣</option><option value="其他">其他</option></select>
-                    <select id="zodiacFilter"><option value="all">所有星座</option><option value="牡羊座">牡羊座</option><option value="金牛座">金牛座</option><option value="雙子座">雙子座</option><option value="巨蟹座">巨蟹座</option><option value="獅子座">獅子座</option><option value="處女座">處女座</option><option value="天秤座">天秤座</option><option value="天蠍座">天蠍座</option><option value="射手座">射手座</option><option value="摩羯座">摩羯座</option><option value="水瓶座">水瓶座</option><option value="雙魚座">雙魚座</option></select>
-                    <select id="sortFilter"><option value="default">預設排序</option><option value="birthdayAsc">生日 (月份先後)</option><option value="ageAsc">年齡 (年輕到資深)</option><option value="heightDesc">身高 (高到矮)</option><option value="numberAsc">背號 (小到大)</option></select>
+                    <select id="natFilter">
+                        <option value="all">所有國籍</option>
+                        <option value="韓國">韓國</option><option value="日本">日本</option>
+                        <option value="臺灣">臺灣</option><option value="其他">其他</option>
+                    </select>
+                    <select id="zodiacFilter">
+                        <option value="all">所有星座</option>
+                        <option value="牡羊座">牡羊座</option><option value="金牛座">金牛座</option><option value="雙子座">雙子座</option><option value="巨蟹座">巨蟹座</option><option value="獅子座">獅子座</option><option value="處女座">處女座</option><option value="天秤座">天秤座</option><option value="天蠍座">天蠍座</option><option value="射手座">射手座</option><option value="摩羯座">摩羯座</option><option value="水瓶座">水瓶座</option><option value="雙魚座">雙魚座</option>
+                    </select>
+                    <select id="sortFilter">
+                        <option value="default">預設排序</option>
+                        <option value="birthdayAsc">生日 (月份先後)</option>
+                        <option value="ageAsc">年齡 (年輕到資深)</option>
+                        <option value="heightDesc">身高 (高到矮)</option>
+                        <option value="numberAsc">背號 (小到大)</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -264,13 +289,12 @@
     </footer>
 
     <script>
-        // 🌟 絕對觸發：進入系統函數
+        // --- 點擊進入系統邏輯 ---
         function enterSystem() {
             const landing = document.getElementById('landing-page');
             if(landing) {
                 landing.classList.add('hidden');
                 document.body.classList.remove('no-scroll');
-                // 等待動畫結束後隱藏元素
                 setTimeout(() => { landing.style.display = 'none'; }, 600);
             }
         }
@@ -398,7 +422,6 @@
 
         function updateTeamTabs() {
             const container = document.getElementById('tabs-container');
-            
             if (currentMode === 'events' || (currentMode === 'girls' && currentSport === "全部")) { 
                 container.style.display = 'none'; renderContent(); return; 
             }
@@ -498,8 +521,11 @@
             uGirls.forEach(name => {
                 let g = dbGirls.find(girl => (girl.realname || "").trim() === name || (girl.nickname || "").trim() === name);
                 let img = g ? `<img src="${g.img}" class="schedule-girl-img">` : `<div class="schedule-girl-img" style="display:flex;align-items:center;justify-content:center;font-size:20px;">👤</div>`;
-                let showName = g ? g.realname : name;
-                html += `<th><div class="schedule-girl-col">${img}<span class="schedule-girl-name">${showName}</span></div></th>`;
+                let showReal = g ? g.realname : name;
+                let showNick = (g && g.nickname && g.nickname !== g.realname) ? g.nickname : "";
+                
+                let nameHtml = `<div class="schedule-girl-name-container"><span class="schedule-girl-name">${showReal}</span>${showNick ? `<span class="schedule-girl-nickname">${showNick}</span>` : ''}</div>`;
+                html += `<th><div class="schedule-girl-col">${img}${nameHtml}</div></th>`;
             });
             html += `</tr></thead><tbody>`;
 
@@ -533,7 +559,9 @@
                 const evN = (e.eventname || "").toLowerCase(); 
                 const girlsStr = (e.girls || "").toLowerCase(); 
                 const host = (e.host || "").toLowerCase();
+                
                 if (evN.includes(search) || girlsStr.includes(search) || host.includes(search)) return true;
+
                 return dbGirls.some(g => {
                     const n = (g.nickname || "").toLowerCase();
                     const r = (g.realname || "").toLowerCase();
@@ -554,9 +582,17 @@
                     const name = n.trim(); 
                     if(!name) return '';
                     const g = dbGirls.find(girl => (girl.realname || "").trim() === name || (girl.nickname || "").trim() === name);
-                    if (!g) return `<div class="girl-hero-card"><div class="girl-hero-img" style="display:flex;align-items:center;justify-content:center;background:#222;color:#555;font-size:24px;border-color:#333;">👤</div><span class="girl-hero-name" style="color:#888;">${name}</span></div>`;
-                    return `<div class="girl-hero-card"><img src="${g.img}" class="girl-hero-img"><span class="girl-hero-name">${g.realname}</span></div>`;
+                    
+                    if (!g) {
+                        return `<div class="girl-hero-card"><div class="girl-hero-img" style="display:flex;align-items:center;justify-content:center;background:#222;color:#555;font-size:24px;border-color:#333;">👤</div><div class="girl-hero-name-container"><span class="girl-hero-name" style="color:#888;">${name}</span></div></div>`;
+                    }
+                    
+                    let showNick = (g.nickname && g.nickname !== g.realname) ? g.nickname : "";
+                    let nameHtml = `<div class="girl-hero-name-container"><span class="girl-hero-name">${g.realname}</span>${showNick ? `<span class="girl-hero-nickname">${showNick}</span>` : ''}</div>`;
+                    
+                    return `<div class="girl-hero-card"><img src="${g.img}" class="girl-hero-img">${nameHtml}</div>`;
                 }).join('');
+                
                 return `<div class="event-item ${isExp ? 'expired' : ''}">${isExp ? '<div class="expired-badge">已結束</div>' : ''}<div class="event-date-box"><span class="date-month">${e.safeDate.monStr}</span><span class="date-day">${day}</span></div><div class="event-content-wrapper"><div class="event-girls-hero">${attendHtml}</div><div class="event-details-sub"><div class="event-title-small">${e.eventname || "活動"}</div><div class="event-meta-row"><span class="meta-item"><i>🕒</i> ${e.time || "未定"}</span><span class="meta-item"><i>📍</i> ${e.address || "官網"}</span>${e.host ? `<span class="meta-item"><i>🏢</i> ${e.host}</span>` : ''}</div></div></div></div>`;
             };
 
