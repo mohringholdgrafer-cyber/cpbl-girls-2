@@ -117,7 +117,6 @@
         .schedule-girl-name-container { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 4px; width: 100%; min-height: 28px; }
         .schedule-girl-name { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 1px; padding-left: 1px; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
         .schedule-girl-nickname { font-size: 11px; color: var(--team-accent); font-weight: 700; line-height: 1; opacity: 0.9; letter-spacing: 1px; padding-left: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
-
         .schedule-date { font-size: 18px; color: #fff; }
         .schedule-day { font-size: 12px; color: var(--team-accent); margin-top: 4px; text-transform: uppercase; }
         .schedule-heart { width: 24px; height: 24px; fill: var(--team-accent); filter: drop-shadow(0 0 5px var(--team-accent)); animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; display: inline-block; }
@@ -366,7 +365,6 @@
                                     resSch.data.forEach(row => {
                                         let sport = (row.sport || "").trim();
                                         let team = (row.team || "").trim();
-                                        // 🌟 防呆：抓取 name 或是 nickname 或 綽號
                                         let name = (row.name || row.nickname || row['綽號'] || "").trim();
                                         let datesRaw = (row.dates || row.date || "").split(/[,\s、，\n]+/);
                                         datesRaw.forEach(dStr => {
@@ -468,6 +466,11 @@
         function renderSchedule(container) {
             if (!currentScheduleTeam) {
                 let availableTeams = [...new Set(dbSchedules.map(s => (s.team || "").trim()).filter(t => t))];
+                if (availableTeams.length === 0) {
+                   container.innerHTML = '<div style="text-align:center; padding:50px; color:#888;">目前系統內還沒有任何官方班表資料喔！</div>';
+                   return;
+                }
+                
                 let groups = { "⚾ 職業棒球 (CPBL)": [], "🏀 TPBL 職籃聯盟": [], "🏀 P. LEAGUE+ 職籃聯盟": [], "🏐 職業排球": [], "🌟 其他活動": [] };
                 availableTeams.forEach(t => {
                     let league = (teamThemes[t] || teamThemes[`${t}_籃球`] || teamThemes[`${t}_棒球`] || {}).league;
@@ -496,7 +499,33 @@
             let dates = [...new Set(teamData.map(s => s.safeDate.num))].sort((a,b)=>a-b);
             let girls = [...new Set(teamData.map(s => s.name))];
             
+            // 🌟 核心升級：班表女孩專屬權重排序 (韓國>日本>其他>台灣>練習生)
+            girls.sort((nameA, nameB) => {
+                const getWeight = (name) => {
+                    let g = dbGirls.find(girl => (girl.realname || "").trim() === name || (girl.nickname || "").trim() === name);
+                    if (!g) return 6; // 資料庫找不到視為未知
+                    let note = (g.note || g['備註'] || g.備註 || "");
+                    if (note.includes('練習生') || note.includes('培訓生')) return 5;
+                    let nat = g.nat || "";
+                    if (nat.includes("韓國")) return 1;
+                    if (nat.includes("日本")) return 2;
+                    if (nat.includes("臺灣") || nat.includes("台灣")) return 4;
+                    return 3; // 其他國籍
+                };
+                let wA = getWeight(nameA);
+                let wB = getWeight(nameB);
+                if (wA !== wB) return wA - wB;
+                return nameA.localeCompare(nameB, 'zh-TW'); // 同分則依姓名筆畫排序
+            });
+
             let html = `<button class="back-btn" onclick="backToScheduleSelection()">⬅️ 返回選擇球隊</button>`;
+            
+            if(teamData.length === 0) {
+                html += `<div style="text-align:center; padding:50px; color:#888;">查無班表資料。</div>`;
+                container.innerHTML = html;
+                return;
+            }
+
             html += `<div class="schedule-wrapper"><table class="schedule-table"><thead><tr><th>日期</th>`;
             girls.forEach(name => {
                 let g = dbGirls.find(girl => (girl.realname || "").trim() === name || (girl.nickname || "").trim() === name);
