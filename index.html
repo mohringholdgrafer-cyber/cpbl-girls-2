@@ -856,10 +856,10 @@
                         <div class="header-info">
                             <div>
                                 <div class="nickname-container" style="display:flex; align-items:center; gap:8px;">
-                                    <div class="nickname" style="color:${cardAccent}">${c.nickname}</div>
+                                    <div class="nickname" style="color:${cardAccent}">${c.realname}</div>
                                     ${c.ig ? `<a href="${c.ig}" target="_blank" class="ig-link" onclick="event.stopPropagation()"><svg class="ig-icon"><use xlink:href="#icon-ig"></use></svg></a>` : ''}
                                 </div>
-                                <div class="realname" style="font-size:14px; color:var(--text-sub); font-weight:700; margin-top:8px; letter-spacing:1px;">${c.realname}</div>
+                                ${(c.nickname && c.nickname !== c.realname) ? `<div class="realname" style="font-size:14px; color:var(--text-sub); font-weight:700; margin-top:8px; letter-spacing:1px;">${c.nickname}</div>` : ''}
                             </div>
                             <div class="number">${displayNum}</div>
                         </div>
@@ -955,8 +955,8 @@
                     
                     <div class="modal-header-info">
                         <div>
-                            <div class="modal-nickname" style="color:${cardAccent}">${c.nickname}</div>
-                            <div class="modal-realname">${c.realname}</div>
+                            <div class="modal-nickname" style="color:${cardAccent}">${c.realname}</div>
+                            ${(c.nickname && c.nickname !== c.realname) ? `<div class="modal-realname">${c.nickname}</div>` : ''}
                         </div>
                         <div class="modal-number">${nums.join(' ') || "-"}</div>
                     </div>
