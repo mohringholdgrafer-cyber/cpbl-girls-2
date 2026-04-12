@@ -98,14 +98,15 @@
         .sub-btn:hover { border-color: #fff; color: #fff; transform: translateY(-2px);}
         .sub-btn.active { background: var(--text-sub); color: #000; border-color: var(--text-sub); }
 
-        .team-tabs { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; padding-top: 20px; border-top: 2px dashed var(--border-color); }
-        .league-group { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 15px; }
-        .league-title { font-family: var(--sport-font); font-size: 14px; font-weight: 700; color: #fff; background: var(--border-color); padding: 4px 20px; border-radius: 2px; text-transform: uppercase; letter-spacing: 2px; margin: 10px 0; transform: skewX(-10deg); }
-        .tab-btn { background: var(--bg-card); border: 2px solid transparent; color: var(--text-sub); cursor: pointer; font-size: 13px; font-weight: 900; border-radius: 4px; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; min-width: 110px; height: 95px; padding: 12px; border-bottom: 4px solid var(--border-color); }
-        .tab-btn:hover { background: #252c36; transform: translateY(-3px); color: #fff; border-bottom-color: var(--team-accent); }
-        .tab-btn.active { background-color: var(--team-accent); color: #111; font-weight: 900; box-shadow: 0 8px 15px rgba(0,0,0,0.6), 0 0 15px var(--team-accent); border-color: var(--team-accent); transform: translateY(-3px); border-bottom: 4px solid rgba(0,0,0,0.3); }
-        .tab-logo { width: 40px; height: 40px; object-fit: contain; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
-
+        /* 🏆 輕量化流線膠囊球隊選單 */
+        .team-tabs { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; padding-top: 15px; border-top: 2px dashed var(--border-color); }
+        .league-group { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .league-title { font-family: var(--sport-font); font-size: 12px; font-weight: 700; color: var(--text-sub); background: rgba(255,255,255,0.05); padding: 4px 16px; border-radius: 20px; text-transform: uppercase; letter-spacing: 2px; margin: 5px 0; border: 1px solid rgba(255,255,255,0.1); }
+        
+        .tab-btn { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-sub); cursor: pointer; font-size: 13px; font-weight: 700; border-radius: 30px; transition: all 0.2s; display: inline-flex; flex-direction: row; align-items: center; justify-content: center; gap: 8px; padding: 8px 20px; height: auto; min-width: auto; }
+        .tab-btn:hover { background: #252c36; transform: translateY(-2px); color: #fff; border-color: var(--team-accent); }
+        .tab-btn.active { background-color: var(--team-accent); color: #111; font-weight: 900; box-shadow: 0 4px 10px rgba(0,0,0,0.5); border-color: var(--team-accent); transform: translateY(-2px); }
+        .tab-logo { width: 20px; height: 20px; object-fit: contain; display: block; }
         .sticky-filter-wrapper { position: sticky; top: 0; z-index: 40; background: rgba(17, 20, 24, 0.98); padding: 15px 20px; border-bottom: 2px solid var(--border-color); box-shadow: 0 10px 20px rgba(0,0,0,0.7); }
         .filters { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; max-width: 1200px; margin: 0 auto; }
         .filters input, .filters select { background-color: var(--bg-card); border: 2px solid var(--border-color); color: var(--text-main); padding: 11px 16px; font-size: 14px; font-weight: 700; border-radius: 2px; outline: none; transition: all 0.2s;}
@@ -317,10 +318,11 @@
             .sub-nav { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; padding-bottom: 5px; padding-top: 12px;}
             .sub-btn { flex-shrink: 0; padding: 6px 14px; font-size: 12px;}
             
-            .team-tabs { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; padding-bottom: 5px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+            /* 📱 手機版微調 */
+            .team-tabs { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; padding-bottom: 5px; -webkit-overflow-scrolling: touch; scrollbar-width: none; gap: 6px; }
             .team-tabs::-webkit-scrollbar { display: none; }
-            .tab-btn { flex-shrink: 0; min-width: 85px; height: 80px; padding: 8px; }
-            .tab-logo { width: 28px; height: 28px; }
+            .tab-btn { flex-shrink: 0; min-width: auto; height: auto; padding: 6px 14px; font-size: 13px; }
+            .tab-logo { width: 16px; height: 16px; }
             
             .league-group { align-items: flex-start; }
             .league-group > div { flex-wrap: nowrap !important; overflow-x: auto; width: 100%; justify-content: flex-start !important; -webkit-overflow-scrolling: touch; scrollbar-width: none; gap: 8px; padding-bottom: 5px;}
