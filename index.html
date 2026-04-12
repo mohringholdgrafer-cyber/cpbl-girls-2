@@ -137,9 +137,10 @@
         /* 其他分類維持紫底，並套用白色外框 */
         .tag-other { background-color: #8e44ad; background-image: none; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 10px; font-weight: 900; letter-spacing: 1px; font-family: var(--tc-font); border-color: #fff; }
 
-        .fav-btn { position: absolute; top: 15px; right: 15px; width: 40px; height: 40px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.5); color: #000; transition: 0.2s;}
+        /* 💖 精緻版我的最愛按鈕 */
+        .fav-btn { position: absolute; top: 12px; right: 12px; width: 30px; height: 30px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 3px 8px rgba(0,0,0,0.6); color: #000; transition: 0.2s;}
         .fav-btn:hover { transform: scale(1.15); background: var(--fav-accent); }
-        .fav-icon { width: 20px; height: 20px; fill: none; stroke: #000; stroke-width: 2.5; transition: 0.2s; }
+        .fav-icon { width: 15px; height: 15px; fill: none; stroke: #000; stroke-width: 2.5; transition: 0.2s; }
         .fav-btn:hover .fav-icon { stroke: #fff; }
         .fav-btn.active { background: var(--fav-accent); }
         .fav-btn.active .fav-icon { fill: #fff; stroke: #fff; animation: heartPop 0.3s; }
