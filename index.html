@@ -125,7 +125,7 @@
 
         /* 🏀 🏆 自訂圖片球類徽章設計 (V8) */
         .sport-tags { position: absolute; top: 15px; left: 15px; display: flex; flex-direction: column; gap: 10px; z-index: 5; }
-        .sport-tag { width: 34px; height: 34px; border-radius: 50%; box-shadow: 2px 2px 6px rgba(0,0,0,0.8); cursor: help; background-size: cover; background-position: center; border: 2px solid #000; background-color: #fff; }
+        .sport-tag { width: 26px; height: 26px; border-radius: 50%; box-shadow: 2px 2px 4px rgba(0,0,0,0.8); cursor: help; background-size: 85%; background-repeat: no-repeat; background-position: center; border: 1.5px solid #000; background-color: #fff; }
         
         /* 強制讀取同一個資料夾底下的圖片檔，請注意檔名大小寫必須完全一樣 */
         .tag-baseball { background-image: url('./baseball.png'); } 
@@ -308,8 +308,8 @@
             .number { font-size: 16px; padding: 4px 8px; }
             
             /* 📱 手機版圖片徽章縮小微調 */
-            .sport-tag { width: 28px; height: 28px; border-width: 1.5px; }
-            .tag-other { font-size: 9px; }
+            .sport-tag { width: 22px; height: 22px; border-width: 1px; }
+            .tag-other { font-size: 8px; transform: scale(0.9); }
 
             /* 📱 雙層導覽列手機版設定 */
             .main-nav { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; padding-bottom: 5px; -webkit-overflow-scrolling: touch; scrollbar-width: none; gap: 10px;}
