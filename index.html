@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>台灣啦啦隊資料庫 | 競技熱血終極版</title>
+    <title>台灣啦啦隊資料庫 | </title>
 
     <link rel="manifest" href="manifest.json">
 
@@ -123,10 +123,11 @@
         .photo-area img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform 0.5s; }
         .card:hover .photo-area img { transform: scale(1.05); }
 
-        /* 🏀 🏆 超清晰球類實心圓形徽章設計 */
+        /* 🏀 🏆 超級防呆：無輻射污染的線條圓形徽章設計 */
         .sport-tags { position: absolute; top: 15px; left: 15px; display: flex; flex-direction: column; gap: 10px; z-index: 5; }
         .sport-tag { display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; box-shadow: 4px 4px 0px rgba(0,0,0,0.7); border: 2px solid #000; cursor: help; }
-        .sport-tag svg { width: 20px; height: 20px; fill: currentColor; }
+        /* 嚴格規定 svg 不填色、只畫線，完美顯示背景顏色 */
+        .sport-tag svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
         
         .tag-baseball { background: #1e3799; color: #fff; } 
         .tag-basketball { background: #f39c12; color: #000; } 
@@ -163,7 +164,7 @@
 
         .ig-link { display: inline-flex; vertical-align: middle; transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0.9; filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.8)); margin-left: 10px; }
         .ig-link:hover { transform: scale(1.2) rotate(-5deg); opacity: 1; filter: drop-shadow(0 0 8px rgba(220,39,67,0.6)); }
-        .ig-icon { width: 22px; height: 22px; fill: url(#ig-grad-final); display: block; }
+        .ig-icon { width: 22px; height: 22px; display: block; } /* IG 圖示不需要設定 stroke */
 
         /* =========================================
            ✨ 個人詳細彈窗
@@ -193,9 +194,9 @@
 
         .modal-ig-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; background: #15191e; color: #fff; text-decoration: none; padding: 16px; margin-top: 30px; font-weight: 900; border: 2px solid #2d3748; transition: 0.3s; font-family: var(--sport-font); letter-spacing: 1px; box-shadow: 6px 6px 0px rgba(0,0,0,0.8); border-radius: 4px; }
         .modal-ig-btn:hover { background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); border-color: transparent; transform: translate(-2px,-2px); box-shadow: 8px 8px 0px rgba(0,0,0,0.9);}
-        .modal-ig-btn svg { width: 22px; height: 22px; fill: url(#ig-grad-final); transition: 0.3s; position: relative; z-index: 1;}
+        .modal-ig-btn svg { width: 22px; height: 22px; transition: 0.3s; position: relative; z-index: 1;}
         .modal-ig-btn span { position: relative; z-index: 1; }
-        .modal-ig-btn:hover svg { fill: #fff; transform: scale(1.1); }
+        .modal-ig-btn:hover svg { transform: scale(1.1); }
 
         .schedule-jump-btn { transition: 0.2s; cursor: pointer; }
         .schedule-jump-btn:hover { transform: translateY(-3px); box-shadow: 4px 4px 0px rgba(0,0,0,0.6) !important; filter: brightness(1.2); }
@@ -307,8 +308,8 @@
             .number { font-size: 16px; padding: 4px 8px; }
             
             /* 📱 手機版圓形 ICON 縮小微調 */
-            .sport-tag { width: 28px; height: 28px; border-width: 1px; }
-            .sport-tag svg { width: 16px; height: 16px; }
+            .sport-tag { width: 28px; height: 28px; border-width: 1.5px; }
+            .sport-tag svg { width: 18px; height: 18px; stroke-width: 1.5; }
 
             /* 📱 雙層導覽列手機版設定 */
             .main-nav { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; padding-bottom: 5px; -webkit-overflow-scrolling: touch; scrollbar-width: none; gap: 10px;}
@@ -420,20 +421,35 @@
                 <stop offset="0%" style="stop-color:#f09433;" /><stop offset="25%" style="stop-color:#e6683c;" /><stop offset="50%" style="stop-color:#dc2743;" /><stop offset="75%" style="stop-color:#cc2366;" /><stop offset="100%" style="stop-color:#bc1888;" />
             </linearGradient>
             
-            <symbol id="icon-baseball" viewBox="0 0 512 512">
-                <path d="M418.4 157.1c-22.3-21.7-52.9-35.3-86.4-36.1C345.5 153.2 368 190.7 375.4 231.8c24.6-13 46.1-31.9 62-54.8c-5.4-7.4-11.8-14.2-19-20zm50.3 54.4c-17.7 26.6-42.5 47.9-72 61.6c4.9 33.7 1.8 68.6-11 100.9c32.7 8.3 62 26 84.6 49.6c18-24.8 28.7-55.2 28.7-87.6c0-48.4-17.2-92.8-46.3-128.5zM425.2 411.3c-23.7-22.6-53.7-39.7-86.8-48.5c-20.1 27.2-46.6 49.3-77 64c23 3.8 47.4 3 70-3.3c35.7-10 68.3-29.8 93.8-55.8zm-190.2 68.4c30.1-13.4 56-35.8 74.9-63.5c-35-15.1-66-38.3-90-67.4c-20 28.4-45.8 51.5-75.5 66.8c30.4 17.5 63 28.1 90.6 28.1v36zm-105-80.5c23.5-13.3 43.6-32.2 58.5-54.8c-32.3-33-54-73.8-62.8-118c-36 10-68.5 30.2-94 56.6c23.5 22.1 53 38.9 85.5 48c4.2 24.3 11 47 20 68.2zM28.4 286.5c17.5-30.8 43.8-55.8 75.3-71.2c-5.7-36.4-1.6-74 13-108.6c-34.9-9.5-66.4-28-90.3-52.8C6.1 82.8-5.8 117-5.8 153.9c0 45.4 15.8 87 44.2 125.6zm70.6-218.4c23.5 22 52.8 38.8 85.2 47.8c19.3-26 44.4-47.5 73.6-61.9c-23-4-47.4-3.5-70 .8c-35 10.3-67 30.3-92.2 56.4zM245.8 34.6c-30 13.5-56 36.1-75 64C205.8 114 236.7 137.6 260.6 167.1c19.8-28.5 45.6-51.7 75.1-67C305.5 82.5 273.2 71.7 245.8 71.7v-37.1zM248 8C111 8 0 119 0 256s111 248 248 248s248-111 248-248S385 8 248 8z" fill="currentColor"/>
+            <symbol id="icon-baseball" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M6 3.5 A 9 9 0 0 1 6 20.5"></path>
+                <path d="M18 3.5 A 9 9 0 0 0 18 20.5"></path>
+                <line x1="6.5" y1="8" x2="8" y2="8.5"></line>
+                <line x1="6" y1="12" x2="7.5" y2="12"></line>
+                <line x1="6.5" y1="16" x2="8" y2="15.5"></line>
+                <line x1="17.5" y1="8" x2="16" y2="8.5"></line>
+                <line x1="18" y1="12" x2="16.5" y2="12"></line>
+                <line x1="17.5" y1="16" x2="16" y2="15.5"></line>
             </symbol>
             
-            <symbol id="icon-basketball" viewBox="0 0 512 512">
-                <path d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM102.6 102.6C141 64.2 195.6 41 256 40.2V166.7C203.9 162.1 155.8 139 121.2 101.4c-6.4 0-12.8 .4-18.6 1.2zM40 256c0-27.1 5.1-53 14.4-76.8c34 38.6 82.3 62 135.1 66.8L112.9 322.5C69.3 293 40 276.5 40 256zm62.6 153.4c-38.4-38.4-61.6-93-62.4-153.4H166.7c4.6 52.1 27.7 100.2 65.3 134.8c0 6.4-.4 12.8-1.2 18.6zM256 472c-27.1 0-53-5.1-76.8-14.4c38.6-34 62-82.3 66.8-135.1L322.5 399.1c-29.5 43.6-46 72.9-66.5 72.9zm153.4-62.6c38.4-38.4 61.6-93 62.4-153.4H345.3c-4.6-52.1-27.7-100.2-65.3-134.8c0-6.4 .4-12.8 1.2-18.6zM472 256c0 27.1-5.1 53-14.4 76.8c-34-38.6-82.3-62-135.1-66.8L399.1 189.5c43.6 29.5 72.9 46 72.9 66.5zm-62.6-153.4C371 64.2 316.4 41 256 40.2V166.7c52.1 4.6 100.2 27.7 134.8 65.3c6.4 0 12.8-.4 18.6-1.2z" fill="currentColor"/>
+            <symbol id="icon-basketball" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <line x1="12" y1="2" x2="12" y2="22"></line>
+                <path d="M6.5 3.5 A 8 8 0 0 1 6.5 20.5"></path>
+                <path d="M17.5 3.5 A 8 8 0 0 0 17.5 20.5"></path>
             </symbol>
             
-            <symbol id="icon-volleyball" viewBox="0 0 512 512">
-                <path d="M129 119.7c-40 31.8-69.5 77.2-83.3 128.5L258 200.6 129 119.7zM435.5 137L228.3 183.1 319.6 44c45 13.9 83.5 43.1 115.9 93zM256 512C114.6 512 0 397.4 0 256C0 146.4 68.9 52.8 165.7 15l-9.8 45.4c-3.1 14.5-1.4 29.5 4.9 42.8L281.4 344.5l-63.5-99.3L13.8 290.7C20.6 411.3 120 507.9 242 511.9l-11-40c-2.4-8.8-1.5-18.2 2.6-26.4l112.5-224.9 66.2 101.4-184 100.7C293 490.7 392.3 457.7 453.7 377l-41.6-4.5c-15.6-1.7-30.8-8.8-42.3-19.9L242.3 221.7l163.6-36.2c10.4-2.3 19.9-7.5 27.6-15s12.5-16.7 14.1-27L471.2 30.1C497 89 512 170.8 512 256c0 141.4-114.6 256-256 256z" fill="currentColor"/>
+            <symbol id="icon-volleyball" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 22 C 12 14 18 10 21.5 7"></path>
+                <path d="M2.5 7 C 6 10 12 14 12 22"></path>
+                <path d="M2.5 7 C 10 7 14 2 14 2"></path>
             </symbol>
             
-            <symbol id="icon-other" viewBox="0 0 512 512">
-                <path d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381 150.3 316.9 18z" fill="currentColor"/>
+            <symbol id="icon-other" viewBox="0 0 24 24">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
             </symbol>
             
             <symbol id="icon-ig" viewBox="0 0 24 24">
@@ -577,8 +593,8 @@
         let currentMode = "girls", currentSport = "全部", currentTeam = "全部啦啦隊";
         let currentScheduleTeam = null, currentScheduleSport = null; 
 
-        // 🏆 強制快取 V6 (球類圖示大升級)
-        const CACHE_KEY = "tw_cheerleader_cache_v6";
+        // 🏆 強制快取 V7 (保證無輻射污染)
+        const CACHE_KEY = "tw_cheerleader_cache_v7";
         const CACHE_TIME = 60 * 60 * 1000; 
 
         function enableEnterButton() {
@@ -768,7 +784,7 @@
         };
 
         // =========================================================================
-        // 女孩卡片與彈窗 (包含超清晰球類 ICON)
+        // 女孩卡片與彈窗 (無輻射手繪球類 ICON版)
         // =========================================================================
         function renderGirls() {
             const container = document.getElementById('grid-container');
@@ -845,7 +861,6 @@
                 const cardAccent = (teamThemes[`${teams[0]}_${currentSport==="全部"?"":currentSport}`] || teamThemes[teams[0]] || teamThemes["全部啦啦隊"]).accent;
                 const isFav = myFavorites.includes(c.realname);
                 
-                // 🏆 使用全新的球類圖示 (附帶 Hover 提示)
                 let sportTags = sports.map(s => {
                     let type = s.includes("棒") ? 'baseball' : s.includes("籃") ? 'basketball' : s.includes("排") ? 'volleyball' : 'other';
                     return `<div class="sport-tag tag-${type}" title="${s}"><svg><use xlink:href="#icon-${type}"></use></svg></div>`;
