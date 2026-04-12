@@ -145,17 +145,21 @@
         .fav-btn.active { background: var(--fav-accent); }
         .fav-btn.active .fav-icon { fill: #fff; stroke: #fff; animation: heartPop 0.3s; }
 
-        .info-section { padding: 25px; background: var(--bg-card); }
+        /* 資訊區塊改為彈性容器，讓底部永遠對齊 */
+        .info-section { padding: 25px; background: var(--bg-card); display: flex; flex-direction: column; flex: 1; }
         .header-info { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 2px dashed var(--border-color); }
         .nickname-container { display: flex; align-items: center; gap: 8px; }
         .nickname { font-size: 24px; font-weight: 900; color: var(--team-accent, #fff); line-height: 1; text-transform: uppercase; }
         .realname { font-size: 14px; color: var(--text-sub); margin-top: 8px; font-weight: 700; letter-spacing: 1px; }
         .number { font-family: var(--sport-font); font-size: 20px; font-weight: 900; color: var(--team-accent, #ffeb3b); background: #111418; padding: 4px 12px; border-radius: 4px; border: 2px solid var(--border-color); transform: skewX(-5deg); box-shadow: 3px 3px 0px rgba(0,0,0,0.5); text-align: center; }
 
-        .data-grid { display: flex; flex-direction: column; gap: 12px; }
-        .data-row { display: flex; justify-content: space-between; font-size: 14px; align-items: center; }
-        .data-label { color: var(--text-sub); font-weight: 700; min-width: 65px; }
-        .data-value { font-weight: 900; color: #fff; text-align: right; font-family: var(--sport-font); letter-spacing: 0.5px; font-size: 15px;}
+        /* margin-bottom: auto 負責把下面的田字格推到底部對齊 */
+        .data-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: auto; }
+        /* 改為向上對齊，避免文字換行時歪掉 */
+        .data-row { display: flex; justify-content: space-between; font-size: 14px; align-items: flex-start; gap: 10px; }
+        /* 強制標籤不准換行 (white-space: nowrap) */
+        .data-label { color: var(--text-sub); font-weight: 700; white-space: nowrap; flex-shrink: 0; }
+        .data-value { font-weight: 900; color: #fff; text-align: right; font-family: var(--sport-font); letter-spacing: 0.5px; font-size: 15px; word-break: break-word; }
 
         /* 🏀 🏆 完美「田」字型數據面板與獨立備註 */
         .stats-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 15px 0; border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; background: #111418; box-shadow: inset 0 2px 8px rgba(0,0,0,0.5); }
