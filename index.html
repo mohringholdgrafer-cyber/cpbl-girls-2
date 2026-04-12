@@ -133,7 +133,12 @@
 
         ..stats-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 15px 0; }
         .stat-box { background: #111418; border: 1px solid var(--border-color); border-radius: 4px; padding: 12px 5px; text-align: center; display: flex; flex-direction: column; justify-content: center; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5); }
-        .stat-label { font-size: 11px; color: var(--text-sub); font-weight: 700; margin-bottom: 6px; letter-spacing: 1px; }
+        .stat-label { font-size: 11px; color: var(--text-sub); font-weight: 700; margin-bottom: 6px; letter-spacing: 1px; }/* 🏀 🏆 完美「田」字型數據面板 */
+        .stats-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 15px 0; border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; background: #111418; box-shadow: inset 0 2px 8px rgba(0,0,0,0.5); }
+        .stat-box { padding: 12px 5px; text-align: center; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+        /* 消除最右邊跟最下方的多餘格線，完美拼出內部十字 */
+        .stat-box:nth-child(even) { border-right: none; }
+        .stat-box:nth-child(n+3) { border-bottom: none; }
         .stat-value { font-size: 15px; font-weight: 900; color: #fff; font-family: var(--sport-font); letter-spacing: 0.5px; }
         .note-box { margin-top: 10px; padding: 12px 15px; background: rgba(255, 87, 34, 0.1); border-left: 4px solid var(--event-accent); font-size: 13px; color: #cbd5e1; font-weight: 700; line-height: 1.5; border-radius: 0 4px 4px 0; }
 
