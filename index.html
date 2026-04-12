@@ -124,15 +124,15 @@
         .card:hover .photo-area img { transform: scale(1.05); }
 
         /* 🏀 🏆 自訂圖片球類徽章設計 (V8) */
+        /* 🏀 🏆 自訂圖片球類徽章設計 (100%貼合無白邊) */
         .sport-tags { position: absolute; top: 15px; left: 15px; display: flex; flex-direction: column; gap: 10px; z-index: 5; }
-        .sport-tag { width: 26px; height: 26px; border-radius: 50%; box-shadow: 2px 2px 4px rgba(0,0,0,0.8); cursor: help; background-size: 85%; background-repeat: no-repeat; background-position: center; border: 1.5px solid #000; background-color: #fff; }
+        .sport-tag { width: 28px; height: 28px; border-radius: 50%; box-shadow: 2px 2px 5px rgba(0,0,0,0.8); cursor: help; background-size: cover; background-repeat: no-repeat; background-position: center; background-color: transparent; border: none; }
         
-        /* 強制讀取同一個資料夾底下的圖片檔，請注意檔名大小寫必須完全一樣 */
         .tag-baseball { background-image: url('./baseball.png'); } 
         .tag-basketball { background-image: url('./basketball-ball.png'); } 
         .tag-volleyball { background-image: url('./vollyball.png'); }
-        /* 其他分類依舊用純色 + 文字顯示 */
-        .tag-other { background-color: #8e44ad; background-image: none; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 900; letter-spacing: 1px; font-family: var(--tc-font); } 
+        /* 其他分類依舊保留紫底跟黑框 */
+        .tag-other { background-color: #8e44ad; border: 1.5px solid #000; background-image: none; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 900; letter-spacing: 1px; font-family: var(--tc-font); }
 
         .fav-btn { position: absolute; top: 15px; right: 15px; width: 40px; height: 40px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.5); color: #000; transition: 0.2s;}
         .fav-btn:hover { transform: scale(1.15); background: var(--fav-accent); }
@@ -308,8 +308,8 @@
             .number { font-size: 16px; padding: 4px 8px; }
             
             /* 📱 手機版圖片徽章縮小微調 */
-            .sport-tag { width: 22px; height: 22px; border-width: 1px; }
-            .tag-other { font-size: 8px; transform: scale(0.9); }
+            .sport-tag { width: 24px; height: 24px; }
+            .tag-other { font-size: 9px; transform: scale(0.9); }
 
             /* 📱 雙層導覽列手機版設定 */
             .main-nav { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; padding-bottom: 5px; -webkit-overflow-scrolling: touch; scrollbar-width: none; gap: 10px;}
