@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>台灣啦啦隊資料庫 | </title>
+    <title>台灣啦啦隊資料庫 | 競技熱血終極版</title>
 
     <link rel="manifest" href="manifest.json">
 
@@ -123,16 +123,15 @@
         .photo-area img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform 0.5s; }
         .card:hover .photo-area img { transform: scale(1.05); }
 
-        /* 🏀 🏆 超級防呆：無輻射污染的線條圓形徽章設計 */
+        /* 🏀 🏆 自訂圖片球類徽章設計 (V8) */
         .sport-tags { position: absolute; top: 15px; left: 15px; display: flex; flex-direction: column; gap: 10px; z-index: 5; }
-        .sport-tag { display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; box-shadow: 4px 4px 0px rgba(0,0,0,0.7); border: 2px solid #000; cursor: help; }
-        /* 嚴格規定 svg 不填色、只畫線，完美顯示背景顏色 */
-        .sport-tag svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .sport-tag { width: 34px; height: 34px; border-radius: 50%; box-shadow: 2px 2px 6px rgba(0,0,0,0.8); cursor: help; background-size: cover; background-position: center; border: 2px solid #000; background-color: #fff; }
         
-        .tag-baseball { background: #1e3799; color: #fff; } 
-        .tag-basketball { background: #f39c12; color: #000; } 
-        .tag-volleyball { background: #00b894; color: #000; }
-        .tag-other { background: #8e44ad; color: #fff; } 
+        .tag-baseball { background-image: url('baseball.png'); } 
+        .tag-basketball { background-image: url('basketball.png'); } 
+        .tag-volleyball { background-image: url('vollyball.png'); }
+        /* 其他分類依舊用純色 + 文字顯示 */
+        .tag-other { background-color: #8e44ad; background-image: none; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 900; letter-spacing: 1px; font-family: var(--tc-font); } 
 
         .fav-btn { position: absolute; top: 15px; right: 15px; width: 40px; height: 40px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.5); color: #000; transition: 0.2s;}
         .fav-btn:hover { transform: scale(1.15); background: var(--fav-accent); }
@@ -164,7 +163,7 @@
 
         .ig-link { display: inline-flex; vertical-align: middle; transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0.9; filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.8)); margin-left: 10px; }
         .ig-link:hover { transform: scale(1.2) rotate(-5deg); opacity: 1; filter: drop-shadow(0 0 8px rgba(220,39,67,0.6)); }
-        .ig-icon { width: 22px; height: 22px; display: block; } /* IG 圖示不需要設定 stroke */
+        .ig-icon { width: 22px; height: 22px; display: block; }
 
         /* =========================================
            ✨ 個人詳細彈窗
@@ -194,9 +193,9 @@
 
         .modal-ig-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; background: #15191e; color: #fff; text-decoration: none; padding: 16px; margin-top: 30px; font-weight: 900; border: 2px solid #2d3748; transition: 0.3s; font-family: var(--sport-font); letter-spacing: 1px; box-shadow: 6px 6px 0px rgba(0,0,0,0.8); border-radius: 4px; }
         .modal-ig-btn:hover { background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); border-color: transparent; transform: translate(-2px,-2px); box-shadow: 8px 8px 0px rgba(0,0,0,0.9);}
-        .modal-ig-btn svg { width: 22px; height: 22px; transition: 0.3s; position: relative; z-index: 1;}
+        .modal-ig-btn svg { width: 22px; height: 22px; fill: url(#ig-grad-final); transition: 0.3s; position: relative; z-index: 1;}
         .modal-ig-btn span { position: relative; z-index: 1; }
-        .modal-ig-btn:hover svg { transform: scale(1.1); }
+        .modal-ig-btn:hover svg { fill: #fff; transform: scale(1.1); }
 
         .schedule-jump-btn { transition: 0.2s; cursor: pointer; }
         .schedule-jump-btn:hover { transform: translateY(-3px); box-shadow: 4px 4px 0px rgba(0,0,0,0.6) !important; filter: brightness(1.2); }
@@ -307,9 +306,9 @@
             .nickname { font-size: 16px; }
             .number { font-size: 16px; padding: 4px 8px; }
             
-            /* 📱 手機版圓形 ICON 縮小微調 */
+            /* 📱 手機版圖片徽章縮小微調 */
             .sport-tag { width: 28px; height: 28px; border-width: 1.5px; }
-            .sport-tag svg { width: 18px; height: 18px; stroke-width: 1.5; }
+            .tag-other { font-size: 9px; }
 
             /* 📱 雙層導覽列手機版設定 */
             .main-nav { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; padding-bottom: 5px; -webkit-overflow-scrolling: touch; scrollbar-width: none; gap: 10px;}
@@ -420,37 +419,6 @@
             <linearGradient id="ig-grad-final" x1="0%" y1="100%" x2="100%" y2="0%">
                 <stop offset="0%" style="stop-color:#f09433;" /><stop offset="25%" style="stop-color:#e6683c;" /><stop offset="50%" style="stop-color:#dc2743;" /><stop offset="75%" style="stop-color:#cc2366;" /><stop offset="100%" style="stop-color:#bc1888;" />
             </linearGradient>
-            
-            <symbol id="icon-baseball" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="M6 3.5 A 9 9 0 0 1 6 20.5"></path>
-                <path d="M18 3.5 A 9 9 0 0 0 18 20.5"></path>
-                <line x1="6.5" y1="8" x2="8" y2="8.5"></line>
-                <line x1="6" y1="12" x2="7.5" y2="12"></line>
-                <line x1="6.5" y1="16" x2="8" y2="15.5"></line>
-                <line x1="17.5" y1="8" x2="16" y2="8.5"></line>
-                <line x1="18" y1="12" x2="16.5" y2="12"></line>
-                <line x1="17.5" y1="16" x2="16" y2="15.5"></line>
-            </symbol>
-            
-            <symbol id="icon-basketball" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="2" y1="12" x2="22" y2="12"></line>
-                <line x1="12" y1="2" x2="12" y2="22"></line>
-                <path d="M6.5 3.5 A 8 8 0 0 1 6.5 20.5"></path>
-                <path d="M17.5 3.5 A 8 8 0 0 0 17.5 20.5"></path>
-            </symbol>
-            
-            <symbol id="icon-volleyball" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="M12 22 C 12 14 18 10 21.5 7"></path>
-                <path d="M2.5 7 C 6 10 12 14 12 22"></path>
-                <path d="M2.5 7 C 10 7 14 2 14 2"></path>
-            </symbol>
-            
-            <symbol id="icon-other" viewBox="0 0 24 24">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-            </symbol>
             
             <symbol id="icon-ig" viewBox="0 0 24 24">
                 <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.332 3.608 1.308.975.975 1.245 2.242 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.332 2.633-1.308 3.608-.975.975-2.242 1.245-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.332-3.608-1.308-.975-.975-1.245-2.242-1.308-3.608-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.062-1.366.332-2.633 1.308-3.608.975-.975 2.242-1.245 3.608-1.308 1.266-.058 1.646-.07 4.85-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.358-.2 6.78-2.618 6.98-6.98.058-1.281.072-1.689.072-4.948s-.014-3.667-.072-4.947c-.2-4.358-2.618-6.78-6.98-6.98-1.281-.058-1.689-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
@@ -593,8 +561,8 @@
         let currentMode = "girls", currentSport = "全部", currentTeam = "全部啦啦隊";
         let currentScheduleTeam = null, currentScheduleSport = null; 
 
-        // 🏆 強制快取 V7 (保證無輻射污染)
-        const CACHE_KEY = "tw_cheerleader_cache_v7";
+        // 🏆 強制快取 V8 (外部 PNG 圖片升級版)
+        const CACHE_KEY = "tw_cheerleader_cache_v8";
         const CACHE_TIME = 60 * 60 * 1000; 
 
         function enableEnterButton() {
@@ -784,7 +752,7 @@
         };
 
         // =========================================================================
-        // 女孩卡片與彈窗 (無輻射手繪球類 ICON版)
+        // 女孩卡片與彈窗 (包含 PNG 圖片徽章)
         // =========================================================================
         function renderGirls() {
             const container = document.getElementById('grid-container');
@@ -861,9 +829,12 @@
                 const cardAccent = (teamThemes[`${teams[0]}_${currentSport==="全部"?"":currentSport}`] || teamThemes[teams[0]] || teamThemes["全部啦啦隊"]).accent;
                 const isFav = myFavorites.includes(c.realname);
                 
+                // 🏆 讀取你的 PNG 圖片當作徽章
                 let sportTags = sports.map(s => {
                     let type = s.includes("棒") ? 'baseball' : s.includes("籃") ? 'basketball' : s.includes("排") ? 'volleyball' : 'other';
-                    return `<div class="sport-tag tag-${type}" title="${s}"><svg><use xlink:href="#icon-${type}"></use></svg></div>`;
+                    return type === 'other' 
+                        ? `<div class="sport-tag tag-other" title="${s}">其他</div>` 
+                        : `<div class="sport-tag tag-${type}" title="${s}"></div>`;
                 }).join('');
                 
                 let displayNum = (c.mN||[c.num]).filter(n=>n && n!=="-").map(n => '#' + String(n).replace(/#/g,'')).join(' ') || "-";
@@ -921,7 +892,9 @@
 
             let tags = sports.filter(s => s).map(s => {
                 let type = s.includes("棒") ? 'baseball' : s.includes("籃") ? 'basketball' : s.includes("排") ? 'volleyball' : 'other';
-                return `<div class="sport-tag tag-${type}" title="${s}"><svg><use xlink:href="#icon-${type}"></use></svg></div>`;
+                return type === 'other' 
+                    ? `<div class="sport-tag tag-other" title="${s}">其他</div>` 
+                    : `<div class="sport-tag tag-${type}" title="${s}"></div>`;
             }).join('');
 
             const today = new Date();
